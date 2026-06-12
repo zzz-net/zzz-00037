@@ -119,15 +119,18 @@ yargs
       if (preScanCheck.exists && !argv.force) {
         console.log(chalk.yellow('⚠ 该目录已有扫描记录:'));
         console.log(`  最近扫描时间: ${preScanCheck.lastScanTime}`);
-        console.log(`  关联批次: ${preScanCheck.batches.slice(-3).join(', ')}`);
+        const validBatches = (preScanCheck.batches || []).filter(bid => store.loadBatch(bid));
+        console.log(`  关联批次: ${validBatches.slice(-3).map(b => b.batchId || b).join(', ')}`);
         console.log(chalk.gray('  使用 --force 强制重新扫描\n'));
-        const batchId = preScanCheck.batches[preScanCheck.batches.length - 1];
-        store.setActiveBatch(batchId);
-        const existing = store.loadBatch(batchId);
-        if (existing) {
-          console.log(chalk.cyan(`📋 批次 ${batchId} 的扫描结果:\n`));
-          printIssueTable(existing.issues);
-          printSummary(existing.summary);
+        if (validBatches.length > 0) {
+          const batchId = validBatches[validBatches.length - 1].batchId || validBatches[validBatches.length - 1];
+          store.setActiveBatch(batchId);
+          const existing = store.loadBatch(batchId);
+          if (existing) {
+            console.log(chalk.cyan(`📋 批次 ${batchId} 的扫描结果:\n`));
+            printIssueTable(existing.issues);
+            printSummary(existing.summary);
+          }
         }
         process.exit(0);
         return;

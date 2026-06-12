@@ -199,7 +199,9 @@ class StateStore {
     const index = this._loadIndex();
     const absDir = path.resolve(targetDir);
     const entry = index.directoryIndex[absDir];
-    if (!entry) return { exists: false };
+    if (!entry || !Array.isArray(entry.batches) || entry.batches.length === 0) {
+      return { exists: false };
+    }
     const result = {
       exists: true,
       lastScanTime: entry.lastScanTime,
@@ -212,12 +214,15 @@ class StateStore {
   }
 
   setActiveBatch(batchId) {
+    if (!batchId || typeof batchId !== 'string') return;
     fs.writeFileSync(this.activeBatchFile, batchId, 'utf-8');
   }
 
   getActiveBatchId() {
     if (!fs.existsSync(this.activeBatchFile)) return null;
-    return fs.readFileSync(this.activeBatchFile, 'utf-8').trim();
+    const id = fs.readFileSync(this.activeBatchFile, 'utf-8').trim();
+    if (!id || id === 'undefined' || id === 'null') return null;
+    return id;
   }
 
   getActiveBatch() {
@@ -314,9 +319,14 @@ class StateStore {
         for (const dir of Object.keys(index.directoryIndex)) {
           const entry = index.directoryIndex[dir];
           entry.batches = entry.batches.filter(bid => bid !== action.batchId);
+          if (entry.batches.length === 0) {
+            delete index.directoryIndex[dir];
+          }
         }
         if (this.getActiveBatchId() === action.batchId) {
-          fs.unlinkSync(this.activeBatchFile);
+          if (fs.existsSync(this.activeBatchFile)) {
+            fs.unlinkSync(this.activeBatchFile);
+          }
         }
         break;
       }
