@@ -383,11 +383,28 @@ class StateStore {
         }
         break;
       }
+      case 'BASELINE_SAVE':
+      case 'BASELINE_IMPORT': {
+        const baselinesDir = path.join(this.storeDir, 'baselines');
+        const baselinePath = path.join(baselinesDir, `${action.baselineName}.json`);
+        if (action.previousData) {
+          fs.writeFileSync(baselinePath, JSON.stringify(action.previousData, null, 2), 'utf-8');
+        } else {
+          if (fs.existsSync(baselinePath)) {
+            fs.unlinkSync(baselinePath);
+          }
+        }
+        break;
+      }
     }
 
     this._saveAllData(data);
     this._saveIndex(index);
     return action;
+  }
+
+  pushBaselineUndo(action) {
+    this._pushUndo(action);
   }
 
   getUndoStackSize() {

@@ -1,0 +1,288 @@
+[
+  {
+    "type": "NEW_BATCH",
+    "batchId": "BATCH_mqc01k6g_dtgz"
+  },
+  {
+    "type": "CLAIM",
+    "batchId": "BATCH_mqc01k6g_dtgz",
+    "beforeStates": [
+      {
+        "id": "ISSUE_mqc01k6j_j8nyvu",
+        "type": "DUPLICATE_VERSION",
+        "severity": "error",
+        "message": "章节[一、投标函] 检测到重复版本文件: 01-投标函\\投标函_v1.pdf(版本:1), 01-投标函\\投标函_v2.pdf(版本:2)",
+        "targetPath": "01-投标函\\投标函_v1.pdf",
+        "expected": "仅保留一个版本",
+        "actual": "存在 2 个版本",
+        "details": {
+          "section": "一、投标函",
+          "files": [
+            {
+              "path": "01-投标函\\投标函_v1.pdf",
+              "version": "1"
+            },
+            {
+              "path": "01-投标函\\投标函_v2.pdf",
+              "version": "2"
+            }
+          ]
+        },
+        "reviewStatus": "pending",
+        "handler": null,
+        "assignee": null,
+        "remark": null,
+        "reviewHistory": []
+      },
+      {
+        "id": "ISSUE_mqc01k6j_jlsk5k",
+        "type": "PAGE_DISCONTINUITY",
+        "severity": "error",
+        "message": "章节[一、投标函] 页码不连续: 缺失第 3 页",
+        "targetPath": "01-投标函",
+        "expected": "存在第 3 页的文件",
+        "actual": "未找到第 3 页",
+        "details": {
+          "section": "一、投标函",
+          "missingPage": 3,
+          "range": {
+            "start": 1,
+            "end": 10
+          }
+        },
+        "reviewStatus": "pending",
+        "handler": null,
+        "assignee": null,
+        "remark": null,
+        "reviewHistory": []
+      },
+      {
+        "id": "ISSUE_mqc01k6j_zqnh4t",
+        "type": "PAGE_DISCONTINUITY",
+        "severity": "error",
+        "message": "章节[一、投标函] 页码不连续: 缺失第 4 页",
+        "targetPath": "01-投标函",
+        "expected": "存在第 4 页的文件",
+        "actual": "未找到第 4 页",
+        "details": {
+          "section": "一、投标函",
+          "missingPage": 4,
+          "range": {
+            "start": 1,
+            "end": 10
+          }
+        },
+        "reviewStatus": "pending",
+        "handler": null,
+        "assignee": null,
+        "remark": null,
+        "reviewHistory": []
+      },
+      {
+        "id": "ISSUE_mqc01k6j_mp23vs",
+        "type": "PAGE_DISCONTINUITY",
+        "severity": "error",
+        "message": "章节[一、投标函] 页码不连续: 缺失第 5 页",
+        "targetPath": "01-投标函",
+        "expected": "存在第 5 页的文件",
+        "actual": "未找到第 5 页",
+        "details": {
+          "section": "一、投标函",
+          "missingPage": 5,
+          "range": {
+            "start": 1,
+            "end": 10
+          }
+        },
+        "reviewStatus": "pending",
+        "handler": null,
+        "assignee": null,
+        "remark": null,
+        "reviewHistory": []
+      },
+      {
+        "id": "ISSUE_mqc01k6j_j74qm5",
+        "type": "PAGE_DISCONTINUITY",
+        "severity": "error",
+        "message": "章节[一、投标函] 页码不连续: 缺失第 6 页",
+        "targetPath": "01-投标函",
+        "expected": "存在第 6 页的文件",
+        "actual": "未找到第 6 页",
+        "details": {
+          "section": "一、投标函",
+          "missingPage": 6,
+          "range": {
+            "start": 1,
+            "end": 10
+          }
+        },
+        "reviewStatus": "pending",
+        "handler": null,
+        "assignee": null,
+        "remark": null,
+        "reviewHistory": []
+      },
+      {
+        "id": "ISSUE_mqc01k6j_wfb21q",
+        "type": "PAGE_DISCONTINUITY",
+        "severity": "error",
+        "message": "章节[一、投标函] 页码不连续: 缺失第 7 页",
+        "targetPath": "01-投标函",
+        "expected": "存在第 7 页的文件",
+        "actual": "未找到第 7 页",
+        "details": {
+          "section": "一、投标函",
+          "missingPage": 7,
+          "range": {
+            "start": 1,
+            "end": 10
+          }
+        },
+        "reviewStatus": "pending",
+        "handler": null,
+        "assignee": null,
+        "remark": null,
+        "reviewHistory": []
+      },
+      {
+        "id": "ISSUE_mqc01k6j_5h9s0i",
+        "type": "PAGE_DISCONTINUITY",
+        "severity": "error",
+        "message": "章节[一、投标函] 页码不连续: 缺失第 8 页",
+        "targetPath": "01-投标函",
+        "expected": "存在第 8 页的文件",
+        "actual": "未找到第 8 页",
+        "details": {
+          "section": "一、投标函",
+          "missingPage": 8,
+          "range": {
+            "start": 1,
+            "end": 10
+          }
+        },
+        "reviewStatus": "pending",
+        "handler": null,
+        "assignee": null,
+        "remark": null,
+        "reviewHistory": []
+      },
+      {
+        "id": "ISSUE_mqc01k6j_38lot5",
+        "type": "PAGE_DISCONTINUITY",
+        "severity": "error",
+        "message": "章节[一、投标函] 页码不连续: 缺失第 9 页",
+        "targetPath": "01-投标函",
+        "expected": "存在第 9 页的文件",
+        "actual": "未找到第 9 页",
+        "details": {
+          "section": "一、投标函",
+          "missingPage": 9,
+          "range": {
+            "start": 1,
+            "end": 10
+          }
+        },
+        "reviewStatus": "pending",
+        "handler": null,
+        "assignee": null,
+        "remark": null,
+        "reviewHistory": []
+      },
+      {
+        "id": "ISSUE_mqc01k6j_skcw8g",
+        "type": "PAGE_DISCONTINUITY",
+        "severity": "error",
+        "message": "章节[一、投标函] 页码不连续: 缺失第 10 页",
+        "targetPath": "01-投标函",
+        "expected": "存在第 10 页的文件",
+        "actual": "未找到第 10 页",
+        "details": {
+          "section": "一、投标函",
+          "missingPage": 10,
+          "range": {
+            "start": 1,
+            "end": 10
+          }
+        },
+        "reviewStatus": "pending",
+        "handler": null,
+        "assignee": null,
+        "remark": null,
+        "reviewHistory": []
+      },
+      {
+        "id": "ISSUE_mqc01k6j_fdlfvo",
+        "type": "MISSING_SIGNATURE",
+        "severity": "warn",
+        "message": "章节[一、投标函] 可能缺少签章: 01-投标函\\投标函_v1.pdf (文件名未包含签章标识)",
+        "targetPath": "01-投标函\\投标函_v1.pdf",
+        "expected": "文件名包含\"签章/盖章/签名/签字/_signed\"等标识",
+        "actual": "投标函_v1.pdf",
+        "details": {
+          "section": "一、投标函",
+          "file": "01-投标函\\投标函_v1.pdf",
+          "sizeCheck": false
+        },
+        "reviewStatus": "pending",
+        "handler": null,
+        "assignee": null,
+        "remark": null,
+        "reviewHistory": []
+      },
+      {
+        "id": "ISSUE_mqc01k6j_axz29m",
+        "type": "MISSING_SIGNATURE",
+        "severity": "warn",
+        "message": "章节[一、投标函] 可能缺少签章: 01-投标函\\投标函_v2.pdf (文件名未包含签章标识)",
+        "targetPath": "01-投标函\\投标函_v2.pdf",
+        "expected": "文件名包含\"签章/盖章/签名/签字/_signed\"等标识",
+        "actual": "投标函_v2.pdf",
+        "details": {
+          "section": "一、投标函",
+          "file": "01-投标函\\投标函_v2.pdf",
+          "sizeCheck": false
+        },
+        "reviewStatus": "pending",
+        "handler": null,
+        "assignee": null,
+        "remark": null,
+        "reviewHistory": []
+      },
+      {
+        "id": "ISSUE_mqc01k6o_3nn7vr",
+        "type": "UNTRACKED_FILE",
+        "severity": "info",
+        "message": "章节[一、投标函] 存在未纳入规则的文件: 01-投标函\\投标函_v1.pdf",
+        "targetPath": "01-投标函\\投标函_v1.pdf",
+        "expected": "在规则中定义该文件的用途",
+        "actual": "01-投标函\\投标函_v1.pdf",
+        "details": {
+          "section": "一、投标函"
+        },
+        "reviewStatus": "pending",
+        "handler": null,
+        "assignee": null,
+        "remark": null,
+        "reviewHistory": []
+      },
+      {
+        "id": "ISSUE_mqc01k6o_wbus3y",
+        "type": "UNTRACKED_FILE",
+        "severity": "info",
+        "message": "章节[一、投标函] 存在未纳入规则的文件: 01-投标函\\投标函_v2.pdf",
+        "targetPath": "01-投标函\\投标函_v2.pdf",
+        "expected": "在规则中定义该文件的用途",
+        "actual": "01-投标函\\投标函_v2.pdf",
+        "details": {
+          "section": "一、投标函"
+        },
+        "reviewStatus": "pending",
+        "handler": null,
+        "assignee": null,
+        "remark": null,
+        "reviewHistory": []
+      }
+    ],
+    "count": 13
+  }
+]

@@ -1,0 +1,40 @@
+[
+  {
+    "type": "NEW_BATCH",
+    "batchId": "BATCH_mqbygewk_zqy1"
+  },
+  {
+    "type": "CLAIM",
+    "batchId": "BATCH_mqbygewk_zqy1",
+    "beforeStates": [
+      {
+        "id": "ISSUE_mqbygewo_u8qqxz",
+        "type": "DUPLICATE_VERSION",
+        "severity": "error",
+        "message": "章节[一、投标函] 检测到重复版本文件: 01-投标函\\投标函_v1.pdf(版本:1), 01-投标函\\投标函_v2.pdf(版本:2)",
+        "targetPath": "01-投标函\\投标函_v1.pdf",
+        "expected": "仅保留一个版本",
+        "actual": "存在 2 个版本",
+        "details": {
+          "section": "一、投标函",
+          "files": [
+            {
+              "path": "01-投标函\\投标函_v1.pdf",
+              "version": "1"
+            },
+            {
+              "path": "01-投标函\\投标函_v2.pdf",
+              "version": "2"
+            }
+          ]
+        },
+        "reviewStatus": "pending",
+        "handler": null,
+        "assignee": null,
+        "remark": null,
+        "reviewHistory": []
+      }
+    ],
+    "count": 1
+  }
+]

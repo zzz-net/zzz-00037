@@ -1,0 +1,342 @@
+[
+  {
+    "type": "NEW_BATCH",
+    "batchId": "BATCH_mqbzuz0v_mybc"
+  },
+  {
+    "type": "CLAIM",
+    "batchId": "BATCH_mqbzuz0v_mybc",
+    "beforeStates": [
+      {
+        "id": "ISSUE_mqbzuz1m_8px7wk",
+        "type": "MISSING_FILE",
+        "severity": "error",
+        "message": "章节[二、商务资质文件] 缺少必需文件: 02-商务资质\\资质等级证书.pdf",
+        "targetPath": "02-商务资质\\资质等级证书.pdf",
+        "expected": "资质等级证书.pdf",
+        "actual": null,
+        "details": {
+          "section": "二、商务资质文件",
+          "file": "资质等级证书.pdf",
+          "description": "建设行政主管部门颁发的资质证书"
+        },
+        "reviewStatus": "pending",
+        "handler": null,
+        "assignee": null,
+        "remark": null,
+        "reviewHistory": []
+      },
+      {
+        "id": "ISSUE_mqbzuz1m_jrhasl",
+        "type": "MISSING_FILE",
+        "severity": "error",
+        "message": "章节[二、商务资质文件] 缺少必需文件: 02-商务资质\\安全生产许可证.pdf",
+        "targetPath": "02-商务资质\\安全生产许可证.pdf",
+        "expected": "安全生产许可证.pdf",
+        "actual": null,
+        "details": {
+          "section": "二、商务资质文件",
+          "file": "安全生产许可证.pdf",
+          "description": ""
+        },
+        "reviewStatus": "pending",
+        "handler": null,
+        "assignee": null,
+        "remark": null,
+        "reviewHistory": []
+      },
+      {
+        "id": "ISSUE_mqbzuz1n_bx741u",
+        "type": "MISSING_FILE",
+        "severity": "error",
+        "message": "章节[三、财务状况] 缺少必需文件: 03-财务状况\\2021年度审计报告.pdf",
+        "targetPath": "03-财务状况\\2021年度审计报告.pdf",
+        "expected": "2021年度审计报告.pdf",
+        "actual": null,
+        "details": {
+          "section": "三、财务状况",
+          "file": "2021年度审计报告.pdf",
+          "description": ""
+        },
+        "reviewStatus": "pending",
+        "handler": null,
+        "assignee": null,
+        "remark": null,
+        "reviewHistory": []
+      },
+      {
+        "id": "ISSUE_mqbzuz1s_7s6o7b",
+        "type": "MISSING_FILE",
+        "severity": "error",
+        "message": "章节[五、项目管理机构] 缺少必需文件: 05-项目管理机构\\项目技术负责人简历表_签章.pdf",
+        "targetPath": "05-项目管理机构\\项目技术负责人简历表_签章.pdf",
+        "expected": "项目技术负责人简历表_签章.pdf",
+        "actual": null,
+        "details": {
+          "section": "五、项目管理机构",
+          "file": "项目技术负责人简历表_签章.pdf",
+          "description": ""
+        },
+        "reviewStatus": "pending",
+        "handler": null,
+        "assignee": null,
+        "remark": null,
+        "reviewHistory": []
+      },
+      {
+        "id": "ISSUE_mqbzuz1v_bwye9f",
+        "type": "MISSING_FILE",
+        "severity": "error",
+        "message": "章节[七、报价文件] 缺少必需文件: 07-报价文件\\报价一览表_签章.pdf",
+        "targetPath": "07-报价文件\\报价一览表_签章.pdf",
+        "expected": "报价一览表_签章.pdf",
+        "actual": null,
+        "details": {
+          "section": "七、报价文件",
+          "file": "报价一览表_签章.pdf",
+          "description": ""
+        },
+        "reviewStatus": "pending",
+        "handler": null,
+        "assignee": null,
+        "remark": null,
+        "reviewHistory": []
+      },
+      {
+        "id": "ISSUE_mqbzuz1v_22i2ft",
+        "type": "MISSING_FILE",
+        "severity": "error",
+        "message": "章节[七、报价文件] 缺少必需文件: 07-报价文件\\分项报价表_签章.xlsx",
+        "targetPath": "07-报价文件\\分项报价表_签章.xlsx",
+        "expected": "分项报价表_签章.xlsx",
+        "actual": null,
+        "details": {
+          "section": "七、报价文件",
+          "file": "分项报价表_签章.xlsx",
+          "description": ""
+        },
+        "reviewStatus": "pending",
+        "handler": null,
+        "assignee": null,
+        "remark": null,
+        "reviewHistory": []
+      },
+      {
+        "id": "ISSUE_mqbzuz1v_7algq6",
+        "type": "MISSING_FILE",
+        "severity": "error",
+        "message": "章节[七、报价文件] 缺少必需文件: 07-报价文件\\总价_已签章.pdf",
+        "targetPath": "07-报价文件\\总价_已签章.pdf",
+        "expected": "总价_已签章.pdf",
+        "actual": null,
+        "details": {
+          "section": "七、报价文件",
+          "file": "总价_已签章.pdf",
+          "description": ""
+        },
+        "reviewStatus": "pending",
+        "handler": null,
+        "assignee": null,
+        "remark": null,
+        "reviewHistory": []
+      }
+    ],
+    "count": 7
+  },
+  {
+    "type": "ASSIGN",
+    "batchId": "BATCH_mqbzuz0v_mybc",
+    "beforeStates": [
+      {
+        "id": "ISSUE_mqbzuz1m_8px7wk",
+        "type": "MISSING_FILE",
+        "severity": "error",
+        "message": "章节[二、商务资质文件] 缺少必需文件: 02-商务资质\\资质等级证书.pdf",
+        "targetPath": "02-商务资质\\资质等级证书.pdf",
+        "expected": "资质等级证书.pdf",
+        "actual": null,
+        "details": {
+          "section": "二、商务资质文件",
+          "file": "资质等级证书.pdf",
+          "description": "建设行政主管部门颁发的资质证书"
+        },
+        "reviewStatus": "pending",
+        "handler": null,
+        "assignee": "张三",
+        "remark": null,
+        "reviewHistory": [
+          {
+            "from": null,
+            "to": "张三",
+            "operator": "张三",
+            "reason": "领取问题",
+            "timestamp": "2026-06-13T06:48:31.028Z"
+          }
+        ]
+      },
+      {
+        "id": "ISSUE_mqbzuz1m_jrhasl",
+        "type": "MISSING_FILE",
+        "severity": "error",
+        "message": "章节[二、商务资质文件] 缺少必需文件: 02-商务资质\\安全生产许可证.pdf",
+        "targetPath": "02-商务资质\\安全生产许可证.pdf",
+        "expected": "安全生产许可证.pdf",
+        "actual": null,
+        "details": {
+          "section": "二、商务资质文件",
+          "file": "安全生产许可证.pdf",
+          "description": ""
+        },
+        "reviewStatus": "pending",
+        "handler": null,
+        "assignee": "张三",
+        "remark": null,
+        "reviewHistory": [
+          {
+            "from": null,
+            "to": "张三",
+            "operator": "张三",
+            "reason": "领取问题",
+            "timestamp": "2026-06-13T06:48:31.030Z"
+          }
+        ]
+      },
+      {
+        "id": "ISSUE_mqbzuz1n_bx741u",
+        "type": "MISSING_FILE",
+        "severity": "error",
+        "message": "章节[三、财务状况] 缺少必需文件: 03-财务状况\\2021年度审计报告.pdf",
+        "targetPath": "03-财务状况\\2021年度审计报告.pdf",
+        "expected": "2021年度审计报告.pdf",
+        "actual": null,
+        "details": {
+          "section": "三、财务状况",
+          "file": "2021年度审计报告.pdf",
+          "description": ""
+        },
+        "reviewStatus": "pending",
+        "handler": null,
+        "assignee": "张三",
+        "remark": null,
+        "reviewHistory": [
+          {
+            "from": null,
+            "to": "张三",
+            "operator": "张三",
+            "reason": "领取问题",
+            "timestamp": "2026-06-13T06:48:31.030Z"
+          }
+        ]
+      },
+      {
+        "id": "ISSUE_mqbzuz1s_7s6o7b",
+        "type": "MISSING_FILE",
+        "severity": "error",
+        "message": "章节[五、项目管理机构] 缺少必需文件: 05-项目管理机构\\项目技术负责人简历表_签章.pdf",
+        "targetPath": "05-项目管理机构\\项目技术负责人简历表_签章.pdf",
+        "expected": "项目技术负责人简历表_签章.pdf",
+        "actual": null,
+        "details": {
+          "section": "五、项目管理机构",
+          "file": "项目技术负责人简历表_签章.pdf",
+          "description": ""
+        },
+        "reviewStatus": "pending",
+        "handler": null,
+        "assignee": "张三",
+        "remark": null,
+        "reviewHistory": [
+          {
+            "from": null,
+            "to": "张三",
+            "operator": "张三",
+            "reason": "领取问题",
+            "timestamp": "2026-06-13T06:48:31.030Z"
+          }
+        ]
+      },
+      {
+        "id": "ISSUE_mqbzuz1v_bwye9f",
+        "type": "MISSING_FILE",
+        "severity": "error",
+        "message": "章节[七、报价文件] 缺少必需文件: 07-报价文件\\报价一览表_签章.pdf",
+        "targetPath": "07-报价文件\\报价一览表_签章.pdf",
+        "expected": "报价一览表_签章.pdf",
+        "actual": null,
+        "details": {
+          "section": "七、报价文件",
+          "file": "报价一览表_签章.pdf",
+          "description": ""
+        },
+        "reviewStatus": "pending",
+        "handler": null,
+        "assignee": "张三",
+        "remark": null,
+        "reviewHistory": [
+          {
+            "from": null,
+            "to": "张三",
+            "operator": "张三",
+            "reason": "领取问题",
+            "timestamp": "2026-06-13T06:48:31.030Z"
+          }
+        ]
+      },
+      {
+        "id": "ISSUE_mqbzuz1v_22i2ft",
+        "type": "MISSING_FILE",
+        "severity": "error",
+        "message": "章节[七、报价文件] 缺少必需文件: 07-报价文件\\分项报价表_签章.xlsx",
+        "targetPath": "07-报价文件\\分项报价表_签章.xlsx",
+        "expected": "分项报价表_签章.xlsx",
+        "actual": null,
+        "details": {
+          "section": "七、报价文件",
+          "file": "分项报价表_签章.xlsx",
+          "description": ""
+        },
+        "reviewStatus": "pending",
+        "handler": null,
+        "assignee": "张三",
+        "remark": null,
+        "reviewHistory": [
+          {
+            "from": null,
+            "to": "张三",
+            "operator": "张三",
+            "reason": "领取问题",
+            "timestamp": "2026-06-13T06:48:31.030Z"
+          }
+        ]
+      },
+      {
+        "id": "ISSUE_mqbzuz1v_7algq6",
+        "type": "MISSING_FILE",
+        "severity": "error",
+        "message": "章节[七、报价文件] 缺少必需文件: 07-报价文件\\总价_已签章.pdf",
+        "targetPath": "07-报价文件\\总价_已签章.pdf",
+        "expected": "总价_已签章.pdf",
+        "actual": null,
+        "details": {
+          "section": "七、报价文件",
+          "file": "总价_已签章.pdf",
+          "description": ""
+        },
+        "reviewStatus": "pending",
+        "handler": null,
+        "assignee": "张三",
+        "remark": null,
+        "reviewHistory": [
+          {
+            "from": null,
+            "to": "张三",
+            "operator": "张三",
+            "reason": "领取问题",
+            "timestamp": "2026-06-13T06:48:31.030Z"
+          }
+        ]
+      }
+    ],
+    "count": 7
+  }
+]

@@ -7,6 +7,7 @@ const { Scanner } = require('../src/scanner');
 const { StateStore } = require('../src/state-store');
 const { Exporter } = require('../src/exporter');
 const { REVIEW_STATUS } = require('../src/models');
+const { BaselineManager, BaselineError } = require('../src/baseline');
 
 const TEST_ROOT = path.join(__dirname, '..', '.test-workspace');
 const SAMPLES_DIR = path.join(__dirname, '..', 'samples');
@@ -777,7 +778,7 @@ test('回归: README 命令总览与 CLI --help 命令清单完全一致（防�
     if (m) {
       const name = m[1];
       // 只接受已知命令模式：validate, scan, resume, review, carryover, status, undo, export, list, history, init-samples
-      if (/^(validate|scan|resume|review|carryover|status|undo|export|list|history|init-samples|claim|assign)$/.test(name)) {
+      if (/^(validate|scan|resume|review|carryover|status|undo|export|list|history|init-samples|claim|assign|baseline)$/.test(name)) {
         if (!helpCmdNames.includes(name)) helpCmdNames.push(name);
       }
     }
@@ -1504,6 +1505,634 @@ test('回归: README 命令总览包含 claim 和 assign 命令', () => {
   const codeBlock = m[1];
   assert.ok(/bbcheck claim\b/.test(codeBlock), 'README 命令总览中应包含 bbcheck claim');
   assert.ok(/bbcheck assign\b/.test(codeBlock), 'README 命令总览中应包含 bbcheck assign');
+});
+
+// ─────────────────────────────────────────────────────────────
+// 测试 10: baseline 基线管理
+// ─────────────────────────────────────────────────────────────
+suite('新功能: baseline save / diff / list');
+
+test('baseline save — 保存基线成功', () => {
+  const storeDir = makeTempDir('bl-save');
+  const store = new StateStore(storeDir);
+  const bl = new BaselineManager(storeDir);
+  const r = scanOnce(store);
+
+  const result = bl.save('v1', r);
+  assert.strictEqual(result.name, 'v1');
+  assert.strictEqual(result.overwritten, false);
+  assert.strictEqual(result.issueCount, r.issues.length);
+  assert.ok(result.issueCount > 0, '应有问题');
+});
+
+test('baseline save — 同名基线不覆盖时报错', () => {
+  const storeDir = makeTempDir('bl-dup');
+  const store = new StateStore(storeDir);
+  const bl = new BaselineManager(storeDir);
+  const r = scanOnce(store);
+
+  bl.save('v1', r);
+  assert.throws(() => bl.save('v1', r), /已存在/);
+});
+
+test('baseline save — 同名基线 force 覆盖', () => {
+  const storeDir = makeTempDir('bl-force');
+  const store = new StateStore(storeDir);
+  const bl = new BaselineManager(storeDir);
+  const r = scanOnce(store);
+
+  bl.save('v1', r);
+  const result = bl.save('v1', r, { force: true });
+  assert.strictEqual(result.overwritten, true);
+});
+
+test('baseline save — 空名称报错', () => {
+  const storeDir = makeTempDir('bl-empty-name');
+  const store = new StateStore(storeDir);
+  const bl = new BaselineManager(storeDir);
+  const r = scanOnce(store);
+  assert.throws(() => bl.save('', r), /不能为空/);
+});
+
+test('baseline save — 非法字符名称报错', () => {
+  const storeDir = makeTempDir('bl-bad-name');
+  const store = new StateStore(storeDir);
+  const bl = new BaselineManager(storeDir);
+  const r = scanOnce(store);
+  assert.throws(() => bl.save('bad name!', r), /非法字符/);
+});
+
+test('baseline save — 无扫描结果报错', () => {
+  const storeDir = makeTempDir('bl-no-scan');
+  const bl = new BaselineManager(storeDir);
+  assert.throws(() => bl.save('v1', null), /没有激活的批次/);
+});
+
+test('baseline list — 列出已保存的基线', () => {
+  const storeDir = makeTempDir('bl-list');
+  const store = new StateStore(storeDir);
+  const bl = new BaselineManager(storeDir);
+  const r = scanOnce(store);
+
+  bl.save('alpha', r);
+  bl.save('beta', r);
+
+  const list = bl.list();
+  assert.strictEqual(list.length, 2);
+  const names = list.map(b => b.name);
+  assert.ok(names.includes('alpha'));
+  assert.ok(names.includes('beta'));
+});
+
+test('baseline list — 空时返回空数组', () => {
+  const storeDir = makeTempDir('bl-list-empty');
+  const bl = new BaselineManager(storeDir);
+  const list = bl.list();
+  assert.strictEqual(list.length, 0);
+});
+
+test('baseline list — 损坏文件标记为 corrupted', () => {
+  const storeDir = makeTempDir('bl-list-corrupt');
+  const bl = new BaselineManager(storeDir);
+  const baselinesDir = path.join(storeDir, 'baselines');
+  if (!fs.existsSync(baselinesDir)) fs.mkdirSync(baselinesDir, { recursive: true });
+  fs.writeFileSync(path.join(baselinesDir, 'bad.json'), 'not valid json{{{', 'utf-8');
+
+  const list = bl.list();
+  assert.strictEqual(list.length, 1);
+  assert.strictEqual(list[0].name, 'bad');
+  assert.strictEqual(list[0].corrupted, true);
+});
+
+test('baseline diff — 相同批次差异为零', () => {
+  const storeDir = makeTempDir('bl-diff-same');
+  const store = new StateStore(storeDir);
+  const bl = new BaselineManager(storeDir);
+  const r = scanOnce(store);
+
+  bl.save('v1', r);
+  const diffResult = bl.diff('v1', r);
+  assert.strictEqual(diffResult.summary.added, 0);
+  assert.strictEqual(diffResult.summary.removed, 0);
+  assert.strictEqual(diffResult.summary.changed, 0);
+  assert.strictEqual(diffResult.summary.unchanged, r.issues.length);
+});
+
+test('baseline diff — 新批次有问题新增和消失', () => {
+  const storeDir = makeTempDir('bl-diff-new');
+  const store = new StateStore(storeDir);
+  const bl = new BaselineManager(storeDir);
+  const r1 = scanOnce(store);
+
+  bl.save('v1', r1);
+
+  const r2 = scanOnce(store);
+  const diffResult = bl.diff('v1', r2);
+
+  assert.ok(diffResult.summary.unchanged > 0, '大部分问题应未变');
+  assert.strictEqual(diffResult.summary.added + diffResult.summary.removed + diffResult.summary.changed + diffResult.summary.unchanged,
+    r2.issues.length, '分类总数应等于当前问题总数');
+});
+
+test('baseline diff — 状态/负责人/备注变化能检测', () => {
+  const storeDir = makeTempDir('bl-diff-change');
+  const store = new StateStore(storeDir);
+  const bl = new BaselineManager(storeDir);
+  const r1 = scanOnce(store);
+
+  bl.save('v1', r1);
+
+  const r2 = scanOnce(store);
+  const firstIssue = r2.issues[0];
+  store.updateIssueStatus(r2.batchId, firstIssue.id, REVIEW_STATUS.CONFIRMED, 'test-handler', 'test-remark');
+
+  const reloaded = store.loadBatch(r2.batchId);
+  const diffResult = bl.diff('v1', reloaded);
+
+  assert.ok(diffResult.summary.changed > 0, '应有状态变化');
+  const changeItem = diffResult.changed.find(c =>
+    c.changes.some(ch => ch.field === 'reviewStatus')
+  );
+  assert.ok(changeItem, '应有 reviewStatus 变化记录');
+});
+
+test('baseline diff — 基线不存在报错', () => {
+  const storeDir = makeTempDir('bl-diff-notfound');
+  const store = new StateStore(storeDir);
+  const bl = new BaselineManager(storeDir);
+  const r = scanOnce(store);
+
+  assert.throws(() => bl.diff('nonexistent', r), /不存在/);
+});
+
+test('baseline diff — 规则不匹配报错', () => {
+  const storeDir = makeTempDir('bl-diff-rule');
+  const store = new StateStore(storeDir);
+  const bl = new BaselineManager(storeDir);
+  const r = scanOnce(store);
+
+  bl.save('v1', r);
+
+  const modifiedResult = store.loadBatch(r.batchId);
+  modifiedResult.rulePath = '/different/rule.yaml';
+  assert.throws(() => bl.diff('v1', modifiedResult), /规则文件不匹配/);
+});
+
+test('baseline diff — 目录不匹配报错', () => {
+  const storeDir = makeTempDir('bl-diff-dir');
+  const store = new StateStore(storeDir);
+  const bl = new BaselineManager(storeDir);
+  const r = scanOnce(store);
+
+  bl.save('v1', r);
+
+  const modifiedResult = store.loadBatch(r.batchId);
+  modifiedResult.targetDir = '/different/directory';
+  assert.throws(() => bl.diff('v1', modifiedResult), /扫描目录不匹配/);
+});
+
+test('baseline diff — 空基线名称报错', () => {
+  const storeDir = makeTempDir('bl-diff-empty');
+  const bl = new BaselineManager(storeDir);
+  assert.throws(() => bl.diff('', null), /不能为空/);
+});
+
+test('baseline diff — 无扫描结果报错', () => {
+  const storeDir = makeTempDir('bl-diff-noscan');
+  const bl = new BaselineManager(storeDir);
+  assert.throws(() => bl.diff('v1', null), /没有激活的批次/);
+});
+
+suite('新功能: baseline export / import');
+
+test('baseline export — 导出 JSON 文件', () => {
+  const storeDir = makeTempDir('bl-export');
+  const store = new StateStore(storeDir);
+  const bl = new BaselineManager(storeDir);
+  const r = scanOnce(store);
+
+  bl.save('v1', r);
+  const outFile = path.join(makeTempDir('bl-export-out'), 'baseline.json');
+  const result = bl.exportBaseline('v1', outFile);
+
+  assert.ok(fs.existsSync(outFile), '导出文件应存在');
+  const data = JSON.parse(fs.readFileSync(outFile, 'utf-8'));
+  assert.strictEqual(data._meta.type, 'bbcheck-baseline');
+  assert.strictEqual(data.baseline.name, 'v1');
+  assert.ok(Array.isArray(data.baseline.issues));
+});
+
+test('baseline import — 导入有效文件', () => {
+  const storeDir = makeTempDir('bl-import');
+  const store = new StateStore(storeDir);
+  const bl = new BaselineManager(storeDir);
+  const r = scanOnce(store);
+
+  bl.save('v1', r);
+  const outFile = path.join(makeTempDir('bl-import-out'), 'baseline.json');
+  bl.exportBaseline('v1', outFile);
+
+  const importStoreDir = makeTempDir('bl-import-dest');
+  const bl2 = new BaselineManager(importStoreDir);
+  const result = bl2.importBaseline(outFile);
+
+  assert.strictEqual(result.name, 'v1');
+  assert.strictEqual(result.overwritten, false);
+  assert.strictEqual(result.issueCount, r.issues.length);
+
+  const list = bl2.list();
+  assert.strictEqual(list.length, 1);
+  assert.strictEqual(list[0].name, 'v1');
+});
+
+test('baseline import — 导入时重命名', () => {
+  const storeDir = makeTempDir('bl-import-rename');
+  const store = new StateStore(storeDir);
+  const bl = new BaselineManager(storeDir);
+  const r = scanOnce(store);
+
+  bl.save('v1', r);
+  const outFile = path.join(makeTempDir('bl-import-rename-out'), 'baseline.json');
+  bl.exportBaseline('v1', outFile);
+
+  const importStoreDir = makeTempDir('bl-import-rename-dest');
+  const bl2 = new BaselineManager(importStoreDir);
+  const result = bl2.importBaseline(outFile, { name: 'v1-renamed' });
+
+  assert.strictEqual(result.name, 'v1-renamed');
+  const loaded = bl2.loadBaseline('v1-renamed');
+  assert.ok(loaded, '应能以新名称加载');
+  assert.strictEqual(loaded.originalName, 'v1');
+});
+
+test('baseline import — 同名基线不覆盖报错', () => {
+  const storeDir = makeTempDir('bl-import-dup');
+  const store = new StateStore(storeDir);
+  const bl = new BaselineManager(storeDir);
+  const r = scanOnce(store);
+
+  bl.save('v1', r);
+  const outFile = path.join(makeTempDir('bl-import-dup-out'), 'baseline.json');
+  bl.exportBaseline('v1', outFile);
+
+  assert.throws(() => bl.importBaseline(outFile), /已存在/);
+});
+
+test('baseline import — 同名基线 force 覆盖', () => {
+  const storeDir = makeTempDir('bl-import-dup-force');
+  const store = new StateStore(storeDir);
+  const bl = new BaselineManager(storeDir);
+  const r = scanOnce(store);
+
+  bl.save('v1', r);
+  const outFile = path.join(makeTempDir('bl-import-dup-force-out'), 'baseline.json');
+  bl.exportBaseline('v1', outFile);
+
+  const result = bl.importBaseline(outFile, { force: true });
+  assert.strictEqual(result.overwritten, true);
+});
+
+test('baseline import — 损坏文件报错', () => {
+  const storeDir = makeTempDir('bl-import-corrupt');
+  const bl = new BaselineManager(storeDir);
+  const corruptFile = path.join(makeTempDir('bl-import-corrupt-file'), 'bad.json');
+  fs.writeFileSync(corruptFile, 'not valid json{{{', 'utf-8');
+
+  assert.throws(() => bl.importBaseline(corruptFile), /已损坏/);
+});
+
+test('baseline import — 非 bbcheck 基线文件报错', () => {
+  const storeDir = makeTempDir('bl-import-wrong');
+  const bl = new BaselineManager(storeDir);
+  const wrongFile = path.join(makeTempDir('bl-import-wrong-file'), 'wrong.json');
+  fs.writeFileSync(wrongFile, JSON.stringify({ foo: 'bar' }), 'utf-8');
+
+  assert.throws(() => bl.importBaseline(wrongFile), /不是有效的 bbcheck 基线文件/);
+});
+
+test('baseline import — 文件不存在报错', () => {
+  const storeDir = makeTempDir('bl-import-no-file');
+  const bl = new BaselineManager(storeDir);
+  assert.throws(() => bl.importBaseline('/nonexistent/file.json'), /不存在/);
+});
+
+suite('新功能: baseline undo 撤销');
+
+test('undo baseline save — 新基线被删除', () => {
+  const storeDir = makeTempDir('bl-undo-save');
+  const store = new StateStore(storeDir);
+  const bl = new BaselineManager(storeDir);
+  const r = scanOnce(store);
+
+  const saveResult = bl.save('v1', r);
+  store.pushBaselineUndo({
+    type: 'BASELINE_SAVE',
+    baselineName: 'v1',
+    previousData: saveResult.previousData || null
+  });
+
+  assert.ok(bl.loadBaseline('v1'), '保存后应能加载');
+
+  const action = store.undo();
+  assert.strictEqual(action.type, 'BASELINE_SAVE');
+  assert.strictEqual(action.baselineName, 'v1');
+
+  assert.strictEqual(bl.loadBaseline('v1'), null, '撤销后基线应被删除');
+});
+
+test('undo baseline save — 覆盖基线恢复原内容', () => {
+  const storeDir = makeTempDir('bl-undo-overwrite');
+  const store = new StateStore(storeDir);
+  const bl = new BaselineManager(storeDir);
+  const r = scanOnce(store);
+
+  const saveResult1 = bl.save('v1', r);
+  store.pushBaselineUndo({
+    type: 'BASELINE_SAVE',
+    baselineName: 'v1',
+    previousData: saveResult1.previousData || null
+  });
+
+  const r2 = scanOnce(store);
+  const saveResult2 = bl.save('v1', r2, { force: true });
+  store.pushBaselineUndo({
+    type: 'BASELINE_SAVE',
+    baselineName: 'v1',
+    previousData: saveResult2.previousData || null
+  });
+
+  const action = store.undo();
+  assert.strictEqual(action.type, 'BASELINE_SAVE');
+
+  const restored = bl.loadBaseline('v1');
+  assert.ok(restored, '撤销后基线应存在');
+  assert.strictEqual(restored.sourceBatchId, r.batchId, '应恢复为第一次保存的内容');
+});
+
+test('undo baseline import — 导入被撤销', () => {
+  const storeDir = makeTempDir('bl-undo-import');
+  const store = new StateStore(storeDir);
+  const bl = new BaselineManager(storeDir);
+  const r = scanOnce(store);
+
+  bl.save('v1', r);
+  const outFile = path.join(makeTempDir('bl-undo-import-file'), 'baseline.json');
+  bl.exportBaseline('v1', outFile);
+
+  const importStoreDir = makeTempDir('bl-undo-import-dest');
+  const store2 = new StateStore(importStoreDir);
+  const bl2 = new BaselineManager(importStoreDir);
+
+  const importResult = bl2.importBaseline(outFile);
+  store2.pushBaselineUndo({
+    type: 'BASELINE_IMPORT',
+    baselineName: importResult.name,
+    previousData: importResult.previousData || null
+  });
+
+  assert.ok(bl2.loadBaseline('v1'), '导入后应能加载');
+
+  store2.undo();
+  assert.strictEqual(bl2.loadBaseline('v1'), null, '撤销后基线应被删除');
+});
+
+suite('新功能: baseline 跨重启持久化');
+
+test('跨重启：基线在新实例中可读取', () => {
+  const storeDir = makeTempDir('bl-persist');
+  const store1 = new StateStore(storeDir);
+  const bl1 = new BaselineManager(storeDir);
+  const r = scanOnce(store1);
+
+  bl1.save('v1', r);
+
+  const bl2 = new BaselineManager(storeDir);
+  const list = bl2.list();
+  assert.strictEqual(list.length, 1);
+  assert.strictEqual(list[0].name, 'v1');
+  assert.strictEqual(list[0].issueCount, r.issues.length);
+
+  const loaded = bl2.loadBaseline('v1');
+  assert.ok(loaded);
+  assert.strictEqual(loaded.issues.length, r.issues.length);
+});
+
+test('跨重启：撤销栈持久化可撤销基线保存', () => {
+  const storeDir = makeTempDir('bl-persist-undo');
+  const store1 = new StateStore(storeDir);
+  const bl1 = new BaselineManager(storeDir);
+  const r = scanOnce(store1);
+
+  const saveResult = bl1.save('v1', r);
+  store1.pushBaselineUndo({
+    type: 'BASELINE_SAVE',
+    baselineName: 'v1',
+    previousData: saveResult.previousData || null
+  });
+
+  const store2 = new StateStore(storeDir);
+  const bl2 = new BaselineManager(storeDir);
+
+  assert.ok(bl2.loadBaseline('v1'), '重启后基线应存在');
+
+  const undoSize = store2.getUndoStackSize();
+  assert.ok(undoSize >= 1, '撤销栈应有至少 1 项');
+
+  store2.undo();
+  assert.strictEqual(bl2.loadBaseline('v1'), null, '重启后撤销应删除基线');
+});
+
+test('跨重启：导出再导入，数据完整', () => {
+  const storeDir = makeTempDir('bl-persist-export');
+  const store = new StateStore(storeDir);
+  const bl = new BaselineManager(storeDir);
+  const r = scanOnce(store);
+
+  bl.save('v1', r);
+  const outFile = path.join(makeTempDir('bl-persist-export-file'), 'baseline.json');
+  bl.exportBaseline('v1', outFile);
+
+  const importStoreDir = makeTempDir('bl-persist-export-dest');
+  const bl2 = new BaselineManager(importStoreDir);
+  bl2.importBaseline(outFile);
+
+  const store2 = new StateStore(importStoreDir);
+  const bl3 = new BaselineManager(importStoreDir);
+  const list = bl3.list();
+  assert.strictEqual(list.length, 1);
+
+  const loaded = bl3.loadBaseline('v1');
+  assert.strictEqual(loaded.issues.length, r.issues.length);
+  const allHaveType = loaded.issues.every(i => i.type);
+  assert.ok(allHaveType, '所有问题应有 type 字段');
+});
+
+suite('新功能: baseline diff 导出');
+
+test('diff 导出 JSON — 结构完整', () => {
+  const storeDir = makeTempDir('bl-diff-export-json');
+  const store = new StateStore(storeDir);
+  const bl = new BaselineManager(storeDir);
+  const r = scanOnce(store);
+
+  bl.save('v1', r);
+  const diffResult = bl.diff('v1', r);
+
+  const outFile = path.join(makeTempDir('bl-diff-json-out'), 'diff.json');
+  bl.exportDiffAsJSON(diffResult, outFile);
+
+  assert.ok(fs.existsSync(outFile));
+  const data = JSON.parse(fs.readFileSync(outFile, 'utf-8'));
+  assert.strictEqual(data._meta.type, 'bbcheck-baseline-diff');
+  assert.ok(data.diff.summary);
+});
+
+test('diff 导出 CSV — 包含差异标签', () => {
+  const storeDir = makeTempDir('bl-diff-export-csv');
+  const store = new StateStore(storeDir);
+  const bl = new BaselineManager(storeDir);
+  const r = scanOnce(store);
+
+  bl.save('v1', r);
+  const diffResult = bl.diff('v1', r);
+
+  const outFile = path.join(makeTempDir('bl-diff-csv-out'), 'diff.csv');
+  bl.exportDiffAsCSV(diffResult, outFile);
+
+  assert.ok(fs.existsSync(outFile));
+  const content = fs.readFileSync(outFile, 'utf-8');
+  assert.ok(content.includes('差异标签'), 'CSV 应含差异标签列');
+  assert.ok(content.includes('未变'), '同批次 diff 应含"未变"标签');
+});
+
+test('diff 导出 HTML — 结构完整', () => {
+  const storeDir = makeTempDir('bl-diff-export-html');
+  const store = new StateStore(storeDir);
+  const bl = new BaselineManager(storeDir);
+  const r = scanOnce(store);
+
+  bl.save('v1', r);
+  const diffResult = bl.diff('v1', r);
+
+  const outFile = path.join(makeTempDir('bl-diff-html-out'), 'diff.html');
+  bl.exportDiffAsHTML(diffResult, outFile);
+
+  assert.ok(fs.existsSync(outFile));
+  const content = fs.readFileSync(outFile, 'utf-8');
+  assert.ok(content.includes('<html'), '应为 HTML');
+  assert.ok(content.includes('基线差异对比'), '应含标题');
+});
+
+suite('新功能: baseline CLI 命令');
+
+test('CLI baseline save — 保存成功', () => {
+  const storeDir = makeTempDir('cli-bl-save');
+  runCli('--store-dir', storeDir, 'scan', '--force', RULE_PATH, DATA_DIR);
+  const res = runCli('--store-dir', storeDir, 'baseline', 'save', '--name', 'v1');
+  assert.strictEqual(res.status, 0, 'baseline save 应成功');
+  assert.ok(/已保存/.test(res.stdout), '输出应含"已保存"');
+});
+
+test('CLI baseline save — 同名报错退出码 1', () => {
+  const storeDir = makeTempDir('cli-bl-dup');
+  runCli('--store-dir', storeDir, 'scan', '--force', RULE_PATH, DATA_DIR);
+  runCli('--store-dir', storeDir, 'baseline', 'save', '--name', 'v1');
+  const res = runCli('--store-dir', storeDir, 'baseline', 'save', '--name', 'v1');
+  assert.strictEqual(res.status, 1, '同名应退出码 1');
+});
+
+test('CLI baseline save --force — 覆盖成功', () => {
+  const storeDir = makeTempDir('cli-bl-force');
+  runCli('--store-dir', storeDir, 'scan', '--force', RULE_PATH, DATA_DIR);
+  runCli('--store-dir', storeDir, 'baseline', 'save', '--name', 'v1');
+  const res = runCli('--store-dir', storeDir, 'baseline', 'save', '--name', 'v1', '--force');
+  assert.strictEqual(res.status, 0);
+  assert.ok(/覆盖/.test(res.stdout), '输出应含"覆盖"');
+});
+
+test('CLI baseline diff — 相同批次无差异', () => {
+  const storeDir = makeTempDir('cli-bl-diff');
+  runCli('--store-dir', storeDir, 'scan', '--force', RULE_PATH, DATA_DIR);
+  runCli('--store-dir', storeDir, 'baseline', 'save', '--name', 'v1');
+  const res = runCli('--store-dir', storeDir, 'baseline', 'diff', '--name', 'v1');
+  assert.strictEqual(res.status, 0, '无差异时应退出码 0');
+  assert.ok(/无差异|完全一致/.test(res.stdout), '输出应含"无差异"');
+});
+
+test('CLI baseline list — 列出基线', () => {
+  const storeDir = makeTempDir('cli-bl-list');
+  runCli('--store-dir', storeDir, 'scan', '--force', RULE_PATH, DATA_DIR);
+  runCli('--store-dir', storeDir, 'baseline', 'save', '--name', 'mybl');
+  const res = runCli('--store-dir', storeDir, 'baseline', 'list');
+  assert.strictEqual(res.status, 0);
+  assert.ok(/mybl/.test(res.stdout), '输出应含基线名称');
+});
+
+test('CLI baseline export + import — 完整流程', () => {
+  const storeDir = makeTempDir('cli-bl-expimp');
+  runCli('--store-dir', storeDir, 'scan', '--force', RULE_PATH, DATA_DIR);
+  runCli('--store-dir', storeDir, 'baseline', 'save', '--name', 'v1');
+
+  const outFile = path.join(makeTempDir('cli-bl-expimp-out'), 'bl.json');
+  const expRes = runCli('--store-dir', storeDir, 'baseline', 'export', '--name', 'v1', '-o', outFile);
+  assert.strictEqual(expRes.status, 0, 'export 应成功');
+  assert.ok(fs.existsSync(outFile), '导出文件应存在');
+
+  const storeDir2 = makeTempDir('cli-bl-expimp-dest');
+  const impRes = runCli('--store-dir', storeDir2, 'baseline', 'import', '--file', outFile);
+  assert.strictEqual(impRes.status, 0, 'import 应成功');
+  assert.ok(/已导入/.test(impRes.stdout), '输出应含"已导入"');
+
+  const listRes = runCli('--store-dir', storeDir2, 'baseline', 'list');
+  assert.ok(/v1/.test(listRes.stdout), '导入后应能列出');
+});
+
+test('CLI baseline import — 损坏文件退出码 2', () => {
+  const storeDir = makeTempDir('cli-bl-imp-corrupt');
+  const corruptFile = path.join(makeTempDir('cli-bl-imp-corrupt-file'), 'bad.json');
+  fs.writeFileSync(corruptFile, 'not valid json{{{', 'utf-8');
+  const res = runCli('--store-dir', storeDir, 'baseline', 'import', '--file', corruptFile);
+  assert.strictEqual(res.status, 2, '损坏文件应退出码 2');
+});
+
+test('CLI undo — 撤销 baseline save', () => {
+  const storeDir = makeTempDir('cli-bl-undo');
+  runCli('--store-dir', storeDir, 'scan', '--force', RULE_PATH, DATA_DIR);
+  runCli('--store-dir', storeDir, 'baseline', 'save', '--name', 'v1');
+
+  const undoRes = runCli('--store-dir', storeDir, 'undo');
+  assert.strictEqual(undoRes.status, 0, 'undo 应成功');
+  assert.ok(/保存基线/.test(undoRes.stdout), '输出应含"保存基线"');
+
+  const listRes = runCli('--store-dir', storeDir, 'baseline', 'list');
+  assert.ok(/暂无/.test(listRes.stdout), '撤销后应无基线');
+});
+
+test('CLI baseline save — 无激活批次退出码 1', () => {
+  const storeDir = makeTempDir('cli-bl-no-batch');
+  const res = runCli('--store-dir', storeDir, 'baseline', 'save', '--name', 'v1');
+  assert.strictEqual(res.status, 1, '无激活批次应退出码 1');
+  assert.ok(/没有激活的批次/.test(res.stdout + res.stderr), '应提示无激活批次');
+});
+
+test('CLI baseline diff — 导出差异报告', () => {
+  const storeDir = makeTempDir('cli-bl-diff-export');
+  runCli('--store-dir', storeDir, 'scan', '--force', RULE_PATH, DATA_DIR);
+  runCli('--store-dir', storeDir, 'baseline', 'save', '--name', 'v1');
+
+  const outFile = path.join(makeTempDir('cli-bl-diff-exp-out'), 'diff.json');
+  const res = runCli('--store-dir', storeDir, 'baseline', 'diff', '--name', 'v1', '-o', outFile);
+  assert.ok(fs.existsSync(outFile), '差异报告文件应存在');
+});
+
+test('回归: README 命令总览包含 baseline 命令', () => {
+  const readmePath = path.join(__dirname, '..', 'README.md');
+  const readmeContent = fs.readFileSync(readmePath, 'utf-8');
+  const commandOverviewRe = /## 命令总览[\s\S]*?```\s*\n([\s\S]*?)\n```/;
+  const m = readmeContent.match(commandOverviewRe);
+  assert.ok(m, 'README 应存在「命令总览」章节');
+  const codeBlock = m[1];
+  assert.ok(/bbcheck baseline\b/.test(codeBlock), 'README 命令总览中应包含 bbcheck baseline');
 });
 
 // ─────────────────────────────────────────────────────────────

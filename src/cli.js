@@ -10,6 +10,7 @@ const { RuleParser, RuleValidationError } = require('./rule-parser');
 const { Scanner, DirectoryNotFoundError } = require('./scanner');
 const { StateStore, EmptyUndoStackError } = require('./state-store');
 const { Exporter, ExportError } = require('./exporter');
+const { BaselineManager, BaselineError } = require('./baseline');
 const {
   ISSUE_TYPES, ISSUE_TYPE_LABELS,
   REVIEW_STATUS, REVIEW_STATUS_LABELS,
@@ -20,6 +21,7 @@ const store = new StateStore();
 const parser = new RuleParser();
 const scanner = new Scanner();
 const exporter = new Exporter();
+const baseline = new BaselineManager();
 
 function printIssueTable(issues, opts = {}) {
   const table = new Table({
@@ -96,6 +98,7 @@ yargs
     if (argv.storeDir) {
       const newStore = new StateStore(argv.storeDir);
       Object.assign(store, newStore);
+      Object.assign(baseline, new BaselineManager(argv.storeDir));
     }
   });
 
@@ -765,7 +768,9 @@ yargs
         BATCH_ISSUE_CHANGE: `批量问题变更 (${action.count || 0}个)`,
         CARRYOVER: `复用上次处理结果 (${action.count || 0}个)`,
         CLAIM: `领取问题 (${action.count || 0}个)`,
-        ASSIGN: `转派问题 (${action.count || 0}个)`
+        ASSIGN: `转派问题 (${action.count || 0}个)`,
+        BASELINE_SAVE: `保存基线 "${action.baselineName || ''}"`,
+        BASELINE_IMPORT: `导入基线 "${action.baselineName || ''}"`
       };
       console.log(chalk.green(`✓ 已撤销: ${typeLabels[action.type] || action.type}`));
       console.log(chalk.gray(`  批次ID: ${action.batchId}`));
@@ -1169,6 +1174,313 @@ yargs
       }
     } else {
       console.log(chalk.gray('  暂无复核历史'));
+    }
+  });
+
+yargs
+  .command('baseline <sub>', '基线管理：保存/对比/导入导出扫描基线', (y) => {
+    y
+      .positional('sub', {
+        describe: '子命令: save / diff / list / export / import',
+        type: 'string',
+        choices: ['save', 'diff', 'list', 'export', 'import']
+      })
+      .option('name', { describe: '基线名称', type: 'string' })
+      .option('force', { alias: 'f', describe: '覆盖同名基线', type: 'boolean', default: false })
+      .option('batch', { alias: 'b', describe: '批次ID (默认激活批次)', type: 'string' })
+      .option('output', { alias: 'o', describe: '导出文件路径', type: 'string' })
+      .option('file', { describe: '导入文件路径', type: 'string' })
+      .option('format', { describe: '导出格式 (json/csv/html)', type: 'string' })
+      .option('rename', { describe: '导入时重命名基线', type: 'string' });
+  }, async (argv) => {
+    try {
+      const sub = argv.sub;
+
+      if (sub === 'save') {
+        const name = argv.name;
+        if (!name) {
+          console.error(chalk.red('❌ 请指定基线名称: --name <名称>'));
+          process.exit(1);
+          return;
+        }
+
+        let batchId = argv.batch || store.getActiveBatchId();
+        if (!batchId) {
+          console.error(chalk.red('❌ 没有激活的批次，请先运行 scan 或 resume'));
+          process.exit(1);
+          return;
+        }
+
+        const result = store.loadBatch(batchId);
+        if (!result) {
+          console.error(chalk.red(`❌ 批次不存在: ${batchId}`));
+          process.exit(1);
+          return;
+        }
+
+        const saveResult = baseline.save(name, result, { force: argv.force });
+
+        store.pushBaselineUndo({
+          type: 'BASELINE_SAVE',
+          baselineName: name,
+          previousData: saveResult.previousData || null
+        });
+
+        if (saveResult.overwritten) {
+          console.log(chalk.yellow(`⚠ 已覆盖同名基线 "${name}"`));
+        }
+        console.log(chalk.green(`✓ 基线 "${name}" 已保存`));
+        console.log(chalk.gray(`  问题数: ${saveResult.issueCount}`));
+        console.log(chalk.gray(`  来源批次: ${result.batchId}`));
+        console.log(chalk.gray(`  规则: ${result.rulePath || '-'}`));
+        console.log(chalk.gray(`  目录: ${result.targetDir || '-'}`));
+        console.log(chalk.cyan('\n💡 下一步:'));
+        console.log(`  ${chalk.gray('$')} bbcheck baseline diff --name ${name}   # 与当前批次对比`);
+        console.log(`  ${chalk.gray('$')} bbcheck baseline export --name ${name} -o baseline.json  # 导出基线\n`);
+
+      } else if (sub === 'diff') {
+        const name = argv.name;
+        if (!name) {
+          console.error(chalk.red('❌ 请指定基线名称: --name <名称>'));
+          process.exit(1);
+          return;
+        }
+
+        let batchId = argv.batch || store.getActiveBatchId();
+        if (!batchId) {
+          console.error(chalk.red('❌ 没有激活的批次，请先运行 scan 或 resume'));
+          process.exit(1);
+          return;
+        }
+
+        const result = store.loadBatch(batchId);
+        if (!result) {
+          console.error(chalk.red(`❌ 批次不存在: ${batchId}`));
+          process.exit(1);
+          return;
+        }
+
+        const diffResult = baseline.diff(name, result);
+
+        console.log(chalk.bold.cyan('\n━━━ 基线差异对比 ━━━'));
+        console.log(`  基线: ${chalk.white(name)} (创建于 ${diffResult.baselineCreatedAt})`);
+        console.log(`  当前批次: ${chalk.white(diffResult.currentBatchId)}`);
+        console.log(`  基线问题数: ${diffResult.baselineIssueCount}  |  当前问题数: ${diffResult.currentIssueCount}\n`);
+
+        console.log(chalk.bold('📊 差异汇总:'));
+        const s = diffResult.summary;
+        console.log(`  ${chalk.green('新增: ' + s.added)}  |  ${chalk.red('已消失: ' + s.removed)}  |  ${chalk.yellow('变化: ' + s.changed)}  |  ${chalk.gray('未变: ' + s.unchanged)}`);
+
+        if (diffResult.added.length > 0) {
+          console.log(chalk.bold.green(`\n✅ 新增问题 (${diffResult.added.length}):`));
+          const addTable = new Table({
+            head: [chalk.cyan('#'), chalk.cyan('类型'), chalk.cyan('严重'), chalk.cyan('状态'), chalk.cyan('路径'), chalk.cyan('描述')],
+            colWidths: [5, 12, 8, 10, 40, 40],
+            wordWrap: true
+          });
+          diffResult.added.forEach((item, i) => {
+            const c = item.current;
+            addTable.push([
+              i + 1,
+              ISSUE_TYPE_LABELS[c.type] || c.type,
+              c.severity,
+              REVIEW_STATUS_LABELS[c.reviewStatus] || c.reviewStatus,
+              c.targetPath || '-',
+              c.message || '-'
+            ]);
+          });
+          console.log(addTable.toString());
+        }
+
+        if (diffResult.removed.length > 0) {
+          console.log(chalk.bold.red(`\n❌ 已消失问题 (${diffResult.removed.length}):`));
+          const rmTable = new Table({
+            head: [chalk.cyan('#'), chalk.cyan('类型'), chalk.cyan('严重'), chalk.cyan('状态'), chalk.cyan('路径'), chalk.cyan('描述')],
+            colWidths: [5, 12, 8, 10, 40, 40],
+            wordWrap: true
+          });
+          diffResult.removed.forEach((item, i) => {
+            const b = item.baseline;
+            rmTable.push([
+              i + 1,
+              ISSUE_TYPE_LABELS[b.type] || b.type,
+              b.severity,
+              REVIEW_STATUS_LABELS[b.reviewStatus] || b.reviewStatus,
+              b.targetPath || '-',
+              b.message || '-'
+            ]);
+          });
+          console.log(rmTable.toString());
+        }
+
+        if (diffResult.changed.length > 0) {
+          console.log(chalk.bold.yellow(`\n⚠ 变化问题 (${diffResult.changed.length}):`));
+          const chTable = new Table({
+            head: [chalk.cyan('#'), chalk.cyan('类型'), chalk.cyan('路径'), chalk.cyan('变化字段'), chalk.cyan('详情')],
+            colWidths: [5, 12, 30, 20, 50],
+            wordWrap: true
+          });
+          diffResult.changed.forEach((item, i) => {
+            const c = item.current;
+            const changedFields = item.changes.map(ch => {
+              if (ch.field === 'reviewStatus') return `状态: ${ch.fromLabel || ch.from}→${ch.toLabel || ch.to}`;
+              if (ch.field === 'assignee') return `负责人: ${ch.from || '-'}→${ch.to || '-'}`;
+              if (ch.field === 'remark') return `备注: 变化`;
+              if (ch.field === 'severity') return `严重: ${ch.from}→${ch.to}`;
+              if (ch.field === 'message') return `描述: 变化`;
+              return `${ch.field}: ${ch.from}→${ch.to}`;
+            }).join(', ');
+            chTable.push([
+              i + 1,
+              ISSUE_TYPE_LABELS[c.type] || c.type,
+              c.targetPath || '-',
+              changedFields,
+              c.message || '-'
+            ]);
+          });
+          console.log(chTable.toString());
+        }
+
+        if (argv.output) {
+          const outPath = path.resolve(argv.output);
+          const fmt = argv.format || path.extname(outPath).replace('.', '') || 'json';
+          if (fmt === 'json') {
+            baseline.exportDiffAsJSON(diffResult, outPath);
+          } else if (fmt === 'csv') {
+            baseline.exportDiffAsCSV(diffResult, outPath);
+          } else if (fmt === 'html') {
+            baseline.exportDiffAsHTML(diffResult, outPath);
+          } else {
+            console.error(chalk.red(`❌ 不支持的导出格式: ${fmt}`));
+            process.exit(1);
+            return;
+          }
+          console.log(chalk.green(`\n📤 差异报告已导出: ${outPath} (${fmt.toUpperCase()})`));
+        }
+
+        if (s.added === 0 && s.removed === 0 && s.changed === 0) {
+          console.log(chalk.green('\n✅ 当前批次与基线完全一致，无差异'));
+        }
+
+        if (s.added + s.removed + s.changed > 0) {
+          process.exit(2);
+        }
+
+      } else if (sub === 'list') {
+        const baselines = baseline.list();
+        if (baselines.length === 0) {
+          console.log(chalk.yellow('⚠ 暂无保存的基线'));
+          return;
+        }
+
+        const table = new Table({
+          head: [
+            chalk.cyan('基线名称'),
+            chalk.cyan('创建时间'),
+            chalk.cyan('问题数'),
+            chalk.cyan('规则'),
+            chalk.cyan('扫描目录'),
+            chalk.cyan('状态')
+          ],
+          colWidths: [20, 22, 10, 30, 40, 10],
+          wordWrap: true
+        });
+
+        for (const b of baselines) {
+          if (b.corrupted) {
+            table.push([
+              b.name,
+              '-', '-', '-', '-',
+              chalk.red('已损坏')
+            ]);
+          } else {
+            table.push([
+              b.name,
+              b.createdAt || '-',
+              b.issueCount,
+              b.rulePath ? path.basename(b.rulePath) : '-',
+              b.targetDir || '-',
+              chalk.green('正常')
+            ]);
+          }
+        }
+
+        console.log(table.toString());
+        console.log(chalk.gray(`\n共 ${baselines.length} 个基线`));
+
+      } else if (sub === 'export') {
+        const name = argv.name;
+        if (!name) {
+          console.error(chalk.red('❌ 请指定基线名称: --name <名称>'));
+          process.exit(1);
+          return;
+        }
+        const output = argv.output;
+        if (!output) {
+          console.error(chalk.red('❌ 请指定输出文件: -o <路径>'));
+          process.exit(1);
+          return;
+        }
+
+        const result = baseline.exportBaseline(name, output);
+        console.log(chalk.green(`📤 基线 "${name}" 已导出`));
+        console.log(chalk.gray(`  路径: ${result.outputPath}`));
+        console.log(chalk.gray(`  问题数: ${result.issueCount}`));
+
+      } else if (sub === 'import') {
+        const filePath = argv.file;
+        if (!filePath) {
+          console.error(chalk.red('❌ 请指定导入文件: --file <路径>'));
+          process.exit(1);
+          return;
+        }
+
+        const result = baseline.importBaseline(filePath, {
+          force: argv.force,
+          name: argv.rename || null
+        });
+
+        store.pushBaselineUndo({
+          type: 'BASELINE_IMPORT',
+          baselineName: result.name,
+          previousData: result.previousData || null
+        });
+
+        if (result.overwritten) {
+          console.log(chalk.yellow(`⚠ 已覆盖同名基线 "${result.name}"`));
+        }
+        console.log(chalk.green(`✓ 基线 "${result.name}" 已导入`));
+        console.log(chalk.gray(`  问题数: ${result.issueCount}`));
+
+      } else {
+        console.error(chalk.red(`❌ 未知子命令: ${sub}`));
+        console.log(chalk.gray('可用子命令: save, diff, list, export, import'));
+        process.exit(1);
+      }
+
+    } catch (e) {
+      if (e instanceof BaselineError) {
+        const exitCodes = {
+          DUPLICATE_NAME: 1,
+          NO_ACTIVE_BATCH: 1,
+          NOT_FOUND: 1,
+          CORRUPTED: 2,
+          RULE_MISMATCH: 3,
+          DIRECTORY_MISMATCH: 3,
+          STORAGE_NOT_WRITABLE: 4,
+          EMPTY_NAME: 1,
+          INVALID_NAME: 1,
+          FILE_NOT_FOUND: 1
+        };
+        console.error(chalk.red(`❌ ${e.message}`));
+        if (e.code === 'RULE_MISMATCH' || e.code === 'DIRECTORY_MISMATCH') {
+          console.log(chalk.yellow('💡 使用不同规则或目录的批次无法与该基线对比'));
+        }
+        process.exit(exitCodes[e.code] || 1);
+      } else {
+        console.error(chalk.red('❌ 基线操作失败: ' + (e.message || e)));
+        process.exit(1);
+      }
     }
   });
 

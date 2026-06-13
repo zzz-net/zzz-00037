@@ -247,6 +247,7 @@ bbcheck carryover [batchId]      # 复用上次处理结果（从上一批次带
 bbcheck export <output>          # 导出复核报告（csv/html/json）
 bbcheck list                     # 列出所有扫描批次
 bbcheck history <issueId>        # 查看单个问题的复核历史
+bbcheck baseline <sub>           # 基线管理：save/diff/list/export/import
 bbcheck init-samples             # 生成样例规则和资料目录
 ```
 
@@ -262,6 +263,43 @@ bbcheck review --help
 > 可以先看章节数、必需文件数、命名规则数、配置问题和目录匹配预览，
 > 缺字段、坏正则、目录不可读、同名章节或 order 冲突都会有清楚错误提示，进程非零退出码。
 > 加 `--json` 可获得机器可读的 `warnings / errors / summary / directoryPreview`。
+
+---
+
+## 基线管理 (baseline)
+
+将某次 scan 结果保存为基线，后续批次与之做差异对比，追踪新增/已消失/状态变化。
+数据保存在 .bbcheck/baselines/ 目录下（每个基线一个 <名称>.json 文件），重启后可找回。
+
+### baseline save --name <名称>
+
+将当前激活批次的扫描结果保存为基线。同名基线默认不覆盖（加 --force 强制覆盖），保存后支持 bbcheck undo 撤回。
+
+### baseline diff --name <名称>
+
+将当前激活批次与指定基线做差异对比。差异分类：新增、已消失、变化（状态/负责人/备注/严重度/描述）、未变。
+支持 -o <文件> 导出差异报告（JSON/CSV/HTML），退出码：0 无差异 / 2 存在差异 / 3 规则/目录不匹配。
+
+### baseline list
+
+列出所有已保存的基线，损坏的基线会标记为已损坏。
+
+### baseline export --name <名称> -o <文件>
+
+将基线导出为 JSON 文件，可在另一台机器上导入。
+
+### baseline import --file <文件>
+
+从 JSON 文件导入基线，支持 --force 覆盖同名、--rename 重命名，导入后支持 bbcheck undo 撤回。
+
+| 场景 | 退出码 | 说明 |
+| --- | --- | --- |
+| 同名基线已存在 | 1 | 提示使用 --force |
+| 损坏导入文件 | 2 | 提示文件已损坏 |
+| 规则/目录不匹配 | 3 | diff 时基线与当前批次的规则或目录不同 |
+| 无激活批次 | 1 | 提示先运行 scan 或 resume |
+| 存储目录不可写 | 4 | 提示权限不足 |
+| 差异存在 | 2 | diff 发现新增/已消失/变化 |
 
 ---
 
@@ -290,7 +328,11 @@ bbcheck review --help
 ├── active-batch           # 当前激活的批次 ID（一行纯文本）
 ├── index.json             # 批次索引 & 目录签名（用于重复扫描检测）
 ├── state.json             # 所有批次聚合快照
+├── undo-stack.json        # 撤销栈（持久化，重启后可继续撤销）
 ├── batch_<id>.json        # 每个批次单独持久化（冗余，防 state.json 损坏）
+└── baselines/             # 基线数据目录
+    ├── v1.json            # 基线 v1
+    └── v2.json            # 基线 v2
 ```
 
 建议将 `.bbcheck/` 加入 `.gitignore`。
@@ -328,6 +370,20 @@ node src/cli.js scan --force mybid/rule.yaml mybid/资料目录
 node src/cli.js carryover
 # 若误带入？撤销
 node src/cli.js undo
+
+# 8.5) 保存基线，后续对比差异
+node src/cli.js baseline save --name v1
+# 重新扫描后对比
+node src/cli.js scan --force mybid/rule.yaml mybid/资料目录
+node src/cli.js baseline diff --name v1
+# 导出差异报告
+node src/cli.js baseline diff --name v1 -o diff.html
+# 撤销保存基线
+node src/cli.js undo
+
+# 8.6) 导出/导入基线（跨机器共享）
+node src/cli.js baseline export --name v1 -o v1-baseline.json
+node src/cli.js baseline import --file v1-baseline.json
 
 # 9) 导出 HTML 报告发给同事
 node src/cli.js export report.html

@@ -1,0 +1,34 @@
+{
+  "batches": [
+    {
+      "batchId": "BATCH_mqbyn1a5_9n42",
+      "rulePath": "D:\\workSpace\\AI__SPACE\\zzz-00037\\samples\\rule.yaml",
+      "targetDir": "D:\\workSpace\\AI__SPACE\\zzz-00037\\samples\\资料目录",
+      "directorySignature": "7579748adcfcf7c9910f8a628ced2f32d79e959aae4f726ddee624717e1f75e0",
+      "scanTime": "2026-06-13T06:14:20.477Z",
+      "lastModified": "2026-06-13T06:14:20.540Z",
+      "totalIssues": 240,
+      "pendingIssues": 0
+    },
+    {
+      "batchId": "BATCH_mqbyn18h_hg2v",
+      "rulePath": "D:\\workSpace\\AI__SPACE\\zzz-00037\\samples\\rule.yaml",
+      "targetDir": "D:\\workSpace\\AI__SPACE\\zzz-00037\\samples\\资料目录",
+      "directorySignature": "7579748adcfcf7c9910f8a628ced2f32d79e959aae4f726ddee624717e1f75e0",
+      "scanTime": "2026-06-13T06:14:20.417Z",
+      "lastModified": "2026-06-13T06:14:20.475Z",
+      "totalIssues": 240,
+      "pendingIssues": 0
+    }
+  ],
+  "directoryIndex": {
+    "D:\\workSpace\\AI__SPACE\\zzz-00037\\samples\\资料目录": {
+      "signature": "7579748adcfcf7c9910f8a628ced2f32d79e959aae4f726ddee624717e1f75e0",
+      "batches": [
+        "BATCH_mqbyn18h_hg2v",
+        "BATCH_mqbyn1a5_9n42"
+      ],
+      "lastScanTime": "2026-06-13T06:14:20.477Z"
+    }
+  }
+}

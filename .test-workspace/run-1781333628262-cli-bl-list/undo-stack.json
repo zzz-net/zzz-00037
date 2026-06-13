@@ -1,0 +1,11 @@
+[
+  {
+    "type": "NEW_BATCH",
+    "batchId": "BATCH_mqc01sfj_4tj4"
+  },
+  {
+    "type": "BASELINE_SAVE",
+    "baselineName": "mybl",
+    "previousData": null
+  }
+]

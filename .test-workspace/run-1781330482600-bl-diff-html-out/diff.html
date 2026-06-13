@@ -1,0 +1,917 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>基线差异对比报告</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif; background: #f5f7fa; color: #2c3e50; padding: 32px; line-height: 1.6; }
+  .container { max-width: 1500px; margin: 0 auto; }
+  h1 { font-size: 28px; margin-bottom: 8px; color: #1a365d; }
+  .subtitle { color: #718096; margin-bottom: 32px; font-size: 14px; }
+  .stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 32px; }
+  .stat-card { background: white; padding: 20px; border-radius: 8px; text-align: center; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+  .stat-value { font-size: 36px; font-weight: 700; }
+  .stat-label { font-size: 13px; color: #718096; margin-top: 4px; }
+  .added-card { border-top: 4px solid #48bb78; }
+  .added-card .stat-value { color: #38a169; }
+  .removed-card { border-top: 4px solid #fc8181; }
+  .removed-card .stat-value { color: #e53e3e; }
+  .changed-card { border-top: 4px solid #ed8936; }
+  .changed-card .stat-value { color: #dd6b20; }
+  .unchanged-card { border-top: 4px solid #a0aec0; }
+  .unchanged-card .stat-value { color: #718096; }
+  table { width: 100%; border-collapse: collapse; background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+  thead { background: #1a365d; color: white; }
+  th { padding: 12px 10px; text-align: left; font-weight: 600; font-size: 12px; white-space: nowrap; }
+  td { padding: 10px; border-bottom: 1px solid #edf2f7; vertical-align: top; font-size: 13px; }
+  .tag { display: inline-block; padding: 2px 10px; border-radius: 12px; font-size: 11px; font-weight: 600; }
+  .tag-added { background: #c6f6d5; color: #22543d; }
+  .tag-removed { background: #fed7d7; color: #742a2a; }
+  .tag-changed { background: #feebc8; color: #7b341e; }
+  .tag-unchanged { background: #edf2f7; color: #4a5568; }
+  .diff-added { background: #f0fff4; }
+  .diff-removed { background: #fff5f5; }
+  .diff-changed { background: #fffaf0; }
+  .diff-unchanged { background: #f7fafc; opacity: 0.7; }
+  code { font-family: "SF Mono", Monaco, Consolas, monospace; background: #edf2f7; padding: 2px 6px; border-radius: 4px; font-size: 11px; }
+  footer { margin-top: 48px; padding-top: 24px; border-top: 1px solid #e2e8f0; color: #a0aec0; font-size: 12px; text-align: center; }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>📊 基线差异对比报告</h1>
+  <div class="subtitle">
+    基线: v1 (创建于 2026-06-13 14:01:22)
+    &nbsp;|&nbsp; 当前批次: BATCH_mqby6d1s_wenv
+    &nbsp;|&nbsp; 生成时间: 2026-06-13 14:01:22
+  </div>
+
+  <div class="stats-row">
+    <div class="stat-card added-card">
+      <div class="stat-value">0</div>
+      <div class="stat-label">新增</div>
+    </div>
+    <div class="stat-card removed-card">
+      <div class="stat-value">0</div>
+      <div class="stat-label">已消失</div>
+    </div>
+    <div class="stat-card changed-card">
+      <div class="stat-value">0</div>
+      <div class="stat-label">变化</div>
+    </div>
+    <div class="stat-card unchanged-card">
+      <div class="stat-value">63</div>
+      <div class="stat-label">未变</div>
+    </div>
+  </div>
+
+  <h2 style="font-size:20px;font-weight:600;margin:24px 0 16px;color:#2d3748;">差异明细 (共 63 条)</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>差异标签</th>
+        <th>问题ID</th>
+        <th>类型</th>
+        <th>严重</th>
+        <th>基线状态</th>
+        <th>当前状态</th>
+        <th>基线负责人</th>
+        <th>当前负责人</th>
+        <th>基线备注</th>
+        <th>当前备注</th>
+        <th>路径</th>
+        <th>描述</th>
+        <th>变化字段</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="diff-unchanged">
+        <td><span class="tag tag-unchanged">未变</span></td>
+        <td><code>ISSUE_mqby6d1v_r…</code></td>
+        <td>重复版本</td>
+        <td>error</td>
+        <td>待补</td>
+        <td>待补</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+        <td><code>01-投标函\投标函_v1.pdf</code></td>
+        <td>章节[一、投标函] 检测到重复版本文件: 01-投标函\投标函_v1.pdf(版本:1), 01-投标函\投标函_v2.pdf(版本:2)</td>
+      </tr><tr class="diff-unchanged">
+        <td><span class="tag tag-unchanged">未变</span></td>
+        <td><code>ISSUE_mqby6d1v_3…</code></td>
+        <td>页码不连续</td>
+        <td>error</td>
+        <td>待补</td>
+        <td>待补</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+        <td><code>01-投标函</code></td>
+        <td>章节[一、投标函] 页码不连续: 缺失第 10 页</td>
+      </tr><tr class="diff-unchanged">
+        <td><span class="tag tag-unchanged">未变</span></td>
+        <td><code>ISSUE_mqby6d1v_x…</code></td>
+        <td>缺少签章</td>
+        <td>warn</td>
+        <td>待补</td>
+        <td>待补</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+        <td><code>01-投标函\投标函_v1.pdf</code></td>
+        <td>章节[一、投标函] 可能缺少签章: 01-投标函\投标函_v1.pdf (文件名未包含签章标识)</td>
+      </tr><tr class="diff-unchanged">
+        <td><span class="tag tag-unchanged">未变</span></td>
+        <td><code>ISSUE_mqby6d1w_y…</code></td>
+        <td>缺少签章</td>
+        <td>warn</td>
+        <td>待补</td>
+        <td>待补</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+        <td><code>01-投标函\投标函_v2.pdf</code></td>
+        <td>章节[一、投标函] 可能缺少签章: 01-投标函\投标函_v2.pdf (文件名未包含签章标识)</td>
+      </tr><tr class="diff-unchanged">
+        <td><span class="tag tag-unchanged">未变</span></td>
+        <td><code>ISSUE_mqby6d1w_v…</code></td>
+        <td>缺失文件</td>
+        <td>error</td>
+        <td>待补</td>
+        <td>待补</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+        <td><code>02-商务资质\资质等级证书.pdf</code></td>
+        <td>章节[二、商务资质文件] 缺少必需文件: 02-商务资质\资质等级证书.pdf</td>
+      </tr><tr class="diff-unchanged">
+        <td><span class="tag tag-unchanged">未变</span></td>
+        <td><code>ISSUE_mqby6d1w_f…</code></td>
+        <td>缺失文件</td>
+        <td>error</td>
+        <td>待补</td>
+        <td>待补</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+        <td><code>02-商务资质\安全生产许可证.pdf</code></td>
+        <td>章节[二、商务资质文件] 缺少必需文件: 02-商务资质\安全生产许可证.pdf</td>
+      </tr><tr class="diff-unchanged">
+        <td><span class="tag tag-unchanged">未变</span></td>
+        <td><code>ISSUE_mqby6d1w_d…</code></td>
+        <td>命名错误</td>
+        <td>warn</td>
+        <td>待补</td>
+        <td>待补</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+        <td><code>02-商务资质\ISO认证_20180601.pdf</code></td>
+        <td>章节[二、商务资质文件] 文件命名不符合规则: 02-商务资质\ISO认证_20180601.pdf</td>
+      </tr><tr class="diff-unchanged">
+        <td><span class="tag tag-unchanged">未变</span></td>
+        <td><code>ISSUE_mqby6d1w_6…</code></td>
+        <td>命名错误</td>
+        <td>warn</td>
+        <td>待补</td>
+        <td>待补</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+        <td><code>02-商务资质\安全生产许可证_20191231.pdf</code></td>
+        <td>章节[二、商务资质文件] 文件命名不符合规则: 02-商务资质\安全生产许可证_20191231.pdf</td>
+      </tr><tr class="diff-unchanged">
+        <td><span class="tag tag-unchanged">未变</span></td>
+        <td><code>ISSUE_mqby6d1w_x…</code></td>
+        <td>重复版本</td>
+        <td>error</td>
+        <td>待补</td>
+        <td>待补</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+        <td><code>02-商务资质\资质等级证书_v1.pdf</code></td>
+        <td>章节[二、商务资质文件] 检测到重复版本文件: 02-商务资质\资质等级证书_v1.pdf(版本:1), 02-商务资质\资质等级证书_v2.pdf(版本:2)</td>
+      </tr><tr class="diff-unchanged">
+        <td><span class="tag tag-unchanged">未变</span></td>
+        <td><code>ISSUE_mqby6d1w_w…</code></td>
+        <td>页码不连续</td>
+        <td>error</td>
+        <td>待补</td>
+        <td>待补</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+        <td><code>02-商务资质</code></td>
+        <td>章节[二、商务资质文件] 页码不连续: 缺失第 35 页</td>
+      </tr><tr class="diff-unchanged">
+        <td><span class="tag tag-unchanged">未变</span></td>
+        <td><code>ISSUE_mqby6d1w_l…</code></td>
+        <td>字段过期</td>
+        <td>warn</td>
+        <td>待补</td>
+        <td>待补</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+        <td><code>02-商务资质\ISO认证_20180601.pdf</code></td>
+        <td>章节[二、商务资质文件] 检测到过期日期: 02-商务资质\ISO认证_20180601.pdf (到期日: 2018-06-01)</td>
+      </tr><tr class="diff-unchanged">
+        <td><span class="tag tag-unchanged">未变</span></td>
+        <td><code>ISSUE_mqby6d1w_9…</code></td>
+        <td>字段过期</td>
+        <td>warn</td>
+        <td>待补</td>
+        <td>待补</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+        <td><code>02-商务资质\安全生产许可证_20191231.pdf</code></td>
+        <td>章节[二、商务资质文件] 检测到过期日期: 02-商务资质\安全生产许可证_20191231.pdf (到期日: 2019-12-31)</td>
+      </tr><tr class="diff-unchanged">
+        <td><span class="tag tag-unchanged">未变</span></td>
+        <td><code>ISSUE_mqby6d1x_h…</code></td>
+        <td>缺失文件</td>
+        <td>error</td>
+        <td>待补</td>
+        <td>待补</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+        <td><code>03-财务状况\2021年度审计报告.pdf</code></td>
+        <td>章节[三、财务状况] 缺少必需文件: 03-财务状况\2021年度审计报告.pdf</td>
+      </tr><tr class="diff-unchanged">
+        <td><span class="tag tag-unchanged">未变</span></td>
+        <td><code>ISSUE_mqby6d1x_1…</code></td>
+        <td>命名错误</td>
+        <td>warn</td>
+        <td>待补</td>
+        <td>待补</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+        <td><code>03-财务状况\2023年度审计报告_v2.pdf</code></td>
+        <td>章节[三、财务状况] 文件命名不符合规则: 03-财务状况\2023年度审计报告_v2.pdf</td>
+      </tr><tr class="diff-unchanged">
+        <td><span class="tag tag-unchanged">未变</span></td>
+        <td><code>ISSUE_mqby6d1x_q…</code></td>
+        <td>命名错误</td>
+        <td>warn</td>
+        <td>待补</td>
+        <td>待补</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+        <td><code>03-财务状况\财务错误格式.exe</code></td>
+        <td>章节[三、财务状况] 文件命名不符合规则: 03-财务状况\财务错误格式.exe</td>
+      </tr><tr class="diff-unchanged">
+        <td><span class="tag tag-unchanged">未变</span></td>
+        <td><code>ISSUE_mqby6d1x_x…</code></td>
+        <td>页码不连续</td>
+        <td>error</td>
+        <td>待补</td>
+        <td>待补</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+        <td><code>03-财务状况</code></td>
+        <td>章节[三、财务状况] 页码不连续: 缺失第 70 页</td>
+      </tr><tr class="diff-unchanged">
+        <td><span class="tag tag-unchanged">未变</span></td>
+        <td><code>ISSUE_mqby6d1x_v…</code></td>
+        <td>命名错误</td>
+        <td>warn</td>
+        <td>待补</td>
+        <td>待补</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+        <td><code>04-类似业绩\业绩_2023_科技园项目_合同.pdf</code></td>
+        <td>章节[四、类似业绩] 文件命名不符合规则: 04-类似业绩\业绩_2023_科技园项目_合同.pdf</td>
+      </tr><tr class="diff-unchanged">
+        <td><span class="tag tag-unchanged">未变</span></td>
+        <td><code>ISSUE_mqby6d1x_9…</code></td>
+        <td>命名错误</td>
+        <td>warn</td>
+        <td>待补</td>
+        <td>待补</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+        <td><code>04-类似业绩\未命名扫描件.jpg</code></td>
+        <td>章节[四、类似业绩] 文件命名不符合规则: 04-类似业绩\未命名扫描件.jpg</td>
+      </tr><tr class="diff-unchanged">
+        <td><span class="tag tag-unchanged">未变</span></td>
+        <td><code>ISSUE_mqby6d1y_a…</code></td>
+        <td>页码不连续</td>
+        <td>error</td>
+        <td>待补</td>
+        <td>待补</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+        <td><code>04-类似业绩</code></td>
+        <td>章节[四、类似业绩] 页码不连续: 缺失第 120 页</td>
+      </tr><tr class="diff-unchanged">
+        <td><span class="tag tag-unchanged">未变</span></td>
+        <td><code>ISSUE_mqby6d1y_2…</code></td>
+        <td>缺失文件</td>
+        <td>error</td>
+        <td>待补</td>
+        <td>待补</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+        <td><code>05-项目管理机构\项目技术负责人简历表_签章.pdf</code></td>
+        <td>章节[五、项目管理机构] 缺少必需文件: 05-项目管理机构\项目技术负责人简历表_签章.pdf</td>
+      </tr><tr class="diff-unchanged">
+        <td><span class="tag tag-unchanged">未变</span></td>
+        <td><code>ISSUE_mqby6d1y_7…</code></td>
+        <td>命名错误</td>
+        <td>warn</td>
+        <td>待补</td>
+        <td>待补</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+        <td><code>05-项目管理机构\李工_建造师证_20170501.pdf</code></td>
+        <td>章节[五、项目管理机构] 文件命名不符合规则: 05-项目管理机构\李工_建造师证_20170501.pdf</td>
+      </tr><tr class="diff-unchanged">
+        <td><span class="tag tag-unchanged">未变</span></td>
+        <td><code>ISSUE_mqby6d1z_c…</code></td>
+        <td>页码不连续</td>
+        <td>error</td>
+        <td>待补</td>
+        <td>待补</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+        <td><code>05-项目管理机构</code></td>
+        <td>章节[五、项目管理机构] 页码不连续: 缺失第 150 页</td>
+      </tr><tr class="diff-unchanged">
+        <td><span class="tag tag-unchanged">未变</span></td>
+        <td><code>ISSUE_mqby6d1z_s…</code></td>
+        <td>字段过期</td>
+        <td>warn</td>
+        <td>待补</td>
+        <td>待补</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+        <td><code>05-项目管理机构\李工_建造师证_20170501.pdf</code></td>
+        <td>章节[五、项目管理机构] 检测到过期日期: 05-项目管理机构\李工_建造师证_20170501.pdf (到期日: 2017-05-01)</td>
+      </tr><tr class="diff-unchanged">
+        <td><span class="tag tag-unchanged">未变</span></td>
+        <td><code>ISSUE_mqby6d1z_k…</code></td>
+        <td>缺少签章</td>
+        <td>warn</td>
+        <td>待补</td>
+        <td>待补</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+        <td><code>05-项目管理机构\张工_社保证明.pdf</code></td>
+        <td>章节[五、项目管理机构] 可能缺少签章: 05-项目管理机构\张工_社保证明.pdf (文件名未包含签章标识)</td>
+      </tr><tr class="diff-unchanged">
+        <td><span class="tag tag-unchanged">未变</span></td>
+        <td><code>ISSUE_mqby6d1z_i…</code></td>
+        <td>缺少签章</td>
+        <td>warn</td>
+        <td>待补</td>
+        <td>待补</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+        <td><code>05-项目管理机构\李工_建造师证_20170501.pdf</code></td>
+        <td>章节[五、项目管理机构] 可能缺少签章: 05-项目管理机构\李工_建造师证_20170501.pdf (文件名未包含签章标识)</td>
+      </tr><tr class="diff-unchanged">
+        <td><span class="tag tag-unchanged">未变</span></td>
+        <td><code>ISSUE_mqby6d1z_t…</code></td>
+        <td>缺少签章</td>
+        <td>warn</td>
+        <td>待补</td>
+        <td>待补</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+        <td><code>05-项目管理机构\项目技术负责人简历表.pdf</code></td>
+        <td>章节[五、项目管理机构] 可能缺少签章: 05-项目管理机构\项目技术负责人简历表.pdf (文件名未包含签章标识)</td>
+      </tr><tr class="diff-unchanged">
+        <td><span class="tag tag-unchanged">未变</span></td>
+        <td><code>ISSUE_mqby6d1z_8…</code></td>
+        <td>命名错误</td>
+        <td>warn</td>
+        <td>待补</td>
+        <td>待补</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+        <td><code>06-施工组织设计\临时草稿.tmp</code></td>
+        <td>章节[六、施工组织设计] 文件命名不符合规则: 06-施工组织设计\临时草稿.tmp</td>
+      </tr><tr class="diff-unchanged">
+        <td><span class="tag tag-unchanged">未变</span></td>
+        <td><code>ISSUE_mqby6d1z_s…</code></td>
+        <td>命名错误</td>
+        <td>warn</td>
+        <td>待补</td>
+        <td>待补</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+        <td><code>06-施工组织设计\进度计划_错误命名.docx!!!</code></td>
+        <td>章节[六、施工组织设计] 文件命名不符合规则: 06-施工组织设计\进度计划_错误命名.docx!!!</td>
+      </tr><tr class="diff-unchanged">
+        <td><span class="tag tag-unchanged">未变</span></td>
+        <td><code>ISSUE_mqby6d20_h…</code></td>
+        <td>缺失文件</td>
+        <td>error</td>
+        <td>待补</td>
+        <td>待补</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+        <td><code>07-报价文件\报价一览表_签章.pdf</code></td>
+        <td>章节[七、报价文件] 缺少必需文件: 07-报价文件\报价一览表_签章.pdf</td>
+      </tr><tr class="diff-unchanged">
+        <td><span class="tag tag-unchanged">未变</span></td>
+        <td><code>ISSUE_mqby6d20_4…</code></td>
+        <td>缺失文件</td>
+        <td>error</td>
+        <td>待补</td>
+        <td>待补</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+        <td><code>07-报价文件\分项报价表_签章.xlsx</code></td>
+        <td>章节[七、报价文件] 缺少必需文件: 07-报价文件\分项报价表_签章.xlsx</td>
+      </tr><tr class="diff-unchanged">
+        <td><span class="tag tag-unchanged">未变</span></td>
+        <td><code>ISSUE_mqby6d20_7…</code></td>
+        <td>缺失文件</td>
+        <td>error</td>
+        <td>待补</td>
+        <td>待补</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+        <td><code>07-报价文件\总价_已签章.pdf</code></td>
+        <td>章节[七、报价文件] 缺少必需文件: 07-报价文件\总价_已签章.pdf</td>
+      </tr><tr class="diff-unchanged">
+        <td><span class="tag tag-unchanged">未变</span></td>
+        <td><code>ISSUE_mqby6d20_6…</code></td>
+        <td>命名错误</td>
+        <td>warn</td>
+        <td>待补</td>
+        <td>待补</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+        <td><code>07-报价文件\分项报价表.xlsx</code></td>
+        <td>章节[七、报价文件] 文件命名不符合规则: 07-报价文件\分项报价表.xlsx</td>
+      </tr><tr class="diff-unchanged">
+        <td><span class="tag tag-unchanged">未变</span></td>
+        <td><code>ISSUE_mqby6d20_2…</code></td>
+        <td>命名错误</td>
+        <td>warn</td>
+        <td>待补</td>
+        <td>待补</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+        <td><code>07-报价文件\总价.pdf</code></td>
+        <td>章节[七、报价文件] 文件命名不符合规则: 07-报价文件\总价.pdf</td>
+      </tr><tr class="diff-unchanged">
+        <td><span class="tag tag-unchanged">未变</span></td>
+        <td><code>ISSUE_mqby6d20_6…</code></td>
+        <td>命名错误</td>
+        <td>warn</td>
+        <td>待补</td>
+        <td>待补</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+        <td><code>07-报价文件\总价_v1.pdf</code></td>
+        <td>章节[七、报价文件] 文件命名不符合规则: 07-报价文件\总价_v1.pdf</td>
+      </tr><tr class="diff-unchanged">
+        <td><span class="tag tag-unchanged">未变</span></td>
+        <td><code>ISSUE_mqby6d20_u…</code></td>
+        <td>命名错误</td>
+        <td>warn</td>
+        <td>待补</td>
+        <td>待补</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+        <td><code>07-报价文件\总价_v2.pdf</code></td>
+        <td>章节[七、报价文件] 文件命名不符合规则: 07-报价文件\总价_v2.pdf</td>
+      </tr><tr class="diff-unchanged">
+        <td><span class="tag tag-unchanged">未变</span></td>
+        <td><code>ISSUE_mqby6d20_k…</code></td>
+        <td>命名错误</td>
+        <td>warn</td>
+        <td>待补</td>
+        <td>待补</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+        <td><code>07-报价文件\报价一览表.pdf</code></td>
+        <td>章节[七、报价文件] 文件命名不符合规则: 07-报价文件\报价一览表.pdf</td>
+      </tr><tr class="diff-unchanged">
+        <td><span class="tag tag-unchanged">未变</span></td>
+        <td><code>ISSUE_mqby6d20_n…</code></td>
+        <td>页码不连续</td>
+        <td>error</td>
+        <td>待补</td>
+        <td>待补</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+        <td><code>07-报价文件</code></td>
+        <td>章节[七、报价文件] 页码不连续: 缺失第 310 页</td>
+      </tr><tr class="diff-unchanged">
+        <td><span class="tag tag-unchanged">未变</span></td>
+        <td><code>ISSUE_mqby6d21_h…</code></td>
+        <td>缺少签章</td>
+        <td>warn</td>
+        <td>待补</td>
+        <td>待补</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+        <td><code>07-报价文件\分项报价表.xlsx</code></td>
+        <td>章节[七、报价文件] 可能缺少签章: 07-报价文件\分项报价表.xlsx (文件名未包含签章标识)</td>
+      </tr><tr class="diff-unchanged">
+        <td><span class="tag tag-unchanged">未变</span></td>
+        <td><code>ISSUE_mqby6d21_3…</code></td>
+        <td>缺少签章</td>
+        <td>warn</td>
+        <td>待补</td>
+        <td>待补</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+        <td><code>07-报价文件\总价.pdf</code></td>
+        <td>章节[七、报价文件] 可能缺少签章: 07-报价文件\总价.pdf (文件名未包含签章标识)</td>
+      </tr><tr class="diff-unchanged">
+        <td><span class="tag tag-unchanged">未变</span></td>
+        <td><code>ISSUE_mqby6d21_b…</code></td>
+        <td>缺少签章</td>
+        <td>warn</td>
+        <td>待补</td>
+        <td>待补</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+        <td><code>07-报价文件\总价_v1.pdf</code></td>
+        <td>章节[七、报价文件] 可能缺少签章: 07-报价文件\总价_v1.pdf (文件名未包含签章标识)</td>
+      </tr><tr class="diff-unchanged">
+        <td><span class="tag tag-unchanged">未变</span></td>
+        <td><code>ISSUE_mqby6d21_p…</code></td>
+        <td>缺少签章</td>
+        <td>warn</td>
+        <td>待补</td>
+        <td>待补</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+        <td><code>07-报价文件\总价_v2.pdf</code></td>
+        <td>章节[七、报价文件] 可能缺少签章: 07-报价文件\总价_v2.pdf (文件名未包含签章标识)</td>
+      </tr><tr class="diff-unchanged">
+        <td><span class="tag tag-unchanged">未变</span></td>
+        <td><code>ISSUE_mqby6d21_d…</code></td>
+        <td>缺少签章</td>
+        <td>warn</td>
+        <td>待补</td>
+        <td>待补</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+        <td><code>07-报价文件\报价一览表.pdf</code></td>
+        <td>章节[七、报价文件] 可能缺少签章: 07-报价文件\报价一览表.pdf (文件名未包含签章标识)</td>
+      </tr><tr class="diff-unchanged">
+        <td><span class="tag tag-unchanged">未变</span></td>
+        <td><code>ISSUE_mqby6d21_0…</code></td>
+        <td>未纳入规则</td>
+        <td>info</td>
+        <td>待补</td>
+        <td>待补</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+        <td><code>01-投标函\投标函_v1.pdf</code></td>
+        <td>章节[一、投标函] 存在未纳入规则的文件: 01-投标函\投标函_v1.pdf</td>
+      </tr><tr class="diff-unchanged">
+        <td><span class="tag tag-unchanged">未变</span></td>
+        <td><code>ISSUE_mqby6d21_m…</code></td>
+        <td>未纳入规则</td>
+        <td>info</td>
+        <td>待补</td>
+        <td>待补</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+        <td><code>01-投标函\投标函_v2.pdf</code></td>
+        <td>章节[一、投标函] 存在未纳入规则的文件: 01-投标函\投标函_v2.pdf</td>
+      </tr><tr class="diff-unchanged">
+        <td><span class="tag tag-unchanged">未变</span></td>
+        <td><code>ISSUE_mqby6d21_2…</code></td>
+        <td>未纳入规则</td>
+        <td>info</td>
+        <td>待补</td>
+        <td>待补</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+        <td><code>02-商务资质\安全生产许可证_20191231.pdf</code></td>
+        <td>章节[二、商务资质文件] 存在未纳入规则的文件: 02-商务资质\安全生产许可证_20191231.pdf</td>
+      </tr><tr class="diff-unchanged">
+        <td><span class="tag tag-unchanged">未变</span></td>
+        <td><code>ISSUE_mqby6d21_v…</code></td>
+        <td>未纳入规则</td>
+        <td>info</td>
+        <td>待补</td>
+        <td>待补</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+        <td><code>02-商务资质\资质等级证书_v1.pdf</code></td>
+        <td>章节[二、商务资质文件] 存在未纳入规则的文件: 02-商务资质\资质等级证书_v1.pdf</td>
+      </tr><tr class="diff-unchanged">
+        <td><span class="tag tag-unchanged">未变</span></td>
+        <td><code>ISSUE_mqby6d21_2…</code></td>
+        <td>未纳入规则</td>
+        <td>info</td>
+        <td>待补</td>
+        <td>待补</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+        <td><code>02-商务资质\资质等级证书_v2.pdf</code></td>
+        <td>章节[二、商务资质文件] 存在未纳入规则的文件: 02-商务资质\资质等级证书_v2.pdf</td>
+      </tr><tr class="diff-unchanged">
+        <td><span class="tag tag-unchanged">未变</span></td>
+        <td><code>ISSUE_mqby6d21_e…</code></td>
+        <td>未纳入规则</td>
+        <td>info</td>
+        <td>待补</td>
+        <td>待补</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+        <td><code>02-商务资质\资质等级证书_v3.1.pdf</code></td>
+        <td>章节[二、商务资质文件] 存在未纳入规则的文件: 02-商务资质\资质等级证书_v3.1.pdf</td>
+      </tr><tr class="diff-unchanged">
+        <td><span class="tag tag-unchanged">未变</span></td>
+        <td><code>ISSUE_mqby6d21_g…</code></td>
+        <td>未纳入规则</td>
+        <td>info</td>
+        <td>待补</td>
+        <td>待补</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+        <td><code>02-商务资质\ISO认证_20180601.pdf</code></td>
+        <td>章节[二、商务资质文件] 存在未纳入规则的文件: 02-商务资质\ISO认证_20180601.pdf</td>
+      </tr><tr class="diff-unchanged">
+        <td><span class="tag tag-unchanged">未变</span></td>
+        <td><code>ISSUE_mqby6d22_6…</code></td>
+        <td>未纳入规则</td>
+        <td>info</td>
+        <td>待补</td>
+        <td>待补</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+        <td><code>03-财务状况\2023年度审计报告_v2.pdf</code></td>
+        <td>章节[三、财务状况] 存在未纳入规则的文件: 03-财务状况\2023年度审计报告_v2.pdf</td>
+      </tr><tr class="diff-unchanged">
+        <td><span class="tag tag-unchanged">未变</span></td>
+        <td><code>ISSUE_mqby6d22_1…</code></td>
+        <td>未纳入规则</td>
+        <td>info</td>
+        <td>待补</td>
+        <td>待补</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+        <td><code>03-财务状况\财务错误格式.exe</code></td>
+        <td>章节[三、财务状况] 存在未纳入规则的文件: 03-财务状况\财务错误格式.exe</td>
+      </tr><tr class="diff-unchanged">
+        <td><span class="tag tag-unchanged">未变</span></td>
+        <td><code>ISSUE_mqby6d22_i…</code></td>
+        <td>未纳入规则</td>
+        <td>info</td>
+        <td>待补</td>
+        <td>待补</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+        <td><code>05-项目管理机构\李工_建造师证_20170501.pdf</code></td>
+        <td>章节[五、项目管理机构] 存在未纳入规则的文件: 05-项目管理机构\李工_建造师证_20170501.pdf</td>
+      </tr><tr class="diff-unchanged">
+        <td><span class="tag tag-unchanged">未变</span></td>
+        <td><code>ISSUE_mqby6d22_f…</code></td>
+        <td>未纳入规则</td>
+        <td>info</td>
+        <td>待补</td>
+        <td>待补</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+        <td><code>05-项目管理机构\项目技术负责人简历表.pdf</code></td>
+        <td>章节[五、项目管理机构] 存在未纳入规则的文件: 05-项目管理机构\项目技术负责人简历表.pdf</td>
+      </tr><tr class="diff-unchanged">
+        <td><span class="tag tag-unchanged">未变</span></td>
+        <td><code>ISSUE_mqby6d22_l…</code></td>
+        <td>未纳入规则</td>
+        <td>info</td>
+        <td>待补</td>
+        <td>待补</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+        <td><code>05-项目管理机构\张工_社保证明.pdf</code></td>
+        <td>章节[五、项目管理机构] 存在未纳入规则的文件: 05-项目管理机构\张工_社保证明.pdf</td>
+      </tr><tr class="diff-unchanged">
+        <td><span class="tag tag-unchanged">未变</span></td>
+        <td><code>ISSUE_mqby6d22_c…</code></td>
+        <td>未纳入规则</td>
+        <td>info</td>
+        <td>待补</td>
+        <td>待补</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+        <td><code>06-施工组织设计\进度计划_错误命名.docx!!!</code></td>
+        <td>章节[六、施工组织设计] 存在未纳入规则的文件: 06-施工组织设计\进度计划_错误命名.docx!!!</td>
+      </tr><tr class="diff-unchanged">
+        <td><span class="tag tag-unchanged">未变</span></td>
+        <td><code>ISSUE_mqby6d22_5…</code></td>
+        <td>未纳入规则</td>
+        <td>info</td>
+        <td>待补</td>
+        <td>待补</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+        <td><code>06-施工组织设计\临时草稿.tmp</code></td>
+        <td>章节[六、施工组织设计] 存在未纳入规则的文件: 06-施工组织设计\临时草稿.tmp</td>
+      </tr><tr class="diff-unchanged">
+        <td><span class="tag tag-unchanged">未变</span></td>
+        <td><code>ISSUE_mqby6d22_r…</code></td>
+        <td>未纳入规则</td>
+        <td>info</td>
+        <td>待补</td>
+        <td>待补</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+        <td><code>07-报价文件\报价一览表.pdf</code></td>
+        <td>章节[七、报价文件] 存在未纳入规则的文件: 07-报价文件\报价一览表.pdf</td>
+      </tr><tr class="diff-unchanged">
+        <td><span class="tag tag-unchanged">未变</span></td>
+        <td><code>ISSUE_mqby6d22_1…</code></td>
+        <td>未纳入规则</td>
+        <td>info</td>
+        <td>待补</td>
+        <td>待补</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+        <td><code>07-报价文件\分项报价表.xlsx</code></td>
+        <td>章节[七、报价文件] 存在未纳入规则的文件: 07-报价文件\分项报价表.xlsx</td>
+      </tr><tr class="diff-unchanged">
+        <td><span class="tag tag-unchanged">未变</span></td>
+        <td><code>ISSUE_mqby6d22_l…</code></td>
+        <td>未纳入规则</td>
+        <td>info</td>
+        <td>待补</td>
+        <td>待补</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+        <td><code>07-报价文件\总价_v1.pdf</code></td>
+        <td>章节[七、报价文件] 存在未纳入规则的文件: 07-报价文件\总价_v1.pdf</td>
+      </tr><tr class="diff-unchanged">
+        <td><span class="tag tag-unchanged">未变</span></td>
+        <td><code>ISSUE_mqby6d22_t…</code></td>
+        <td>未纳入规则</td>
+        <td>info</td>
+        <td>待补</td>
+        <td>待补</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+        <td><code>07-报价文件\总价_v2.pdf</code></td>
+        <td>章节[七、报价文件] 存在未纳入规则的文件: 07-报价文件\总价_v2.pdf</td>
+      </tr><tr class="diff-unchanged">
+        <td><span class="tag tag-unchanged">未变</span></td>
+        <td><code>ISSUE_mqby6d22_n…</code></td>
+        <td>未纳入规则</td>
+        <td>info</td>
+        <td>待补</td>
+        <td>待补</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+        <td><code>07-报价文件\总价.pdf</code></td>
+        <td>章节[七、报价文件] 存在未纳入规则的文件: 07-报价文件\总价.pdf</td>
+      </tr><tr class="diff-unchanged">
+        <td><span class="tag tag-unchanged">未变</span></td>
+        <td><code>ISSUE_mqby6d22_f…</code></td>
+        <td>未纳入规则</td>
+        <td>info</td>
+        <td>待补</td>
+        <td>待补</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+        <td><code>99-临时目录\临时-内部说明.docx</code></td>
+        <td>未纳入规则的文件: 99-临时目录\临时-内部说明.docx</td>
+      </tr><tr class="diff-unchanged">
+        <td><span class="tag tag-unchanged">未变</span></td>
+        <td><code>ISSUE_mqby6d22_c…</code></td>
+        <td>未纳入规则</td>
+        <td>info</td>
+        <td>待补</td>
+        <td>待补</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+        <td><code>99-临时目录\扫描件_未整理.pdf</code></td>
+        <td>未纳入规则的文件: 99-临时目录\扫描件_未整理.pdf</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <footer>
+    本报告由 bid-binder-checker v1.0.0 生成 | 新增 0、已消失 0、变化 0、未变 63
+  </footer>
+</div>
+</body>
+</html>
