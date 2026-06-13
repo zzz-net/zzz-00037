@@ -361,7 +361,9 @@ class StateStore {
         break;
       }
       case 'BATCH_ISSUE_CHANGE':
-      case 'CARRYOVER': {
+      case 'CARRYOVER':
+      case 'CLAIM':
+      case 'ASSIGN': {
         if (data.batches[action.batchId]) {
           const issues = data.batches[action.batchId].issues;
           for (const before of action.beforeStates) {
@@ -657,6 +659,177 @@ class StateStore {
     this._saveAllData(data);
     this._saveIndex(index);
     return true;
+  }
+
+  findIssuesByPrefix(batchId, idPrefix) {
+    const scanResult = this.loadBatch(batchId);
+    if (!scanResult) return { error: `批次不存在: ${batchId}`, issues: [] };
+    const matches = scanResult.issues.filter(i => i.id.startsWith(idPrefix));
+    if (matches.length === 0) return { error: `没有匹配问题ID前缀: ${idPrefix}`, issues: [] };
+    if (matches.length > 1) return { error: `ID前缀 "${idPrefix}" 匹配到 ${matches.length} 个问题，请提供更精确的ID`, issues: [], ambiguous: true };
+    return { error: null, issues: matches };
+  }
+
+  claimIssues(batchId, assignee, options = {}) {
+    if (!assignee || assignee.trim() === '') {
+      return { error: '负责人不能为空', claimed: 0, conflicts: [] };
+    }
+    const scanResult = this.loadBatch(batchId);
+    if (!scanResult) return { error: `批次不存在: ${batchId}`, claimed: 0, conflicts: [] };
+
+    let targetIssues = scanResult.issues;
+    if (options.ids) {
+      const idList = options.ids.split(',').map(s => s.trim());
+      targetIssues = targetIssues.filter(i =>
+        idList.includes(i.id) || idList.some(id => i.id.startsWith(id))
+      );
+    }
+    if (options.type) {
+      const { ISSUE_TYPE_LABELS } = require('./models');
+      const typeKey = Object.keys(ISSUE_TYPE_LABELS).find(
+        k => k === options.type ||
+          ISSUE_TYPE_LABELS[k] === options.type ||
+          k.toLowerCase() === options.type.toLowerCase()
+      );
+      if (typeKey) {
+        targetIssues = targetIssues.filter(i => i.type === typeKey);
+      }
+    }
+    if (options.section) {
+      targetIssues = targetIssues.filter(i =>
+        i.details && i.details.section && i.details.section.includes(options.section)
+      );
+    }
+
+    const conflicts = [];
+    const toClaim = [];
+    for (const issue of targetIssues) {
+      if (issue.assignee && issue.assignee !== assignee) {
+        conflicts.push({
+          issueId: issue.id,
+          currentAssignee: issue.assignee,
+          reviewStatus: issue.reviewStatus
+        });
+      } else if (issue.assignee === assignee) {
+        conflicts.push({
+          issueId: issue.id,
+          samePerson: true,
+          currentAssignee: issue.assignee
+        });
+      } else {
+        toClaim.push(issue);
+      }
+    }
+
+    if (toClaim.length === 0) {
+      return { claimed: 0, conflicts };
+    }
+
+    const beforeStates = [];
+    for (const issue of toClaim) {
+      beforeStates.push(JSON.parse(JSON.stringify(issue.toJSON())));
+      issue.setAssignee(assignee, assignee, '领取问题');
+    }
+
+    this._pushUndo({
+      type: 'CLAIM',
+      batchId: batchId,
+      beforeStates: beforeStates,
+      count: toClaim.length
+    });
+
+    this._persistBatchDirectly(scanResult);
+    return { claimed: toClaim.length, conflicts };
+  }
+
+  assignIssues(batchId, targetAssignee, operator, options = {}) {
+    if (!targetAssignee || targetAssignee.trim() === '') {
+      return { error: '目标负责人不能为空', assigned: 0, conflicts: [] };
+    }
+    const scanResult = this.loadBatch(batchId);
+    if (!scanResult) return { error: `批次不存在: ${batchId}`, assigned: 0, conflicts: [] };
+
+    let targetIssues = scanResult.issues;
+    if (options.ids) {
+      const idList = options.ids.split(',').map(s => s.trim());
+      targetIssues = targetIssues.filter(i =>
+        idList.includes(i.id) || idList.some(id => i.id.startsWith(id))
+      );
+    }
+    if (options.type) {
+      const { ISSUE_TYPE_LABELS } = require('./models');
+      const typeKey = Object.keys(ISSUE_TYPE_LABELS).find(
+        k => k === options.type ||
+          ISSUE_TYPE_LABELS[k] === options.type ||
+          k.toLowerCase() === options.type.toLowerCase()
+      );
+      if (typeKey) {
+        targetIssues = targetIssues.filter(i => i.type === typeKey);
+      }
+    }
+    if (options.section) {
+      targetIssues = targetIssues.filter(i =>
+        i.details && i.details.section && i.details.section.includes(options.section)
+      );
+    }
+
+    const conflicts = [];
+    const toAssign = [];
+    const force = options.force || false;
+    const reason = options.reason || '';
+
+    for (const issue of targetIssues) {
+      if (issue.assignee === targetAssignee) {
+        conflicts.push({
+          issueId: issue.id,
+          samePerson: true,
+          currentAssignee: issue.assignee
+        });
+        continue;
+      }
+      if (issue.reviewStatus === REVIEW_STATUS.CONFIRMED || issue.reviewStatus === REVIEW_STATUS.IGNORED) {
+        if (!force) {
+          conflicts.push({
+            issueId: issue.id,
+            alreadyFinalized: true,
+            reviewStatus: issue.reviewStatus,
+            currentAssignee: issue.assignee
+          });
+          continue;
+        }
+      }
+      if (issue.assignee && issue.assignee !== targetAssignee && !force) {
+        conflicts.push({
+          issueId: issue.id,
+          alreadyClaimed: true,
+          currentAssignee: issue.assignee,
+          reviewStatus: issue.reviewStatus
+        });
+        continue;
+      }
+      toAssign.push(issue);
+    }
+
+    if (toAssign.length === 0) {
+      return { assigned: 0, conflicts };
+    }
+
+    const beforeStates = [];
+    for (const issue of toAssign) {
+      beforeStates.push(JSON.parse(JSON.stringify(issue.toJSON())));
+      const assignReason = reason || `转派给 ${targetAssignee}`;
+      issue.setAssignee(targetAssignee, operator, assignReason);
+    }
+
+    this._pushUndo({
+      type: 'ASSIGN',
+      batchId: batchId,
+      beforeStates: beforeStates,
+      count: toAssign.length
+    });
+
+    this._persistBatchDirectly(scanResult);
+    return { assigned: toAssign.length, conflicts };
   }
 }
 

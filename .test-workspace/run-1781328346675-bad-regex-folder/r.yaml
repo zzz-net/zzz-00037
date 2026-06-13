@@ -1,0 +1,6 @@
+name: "bad-regex"
+sections:
+  - name: "S"
+    order: 1
+    namingPatterns:
+      - pattern: "*invalid*"

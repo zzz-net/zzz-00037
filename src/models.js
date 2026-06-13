@@ -44,6 +44,7 @@ class Issue {
     this.details = data.details || {};
     this.reviewStatus = data.reviewStatus || REVIEW_STATUS.PENDING;
     this.handler = data.handler || null;
+    this.assignee = data.assignee || null;
     this.remark = data.remark || null;
     this.reviewHistory = data.reviewHistory || [];
   }
@@ -67,6 +68,19 @@ class Issue {
     return change;
   }
 
+  setAssignee(assignee, operator, reason = '') {
+    const change = {
+      from: this.assignee,
+      to: assignee,
+      operator: operator,
+      reason: reason,
+      timestamp: new Date().toISOString()
+    };
+    this.reviewHistory.push(change);
+    this.assignee = assignee;
+    return change;
+  }
+
   toJSON() {
     return {
       id: this.id,
@@ -79,6 +93,7 @@ class Issue {
       details: this.details,
       reviewStatus: this.reviewStatus,
       handler: this.handler,
+      assignee: this.assignee,
       remark: this.remark,
       reviewHistory: this.reviewHistory
     };

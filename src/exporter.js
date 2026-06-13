@@ -27,6 +27,7 @@ class Exporter {
       '严重程度',
       '复核状态',
       '处理人',
+      '负责人',
       '备注',
       '目标路径',
       '描述',
@@ -45,6 +46,7 @@ class Exporter {
         this._severityLabel(issue.severity),
         REVIEW_STATUS_LABELS[issue.reviewStatus] || issue.reviewStatus,
         issue.handler || '',
+        issue.assignee || '',
         issue.remark || '',
         issue.targetPath || '',
         issue.message || '',
@@ -56,7 +58,7 @@ class Exporter {
     }
 
     const summaryRow1 = [
-      '=== 汇总 ===', '', '', '', '', '', '', '', '', '', '', ''
+      '=== 汇总 ===', '', '', '', '', '', '', '', '', '', '', '', ''
     ];
     rows.push(summaryRow1);
     rows.push([
@@ -69,24 +71,24 @@ class Exporter {
       scanResult.summary.byStatus.confirmed || 0,
       '忽略',
       scanResult.summary.byStatus.ignored || 0,
-      '', '', ''
+      '', '', '', ''
     ]);
-    rows.push(['按类型统计:', '', '', '', '', '', '', '', '', '', '', '']);
+    rows.push(['按类型统计:', '', '', '', '', '', '', '', '', '', '', '', '']);
     for (const [type, count] of Object.entries(scanResult.summary.byType)) {
       rows.push([
         ISSUE_TYPE_LABELS[type] || type,
-        count, '', '', '', '', '', '', '', '', '', ''
+        count, '', '', '', '', '', '', '', '', '', '', ''
       ]);
     }
-    rows.push(['', '', '', '', '', '', '', '', '', '', '', '']);
+    rows.push(['', '', '', '', '', '', '', '', '', '', '', '', '']);
     rows.push([
-      '批次ID', scanResult.batchId, '', '', '', '', '', '', '', '', '', ''
+      '批次ID', scanResult.batchId, '', '', '', '', '', '', '', '', '', '', ''
     ]);
     rows.push([
-      '规则文件', scanResult.rulePath, '', '', '', '', '', '', '', '', '', ''
+      '规则文件', scanResult.rulePath, '', '', '', '', '', '', '', '', '', '', ''
     ]);
     rows.push([
-      '扫描目录', scanResult.targetDir, '', '', '', '', '', '', '', '', '', ''
+      '扫描目录', scanResult.targetDir, '', '', '', '', '', '', '', '', '', '', ''
     ]);
 
     const csv = rows.map(r => r.map(c => this._escapeCsv(c)).join(',')).join('\r\n');
@@ -137,9 +139,12 @@ class Exporter {
       const reviewHistoryHTML = issue.reviewHistory && issue.reviewHistory.length > 0
         ? '<div class="history">' +
             '<strong>历史:</strong><ul>' +
-            issue.reviewHistory.map(h =>
-              `<li>[${this._formatTime(h.timestamp)}] ${this._statusBadge(h.from)} → ${this._statusBadge(h.to)}${h.handler ? ' by ' + this._escapeHTML(h.handler) : ''}${h.remark ? ' - ' + this._escapeHTML(h.remark) : ''}</li>`
-            ).join('') +
+            issue.reviewHistory.map(h => {
+              if (h.operator) {
+                return `<li>[${this._formatTime(h.timestamp)}] 负责人: ${this._escapeHTML(h.from || '(无)')} → ${this._escapeHTML(h.to || '(无)')} by ${this._escapeHTML(h.operator)}${h.reason ? ' - ' + this._escapeHTML(h.reason) : ''}</li>`;
+              }
+              return `<li>[${this._formatTime(h.timestamp)}] ${this._statusBadge(h.from)} → ${this._statusBadge(h.to)}${h.handler ? ' by ' + this._escapeHTML(h.handler) : ''}${h.remark ? ' - ' + this._escapeHTML(h.remark) : ''}</li>`;
+            }).join('') +
             '</ul></div>'
         : '';
 
@@ -150,9 +155,10 @@ class Exporter {
           <td><span class="sev-badge ${this._severityClass(issue.severity)}">${this._severityLabel(issue.severity)}</span></td>
           <td>${this._statusBadge(issue.reviewStatus)}</td>
           <td>${this._escapeHTML(issue.handler || '-')}</td>
+          <td>${this._escapeHTML(issue.assignee || '-')}</td>
           <td>${this._escapeHTML(issue.remark || '-')}</td>
           <td><code>${this._escapeHTML(section)}</code></td>
-          <td>${this._escapeHTML(issue.targetPath || '-')}</td>
+          <td><code>${this._escapeHTML(issue.targetPath || '-')}</code></td>
           <td>
             <div class="msg">${this._escapeHTML(issue.message || '')}</div>
             ${issue.expected ? `<div class="kv"><span class="k">期望:</span> <span class="v">${this._escapeHTML(String(issue.expected))}</span></div>` : ''}
@@ -285,6 +291,7 @@ class Exporter {
         <th style="width:80px">严重</th>
         <th style="width:90px">状态</th>
         <th style="width:100px">处理人</th>
+        <th style="width:100px">负责人</th>
         <th style="width:120px">备注</th>
         <th style="width:120px">章节</th>
         <th style="width:200px">路径</th>
@@ -292,7 +299,7 @@ class Exporter {
       </tr>
     </thead>
     <tbody>
-      ${issuesHTML || '<tr><td colspan="9" style="text-align:center;padding:40px;color:#a0aec0">🎉 没有发现任何问题</td></tr>'}
+      ${issuesHTML || '<tr><td colspan="10" style="text-align:center;padding:40px;color:#a0aec0">🎉 没有发现任何问题</td></tr>'}
     </tbody>
   </table>
 

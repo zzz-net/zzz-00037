@@ -18,6 +18,7 @@
   - 签章要求（按文件名关键字）
   - 未纳入规则的文件检测
 - ✅ **复核流程**：待补 / 已确认 / 忽略，记录处理人 & 备注 & 完整变更历史
+- ✅ **多人协作**：`claim` 领取 / `assign` 转派，冲突保护，跨重启持久化
 - ✅ **状态持久化**：批次状态保存到本地 `.bbcheck/` 目录
 - ✅ **撤销支持**：所有操作可撤销（内存栈，批次内生效）
 - ✅ **断点恢复**：`resume` 命令可重启后继续处理上次批次
@@ -109,7 +110,8 @@ bbcheck review -s confirmed --ids "ISSUE_xxx,ISSUE_yyy" -H 王五
 ### 4. 撤销上一步
 
 ```bash
-bbcheck undo           # 撤销
+# 撤销上一步操作
+bbcheck carryover           # 撤销
 bbcheck undo --dry-run # 仅查看不执行
 ```
 
@@ -239,6 +241,8 @@ bbcheck resume [batchId]         # 恢复处理（继续上次未完成的批次
 bbcheck review                   # 交互式复核问题（或批量复核）
 bbcheck status                   # 查看当前批次状态
 bbcheck undo                     # 撤销上一步操作
+bbcheck claim                    # 领取问题（多人协作，按类型/ID/章节）
+bbcheck assign <target>          # 转派问题给其他人（需 --force 覆盖已有负责人）
 bbcheck carryover [batchId]      # 复用上次处理结果（从上一批次带入复核状态）
 bbcheck export <output>          # 导出复核报告（csv/html/json）
 bbcheck list                     # 列出所有扫描批次

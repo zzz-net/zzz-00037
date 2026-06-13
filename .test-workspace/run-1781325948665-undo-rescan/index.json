@@ -1,0 +1,23 @@
+{
+  "batches": [
+    {
+      "batchId": "BATCH_mqbvh6ob_17dy",
+      "rulePath": "D:\\workSpace\\AI__SPACE\\zzz-00037\\samples\\rule.yaml",
+      "targetDir": "D:\\workSpace\\AI__SPACE\\zzz-00037\\samples\\资料目录",
+      "directorySignature": "7579748adcfcf7c9910f8a628ced2f32d79e959aae4f726ddee624717e1f75e0",
+      "scanTime": "2026-06-13T04:45:48.683Z",
+      "lastModified": "2026-06-13T04:45:48.787Z",
+      "totalIssues": 240,
+      "pendingIssues": 240
+    }
+  ],
+  "directoryIndex": {
+    "D:\\workSpace\\AI__SPACE\\zzz-00037\\samples\\资料目录": {
+      "signature": "7579748adcfcf7c9910f8a628ced2f32d79e959aae4f726ddee624717e1f75e0",
+      "batches": [
+        "BATCH_mqbvh6ob_17dy"
+      ],
+      "lastScanTime": "2026-06-13T04:45:48.683Z"
+    }
+  }
+}

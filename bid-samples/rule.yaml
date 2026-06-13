@@ -1,0 +1,61 @@
+# 投标文件装订检查规则样例
+name: "XX项目投标文件装订规则"
+description: "用于XX项目投标文件完整性和装订顺序检查"
+version: "1.0"
+globalSignatureRequired: false
+globalPageRange: null
+globalExpiryField: null
+
+sections:
+  - name: "商务部分"
+    order: 1
+    directory: "01-商务部分"
+    description: "包含投标函、资质文件等商务材料"
+    signatureRequired: true
+    requiredFiles:
+      - path: "投标函.pdf"
+        description: "正式投标函文件"
+      - path: "法定代表人身份证明_签章.pdf"
+        description: "法定代表人身份证明"
+      - path: "授权委托书_签章.pdf"
+        optional: true
+        description: "如为委托代理人则必需"
+    namingPatterns:
+      - pattern: "^\d{2}-[\u4e00-\u9fa5A-Za-z0-9_]+\.(pdf|doc|docx)$"
+        label: "编号-名称.扩展名"
+      - pattern: "^[\u4e00-\u9fa5]{2,}_v(\d+)(?:\.\d+)*\.pdf$"
+        label: "名称_v版本号.pdf"
+        extractVersion: true
+        versionGroup: 1
+    pageRange: "1-30"
+    expiryField:
+      fieldName: "cert_expiry"
+      dateFormat: "YYYY-MM-DD"
+
+  - name: "技术部分"
+    order: 2
+    directory: "02-技术部分"
+    description: "技术方案、实施方案等"
+    allowUntracked: false
+    requiredFiles:
+      - path: "技术方案.pdf"
+      - path: "项目实施计划.pdf"
+    namingPatterns:
+      - pattern: "^[\u4e00-\u9fa5A-Za-z0-9_]+\.pdf$"
+        label: "中文名.pdf"
+    pageRange: "31-80"
+
+  - name: "报价部分"
+    order: 3
+    directory: "03-报价部分"
+    description: "报价单、价格明细等"
+    signatureRequired: true
+    requiredFiles:
+      - path: "报价一览表_签章.pdf"
+        signatureRequired: true
+      - path: "分项报价表_签章.pdf"
+        signatureRequired: true
+    namingPatterns:
+      - pattern: "^[\u4e00-\u9fa5]+_签章\.pdf$"
+        label: "名称_签章.pdf"
+    pageRange: "81-100"

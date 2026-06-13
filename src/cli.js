@@ -30,10 +30,11 @@ function printIssueTable(issues, opts = {}) {
       chalk.cyan('严重'),
       chalk.cyan('状态'),
       chalk.cyan('处理人'),
+      chalk.cyan('负责人'),
       chalk.cyan('章节'),
       chalk.cyan('描述')
     ],
-    colWidths: [5, 20, 12, 8, 10, 10, 12, 50],
+    colWidths: [5, 20, 12, 8, 10, 10, 10, 12, 50],
     wordWrap: true
   });
 
@@ -53,6 +54,7 @@ function printIssueTable(issues, opts = {}) {
       chalk[sevColor]({ error: '错误', warn: '警告', info: '提示' }[issue.severity] || issue.severity),
       chalk[stColor](REVIEW_STATUS_LABELS[issue.reviewStatus] || issue.reviewStatus),
       issue.handler || '-',
+      issue.assignee || '-',
       section,
       issue.message
     ]);
@@ -516,7 +518,8 @@ yargs
       .option('ids', { describe: '批量处理指定ID (逗号分隔)', type: 'string' })
       .option('remark', { alias: 'r', describe: '备注', type: 'string', default: '' })
       .option('type', { alias: 't', describe: '按问题类型批量过滤 (如 MISSING_FILE / 缺失文件)', type: 'string' })
-      .option('filter', { alias: 'f', describe: '按当前状态批量过滤 (pending/confirmed/ignored)', type: 'string' });
+      .option('filter', { alias: 'f', describe: '按当前状态批量过滤 (pending/confirmed/ignored)', type: 'string' })
+      .option('force', { describe: '强制处理已被他人领取的问题', type: 'boolean', default: false });
   }, async (argv) => {
     try {
       let batchId = argv.batch || store.getActiveBatchId();
@@ -564,16 +567,31 @@ yargs
           );
         }
 
+        if (!argv.force) {
+          const protectedIssues = targetIssues.filter(i => i.assignee && i.assignee !== argv.handler);
+          if (protectedIssues.length > 0) {
+            console.error(chalk.red(`❌ 有 ${protectedIssues.length} 个问题已被 ${[...new Set(protectedIssues.map(i => i.assignee))].join(', ')} 领取，不能修改处理人`));
+            console.error(chalk.yellow('  使用 --force 可强制处理'));
+            process.exit(1);
+            return;
+          }
+        }
+
         if (targetIssues.length === 0) {
           console.log(chalk.yellow('⚠ 没有匹配的问题'));
           return;
         }
 
-        const updates = targetIssues.map(i => ({
-          issueId: i.id,
-          status: targetStatus,
-          remark: argv.remark
-        }));
+        const updates = targetIssues.map(i => {
+          const remark = (i.assignee && i.assignee !== argv.handler && argv.force)
+            ? `${argv.remark ? argv.remark + ' ' : ''}[强制处理: 原负责人${i.assignee}]`
+            : argv.remark;
+          return {
+            issueId: i.id,
+            status: targetStatus,
+            remark: remark
+          };
+        });
 
         const changes = store.batchUpdateIssues(batchId, updates, argv.handler);
         console.log(chalk.green(`✓ 已批量更新 ${changes.length} 个问题为"${REVIEW_STATUS_LABELS[targetStatus]}"`));
@@ -597,12 +615,20 @@ yargs
       let cursor = 0;
       while (cursor < pendingIssues.length) {
         const issue = pendingIssues[cursor];
+
+        if (issue.assignee && issue.assignee !== argv.handler && !argv.force) {
+          console.log(chalk.yellow(`\n⚡ 问题 ${issue.id.slice(0, 16)}… 已被 ${issue.assignee} 领取，跳过（使用 --force 可强制处理）`));
+          cursor++;
+          continue;
+        }
+
         console.log(chalk.cyan(`\n━━━ 问题 ${cursor + 1}/${pendingIssues.length} ━━━`));
         console.log(`  ID: ${issue.id}`);
         console.log(`  类型: ${ISSUE_TYPE_LABELS[issue.type] || issue.type}  |  严重: ${issue.severity}`);
         console.log(`  章节: ${(issue.details && issue.details.section) || '-'}`);
         console.log(`  路径: ${issue.targetPath || '-'}`);
         console.log(`  描述: ${chalk.bold(issue.message)}`);
+        if (issue.assignee) console.log(`  负责人: ${chalk.magenta(issue.assignee)}`);
         if (issue.expected) console.log(`  期望: ${issue.expected}`);
         if (issue.actual) console.log(`  实际: ${issue.actual}`);
 
@@ -638,7 +664,10 @@ yargs
           continue;
         }
 
-        store.updateIssueStatus(batchId, issue.id, answers.status, argv.handler, answers.remark || '');
+        const remark = (issue.assignee && issue.assignee !== argv.handler && argv.force)
+          ? `${answers.remark || ''} [强制处理: 原负责人${issue.assignee}]`
+          : (answers.remark || '');
+        store.updateIssueStatus(batchId, issue.id, answers.status, argv.handler, remark);
         console.log(chalk.green(`  ✓ 已标记为"${REVIEW_STATUS_LABELS[answers.status]}"`));
         cursor++;
       }
@@ -662,6 +691,7 @@ yargs
     y.option('batch', { alias: 'b', describe: '批次ID (默认激活批次)', type: 'string' });
     y.option('filter', { alias: 'f', describe: '按状态过滤 (pending/confirmed/ignored)', type: 'string' });
     y.option('type', { alias: 't', describe: '按问题类型过滤', type: 'string' });
+    y.option('assignee', { alias: 'a', describe: '按负责人过滤', type: 'string' });
   }, async (argv) => {
     let batchId = argv.batch || store.getActiveBatchId();
     if (!batchId) {
@@ -700,6 +730,9 @@ yargs
       );
       if (typeKey) issues = issues.filter(i => i.type === typeKey);
     }
+    if (argv.assignee) {
+      issues = issues.filter(i => i.assignee === argv.assignee);
+    }
 
     printIssueTable(issues);
     printSummary(result.summary);
@@ -730,7 +763,9 @@ yargs
         UPDATE_BATCH: '更新批次',
         ISSUE_CHANGE: '问题状态变更',
         BATCH_ISSUE_CHANGE: `批量问题变更 (${action.count || 0}个)`,
-        CARRYOVER: `复用上次处理结果 (${action.count || 0}个)`
+        CARRYOVER: `复用上次处理结果 (${action.count || 0}个)`,
+        CLAIM: `领取问题 (${action.count || 0}个)`,
+        ASSIGN: `转派问题 (${action.count || 0}个)`
       };
       console.log(chalk.green(`✓ 已撤销: ${typeLabels[action.type] || action.type}`));
       console.log(chalk.gray(`  批次ID: ${action.batchId}`));
@@ -751,6 +786,135 @@ yargs
         console.error(chalk.red('❌ 撤销失败: ' + e.message));
         process.exit(1);
       }
+    }
+  });
+
+yargs
+  .command('claim', '领取问题（多人协作）', (y) => {
+    y
+      .option('batch', { alias: 'b', describe: '批次ID (默认激活批次)', type: 'string' })
+      .option('assignee', { alias: 'a', describe: '领取人', type: 'string', default: process.env.USER || process.env.USERNAME || 'unknown' })
+      .option('ids', { describe: '按问题ID领取 (逗号分隔，支持前缀)', type: 'string' })
+      .option('type', { alias: 't', describe: '按问题类型领取 (如 MISSING_FILE / 缺失文件)', type: 'string' })
+      .option('section', { alias: 's', describe: '按章节领取 (模糊匹配)', type: 'string' });
+  }, async (argv) => {
+    try {
+      let batchId = argv.batch || store.getActiveBatchId();
+      if (!batchId) {
+        console.error(chalk.red('❌ 没有激活的批次，请先运行 scan 或 resume'));
+        process.exit(1);
+        return;
+      }
+
+      const result = store.claimIssues(batchId, argv.assignee, {
+        ids: argv.ids,
+        type: argv.type,
+        section: argv.section
+      });
+
+      if (result.error) {
+        console.error(chalk.red(`❌ ${result.error}`));
+        process.exit(1);
+        return;
+      }
+
+      if (result.claimed > 0) {
+        console.log(chalk.green(`✓ ${argv.assignee} 已领取 ${result.claimed} 个问题`));
+      }
+
+      if (result.conflicts.length > 0) {
+        for (const c of result.conflicts) {
+          if (c.samePerson) {
+            console.log(chalk.yellow(`⚡ 问题 ${c.issueId.slice(0, 16)}… 已由 ${c.currentAssignee} 领取（同人），跳过`));
+          } else if (c.currentAssignee) {
+            console.log(chalk.yellow(`⚠ 问题 ${c.issueId.slice(0, 16)}… 已被 ${c.currentAssignee} 领取，跳过（使用 assign --force 可覆盖）`));
+          }
+        }
+      }
+
+      if (result.claimed === 0 && result.conflicts.length > 0) {
+        console.error(chalk.red('❌ 没有可领取的问题'));
+        process.exit(1);
+        return;
+      }
+
+      console.log(chalk.cyan('\n💡 下一步:'));
+      console.log(`  ${chalk.gray('$')} bbcheck status       # 查看领取状态`);
+      console.log(`  ${chalk.gray('$')} bbcheck undo         # 撤销领取\n`);
+    } catch (e) {
+      console.error(chalk.red('❌ 领取失败: ' + (e.message || e)));
+      process.exit(1);
+    }
+  });
+
+yargs
+  .command('assign <target>', '转派问题给其他人（多人协作）', (y) => {
+    y
+      .positional('target', { describe: '目标负责人', type: 'string' })
+      .option('batch', { alias: 'b', describe: '批次ID (默认激活批次)', type: 'string' })
+      .option('operator', { alias: 'o', describe: '操作人', type: 'string', default: process.env.USER || process.env.USERNAME || 'unknown' })
+      .option('ids', { describe: '按问题ID转派 (逗号分隔，支持前缀)', type: 'string' })
+      .option('type', { alias: 't', describe: '按问题类型转派', type: 'string' })
+      .option('section', { alias: 's', describe: '按章节转派 (模糊匹配)', type: 'string' })
+      .option('force', { alias: 'f', describe: '强制转派（覆盖已有负责人、已确认/忽略的问题）', type: 'boolean', default: false })
+      .option('reason', { alias: 'r', describe: '转派原因', type: 'string' });
+  }, async (argv) => {
+    try {
+      let batchId = argv.batch || store.getActiveBatchId();
+      if (!batchId) {
+        console.error(chalk.red('❌ 没有激活的批次，请先运行 scan 或 resume'));
+        process.exit(1);
+        return;
+      }
+
+      const result = store.assignIssues(batchId, argv.target, argv.operator, {
+        ids: argv.ids,
+        type: argv.type,
+        section: argv.section,
+        force: argv.force,
+        reason: argv.reason
+      });
+
+      if (result.error) {
+        console.error(chalk.red(`❌ ${result.error}`));
+        process.exit(1);
+        return;
+      }
+
+      if (result.assigned > 0) {
+        console.log(chalk.green(`✓ 已转派 ${result.assigned} 个问题给 ${argv.target}`));
+      }
+
+      if (result.conflicts.length > 0) {
+        for (const c of result.conflicts) {
+          if (c.samePerson) {
+            console.log(chalk.yellow(`⚡ 问题 ${c.issueId.slice(0, 16)}… 负责人已是 ${c.currentAssignee}（同人），跳过`));
+          } else if (c.alreadyFinalized) {
+            console.log(chalk.yellow(`⚠ 问题 ${c.issueId.slice(0, 16)}… 状态为"${REVIEW_STATUS_LABELS[c.reviewStatus] || c.reviewStatus}"，需 --force 才能转派`));
+          } else if (c.alreadyClaimed) {
+            console.log(chalk.yellow(`⚠ 问题 ${c.issueId.slice(0, 16)}… 已被 ${c.currentAssignee} 领取，需 --force 才能转派`));
+          }
+        }
+      }
+
+      if (result.assigned === 0 && result.conflicts.length > 0) {
+        console.error(chalk.red('❌ 没有可转派的问题'));
+        process.exit(1);
+        return;
+      }
+
+      if (result.assigned === 0) {
+        console.log(chalk.yellow('⚠ 没有匹配的问题'));
+        process.exit(1);
+        return;
+      }
+
+      console.log(chalk.cyan('\n💡 下一步:'));
+      console.log(`  ${chalk.gray('$')} bbcheck status       # 查看转派状态`);
+      console.log(`  ${chalk.gray('$')} bbcheck undo         # 撤销转派\n`);
+    } catch (e) {
+      console.error(chalk.red('❌ 转派失败: ' + (e.message || e)));
+      process.exit(1);
     }
   });
 
@@ -977,6 +1141,7 @@ yargs
     console.log(`  严重: ${issue.severity}`);
     console.log(`  当前状态: ${REVIEW_STATUS_LABELS[issue.reviewStatus]}`);
     console.log(`  处理人: ${issue.handler || '-'}`);
+    console.log(`  负责人: ${issue.assignee || '-'}`);
     console.log(`  备注: ${issue.remark || '-'}`);
     console.log(`  描述: ${issue.message}\n`);
 
@@ -985,10 +1150,22 @@ yargs
       for (let i = issue.reviewHistory.length - 1; i >= 0; i--) {
         const h = issue.reviewHistory[i];
         const idx = issue.reviewHistory.length - i;
-        console.log(`  ${idx}. [${h.timestamp}]`);
-        console.log(`     ${REVIEW_STATUS_LABELS[h.from]} → ${REVIEW_STATUS_LABELS[h.to]}`);
-        console.log(`     处理人: ${h.handler || '-'}`);
-        if (h.remark) console.log(`     备注: ${h.remark}`);
+        if (h.to !== undefined && h.from !== undefined && !h.operator) {
+          console.log(`  ${idx}. [${h.timestamp}]`);
+          console.log(`     ${REVIEW_STATUS_LABELS[h.from] || h.from} → ${REVIEW_STATUS_LABELS[h.to] || h.to}`);
+          console.log(`     处理人: ${h.handler || '-'}`);
+          if (h.remark) console.log(`     备注: ${h.remark}`);
+        } else if (h.operator) {
+          console.log(`  ${idx}. [${h.timestamp}]`);
+          console.log(`     负责人: ${h.from || '(无)'} → ${h.to || '(无)'}`);
+          console.log(`     操作人: ${h.operator}`);
+          if (h.reason) console.log(`     原因: ${h.reason}`);
+        } else {
+          console.log(`  ${idx}. [${h.timestamp}]`);
+          console.log(`     ${REVIEW_STATUS_LABELS[h.from] || h.from} → ${REVIEW_STATUS_LABELS[h.to] || h.to}`);
+          console.log(`     处理人: ${h.handler || '-'}`);
+          if (h.remark) console.log(`     备注: ${h.remark}`);
+        }
       }
     } else {
       console.log(chalk.gray('  暂无复核历史'));
