@@ -729,7 +729,8 @@ yargs
         NEW_BATCH: '创建新批次',
         UPDATE_BATCH: '更新批次',
         ISSUE_CHANGE: '问题状态变更',
-        BATCH_ISSUE_CHANGE: `批量问题变更 (${action.count || 0}个)`
+        BATCH_ISSUE_CHANGE: `批量问题变更 (${action.count || 0}个)`,
+        CARRYOVER: `复用上次处理结果 (${action.count || 0}个)`
       };
       console.log(chalk.green(`✓ 已撤销: ${typeLabels[action.type] || action.type}`));
       console.log(chalk.gray(`  批次ID: ${action.batchId}`));
@@ -750,6 +751,92 @@ yargs
         console.error(chalk.red('❌ 撤销失败: ' + e.message));
         process.exit(1);
       }
+    }
+  });
+
+yargs
+  .command('carryover [batchId]', '复用上次处理结果（从上一批次带入复核状态）', (y) => {
+    y
+      .positional('batchId', { describe: '当前批次ID (默认激活批次)', type: 'string' })
+      .option('from', { describe: '指定来源批次ID (默认自动查找同目录上一批次)', type: 'string' });
+  }, async (argv) => {
+    try {
+      let currentBatchId = argv.batchId || store.getActiveBatchId();
+      if (!currentBatchId) {
+        console.error(chalk.red('❌ 没有激活的批次，请先运行 scan 或 resume'));
+        const batches = store.listBatches(10);
+        if (batches.length > 0) {
+          console.log(chalk.yellow('\n可用批次:'));
+          for (const b of batches) {
+            console.log(`  ${b.batchId}  ${b.targetDir}  (${b.lastScanTime})`);
+          }
+        }
+        process.exit(1);
+        return;
+      }
+
+      const currentResult = store.loadBatch(currentBatchId);
+      if (!currentResult) {
+        console.error(chalk.red(`❌ 当前批次不存在: ${currentBatchId}`));
+        process.exit(1);
+        return;
+      }
+
+      console.log(chalk.blue(`📋 复用上次处理结果`));
+      console.log(chalk.gray(`  当前批次: ${currentBatchId}`));
+      console.log(chalk.gray(`  扫描目录: ${currentResult.targetDir}`));
+
+      const result = store.carryoverIssues(currentBatchId, argv.from || null);
+
+      if (result.warnings && result.warnings.length > 0) {
+        for (const w of result.warnings) {
+          console.log(chalk.yellow(`⚠ ${w}`));
+        }
+        process.exit(0);
+        return;
+      }
+
+      if (result.previousBatchId) {
+        console.log(chalk.gray(`  来源批次: ${result.previousBatchId}`));
+      }
+
+      console.log();
+      console.log(chalk.green(`✓ 成功带入 ${result.carried} 个问题的复核状态`));
+
+      if (result.skipped > 0) {
+        console.log(chalk.yellow(`⚡ 跳过 ${result.skipped} 个已手动处理的问题`));
+      }
+
+      if (result.conflicts.length > 0) {
+        console.log(chalk.yellow(`\n⚠ 冲突问题（已跳过，不覆盖）:`));
+        for (const c of result.conflicts) {
+          console.log(chalk.yellow(`  • 问题 ${c.currentIssueId.slice(0, 16)}…: 当前="${REVIEW_STATUS_LABELS[c.currentStatus]||c.currentStatus}" vs 旧="${REVIEW_STATUS_LABELS[c.previousStatus]||c.previousStatus}" — ${c.reason}`));
+        }
+      }
+
+      if (result.descChanged.length > 0) {
+        console.log(chalk.cyan(`\n📝 描述变化的相似问题（未带入，需人工确认）:`));
+        for (const d of result.descChanged) {
+          console.log(chalk.cyan(`  • 问题 ${d.currentIssueId.slice(0, 16)}…`));
+          console.log(chalk.gray(`    新描述: ${d.currentDesc}`));
+          console.log(chalk.gray(`    旧描述: ${d.previousDesc}`));
+          console.log(chalk.gray(`    旧状态: ${REVIEW_STATUS_LABELS[d.previousStatus]||d.previousStatus} (${d.previousHandler || '-'})`));
+        }
+      }
+
+      if (result.carried > 0) {
+        const updated = store.loadBatch(currentBatchId);
+        console.log();
+        printSummary(updated.summary);
+
+        console.log(chalk.cyan('💡 下一步:'));
+        console.log(`  ${chalk.gray('$')} bbcheck status       # 查看带入后的状态`);
+        console.log(`  ${chalk.gray('$')} bbcheck undo         # 撤销本次带入\n`);
+      }
+
+    } catch (e) {
+      console.error(chalk.red('❌ 复用失败: ' + e.message));
+      process.exit(1);
     }
   });
 

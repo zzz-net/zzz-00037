@@ -113,7 +113,19 @@ bbcheck undo           # 撤销
 bbcheck undo --dry-run # 仅查看不执行
 ```
 
-每次复核、批量更新、甚至扫描本身都可撤销，直到栈清空。
+每次复核、批量更新、复用上次处理结果、甚至扫描本身都可撤销，直到栈清空。
+
+### 4.5 复用上次处理结果
+
+当重新 `scan` 同一资料目录（或 `--force` 生成新批次）后，可以把上一批次里相同问题的复核状态、处理人和备注带到当前批次：
+
+```bash
+bbcheck carryover                 # 自动查找同目录上一批次
+bbcheck carryover --from BATCH_xxx  # 指定来源批次
+bbcheck carryover BATCH_yyy       # 指定当前批次（默认激活批次）
+```
+
+匹配规则：**类型 + 目标路径 + 章节 + 描述**完全一致才带入；仅类型/路径/章节匹配但描述变化时会列出供人工确认；当前批次已手动处理的问题不会被覆盖。操作写入复核历史，支持 `undo` 撤回。
 
 ### 5. 继续上次处理（重启后）
 
@@ -227,6 +239,7 @@ bbcheck resume [batchId]         # 恢复处理（继续上次未完成的批次
 bbcheck review                   # 交互式复核问题（或批量复核）
 bbcheck status                   # 查看当前批次状态
 bbcheck undo                     # 撤销上一步操作
+bbcheck carryover [batchId]      # 复用上次处理结果（从上一批次带入复核状态）
 bbcheck export <output>          # 导出复核报告（csv/html/json）
 bbcheck list                     # 列出所有扫描批次
 bbcheck history <issueId>        # 查看单个问题的复核历史
@@ -304,10 +317,18 @@ node src/cli.js undo   # 再撤销一次
 # 6) 批量忽略"未纳入规则"类问题
 node src/cli.js review -s ignored --type UNTRACKED_FILE -H 李四 -r "不影响装订"
 
-# 7) 导出 HTML 报告发给同事
+# 7) 重新扫描同一目录（例如资料更新后）
+node src/cli.js scan --force mybid/rule.yaml mybid/资料目录
+
+# 8) 复用上次处理结果（自动带入相同问题的状态/处理人/备注）
+node src/cli.js carryover
+# 若误带入？撤销
+node src/cli.js undo
+
+# 9) 导出 HTML 报告发给同事
 node src/cli.js export report.html
 
-# 8) 同时导出 CSV 留档
+# 10) 同时导出 CSV 留档
 node src/cli.js export report.csv
 ```
 

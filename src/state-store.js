@@ -360,7 +360,8 @@ class StateStore {
         }
         break;
       }
-      case 'BATCH_ISSUE_CHANGE': {
+      case 'BATCH_ISSUE_CHANGE':
+      case 'CARRYOVER': {
         if (data.batches[action.batchId]) {
           const issues = data.batches[action.batchId].issues;
           for (const before of action.beforeStates) {
@@ -389,6 +390,248 @@ class StateStore {
 
   getUndoStackSize() {
     return this._undoStack.length;
+  }
+
+  _buildIssueSignature(issue) {
+    const section = (issue.details && issue.details.section) || '';
+    const targetPath = issue.targetPath || '';
+    const message = issue.message || '';
+    return `${issue.type}::${targetPath}::${section}::${message}`;
+  }
+
+  _buildIssueSignatureWithoutDesc(issue) {
+    const section = (issue.details && issue.details.section) || '';
+    const targetPath = issue.targetPath || '';
+    return `${issue.type}::${targetPath}::${section}`;
+  }
+
+  findPreviousBatchId(currentBatchId) {
+    const currentResult = this.loadBatch(currentBatchId);
+    if (!currentResult || !currentResult.targetDir) return null;
+
+    const index = this._loadIndex();
+    const absDir = path.resolve(currentResult.targetDir);
+    const entry = index.directoryIndex[absDir];
+    if (!entry || !Array.isArray(entry.batches)) return null;
+
+    const currentIdx = entry.batches.indexOf(currentBatchId);
+    if (currentIdx <= 0) return null;
+
+    for (let i = currentIdx - 1; i >= 0; i--) {
+      const bid = entry.batches[i];
+      if (this.loadBatch(bid)) return bid;
+    }
+    return null;
+  }
+
+  carryoverIssues(currentBatchId, previousBatchId) {
+    const currentResult = this.loadBatch(currentBatchId);
+    if (!currentResult) {
+      throw new Error(`当前批次不存在: ${currentBatchId}`);
+    }
+
+    let prevBatchId = previousBatchId;
+    if (!prevBatchId) {
+      prevBatchId = this.findPreviousBatchId(currentBatchId);
+    }
+
+    if (!prevBatchId) {
+      return {
+        carried: 0,
+        skipped: 0,
+        conflicts: [],
+        descChanged: [],
+        warnings: ['未找到可复用的上一批次。请指定旧批次 ID 或确认同一目录存在更早的扫描。'],
+        previousBatchId: null
+      };
+    }
+
+    const previousResult = this.loadBatch(prevBatchId);
+    if (!previousResult) {
+      return {
+        carried: 0,
+        skipped: 0,
+        conflicts: [],
+        descChanged: [],
+        warnings: [`旧批次 ${prevBatchId} 已被删除或数据损坏，无法复用。`],
+        previousBatchId: prevBatchId
+      };
+    }
+
+    const pendingIssues = currentResult.issues.filter(
+      i => i.reviewStatus === REVIEW_STATUS.PENDING
+    );
+
+    if (pendingIssues.length === 0) {
+      return {
+        carried: 0,
+        skipped: 0,
+        conflicts: [],
+        descChanged: [],
+        warnings: ['当前批次没有待处理的问题，无需复用。'],
+        previousBatchId: prevBatchId
+      };
+    }
+
+    const prevReviewed = previousResult.issues.filter(
+      i => i.reviewStatus !== REVIEW_STATUS.PENDING
+    );
+
+    if (prevReviewed.length === 0) {
+      return {
+        carried: 0,
+        skipped: 0,
+        conflicts: [],
+        descChanged: [],
+        warnings: ['上一批次中没有已处理的问题，无结果可复用。'],
+        previousBatchId: prevBatchId
+      };
+    }
+
+    const prevMap = new Map();
+    for (const pi of prevReviewed) {
+      const key = this._buildIssueSignature(pi);
+      prevMap.set(key, pi);
+    }
+
+    const prevMapByWeakKey = new Map();
+    for (const pi of prevReviewed) {
+      const weakKey = this._buildIssueSignatureWithoutDesc(pi);
+      if (!prevMapByWeakKey.has(weakKey)) {
+        prevMapByWeakKey.set(weakKey, []);
+      }
+      prevMapByWeakKey.get(weakKey).push(pi);
+    }
+
+    const manuallyReviewedBeforeCarryover = currentResult.issues.filter(
+      i => i.reviewStatus !== REVIEW_STATUS.PENDING
+    );
+    const manuallyReviewedSignatures = new Set(
+      manuallyReviewedBeforeCarryover.map(i => this._buildIssueSignature(i))
+    );
+
+    const beforeStates = [];
+    const carried = [];
+    const conflicts = [];
+    const descChanged = [];
+
+    for (const currIssue of pendingIssues) {
+      const strongKey = this._buildIssueSignature(currIssue);
+      const prevMatch = prevMap.get(strongKey);
+
+      if (prevMatch) {
+        const beforeChange = JSON.parse(JSON.stringify(currIssue.toJSON()));
+        beforeStates.push(beforeChange);
+
+        const carryoverRemark = prevMatch.remark
+          ? `${prevMatch.remark} [复用自批次 ${prevBatchId.slice(0, 16)}…]`
+          : `[复用自批次 ${prevBatchId.slice(0, 16)}…]`;
+
+        currIssue.setReview(
+          prevMatch.reviewStatus,
+          prevMatch.handler,
+          carryoverRemark
+        );
+        carried.push({
+          currentIssueId: currIssue.id,
+          previousIssueId: prevMatch.id,
+          status: prevMatch.reviewStatus,
+          handler: prevMatch.handler,
+          remark: prevMatch.remark,
+          descChanged: false
+        });
+        continue;
+      }
+
+      const weakKey = this._buildIssueSignatureWithoutDesc(currIssue);
+      const weakMatches = prevMapByWeakKey.get(weakKey);
+
+      if (weakMatches && weakMatches.length > 0) {
+        const weakMatch = weakMatches[0];
+        descChanged.push({
+          currentIssueId: currIssue.id,
+          currentDesc: currIssue.message,
+          previousIssueId: weakMatch.id,
+          previousDesc: weakMatch.message,
+          previousStatus: weakMatch.reviewStatus,
+          previousHandler: weakMatch.handler
+        });
+        continue;
+      }
+    }
+
+    let skipped = 0;
+    for (const pi of prevReviewed) {
+      const prevSig = this._buildIssueSignature(pi);
+      if (manuallyReviewedSignatures.has(prevSig)) {
+        const matchInCurrent = manuallyReviewedBeforeCarryover.find(
+          ci => this._buildIssueSignature(ci) === prevSig
+        );
+        if (matchInCurrent) {
+          skipped++;
+          if (!conflicts.find(c => c.currentIssueId === matchInCurrent.id)) {
+            conflicts.push({
+              currentIssueId: matchInCurrent.id,
+              currentStatus: matchInCurrent.reviewStatus,
+              currentHandler: matchInCurrent.handler,
+              previousStatus: pi.reviewStatus,
+              previousHandler: pi.handler,
+              reason: '当前批次已手动处理，不覆盖'
+            });
+          }
+        }
+      }
+    }
+
+    if (beforeStates.length > 0) {
+      this._pushUndo({
+        type: 'CARRYOVER',
+        batchId: currentBatchId,
+        beforeStates: beforeStates,
+        previousBatchId: prevBatchId,
+        count: beforeStates.length
+      });
+      this._persistBatchDirectly(currentResult);
+    }
+
+    return {
+      carried: carried.length,
+      skipped,
+      conflicts,
+      descChanged,
+      warnings: [],
+      previousBatchId: prevBatchId,
+      details: carried
+    };
+  }
+
+  _persistBatchDirectly(scanResult) {
+    const data = this._loadAllData();
+    const index = this._loadIndex();
+
+    data.batches[scanResult.batchId] = scanResult.toJSON();
+    this._saveAllData(data);
+    this._saveBatchSeparate(scanResult.batchId, scanResult);
+
+    const idx = index.batches.findIndex(b => b.batchId === scanResult.batchId);
+    const entry = {
+      batchId: scanResult.batchId,
+      rulePath: scanResult.rulePath,
+      targetDir: scanResult.targetDir,
+      directorySignature: scanResult.directorySignature,
+      scanTime: scanResult.scanTime,
+      lastModified: new Date().toISOString(),
+      totalIssues: scanResult.summary.total,
+      pendingIssues: scanResult.summary.byStatus.pending
+    };
+    if (idx >= 0) {
+      index.batches[idx] = entry;
+    } else {
+      index.batches.push(entry);
+    }
+
+    index.batches.sort((a, b) => new Date(b.lastModified) - new Date(a.lastModified));
+    this._saveIndex(index);
   }
 
   deleteBatch(batchId) {
