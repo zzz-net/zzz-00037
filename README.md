@@ -207,32 +207,43 @@ bbcheck export report --format html  # 强制格式
 
 ## 命令总览
 
+> 顺序与 `bbcheck --help` 输出保持一致。
+
 ```
-bbcheck scan <rule> <dir>       # 按规则扫描资料目录
-bbcheck review                  # 交互式复核（或批量复核）
-bbcheck undo                    # 撤销上一步
-bbcheck resume [batchId]        # 恢复上次处理
-bbcheck status                  # 查看当前批次
-bbcheck list                    # 列出所有批次
-bbcheck history <issueId>       # 查看单个问题的复核历史
-bbcheck export <output>         # 导出报告（csv/html/json）
-bbcheck init-samples            # 生成样例规则和资料目录
+bbcheck validate <rule> [dir]    # 校验规则 + 预览目录匹配（不写状态、不生成批次，支持 --json）
+bbcheck scan <rule> <dir>        # 按规则扫描资料目录
+bbcheck resume [batchId]         # 恢复处理（继续上次未完成的批次）
+bbcheck review                   # 交互式复核问题（或批量复核）
+bbcheck status                   # 查看当前批次状态
+bbcheck undo                     # 撤销上一步操作
+bbcheck export <output>          # 导出复核报告（csv/html/json）
+bbcheck list                     # 列出所有扫描批次
+bbcheck history <issueId>        # 查看单个问题的复核历史
+bbcheck init-samples             # 生成样例规则和资料目录
 ```
 
 每个命令加 `--help` 查看参数，例如：
 
 ```bash
+bbcheck validate --help
 bbcheck scan --help
 bbcheck review --help
 ```
+
+> 💡 **推荐工作流**：正式 `scan` 前先跑 `bbcheck validate rule.yaml [资料目录]`，
+> 可以先看章节数、必需文件数、命名规则数、配置问题和目录匹配预览，
+> 缺字段、坏正则、目录不可读、同名章节或 order 冲突都会有清楚错误提示，进程非零退出码。
+> 加 `--json` 可获得机器可读的 `warnings / errors / summary / directoryPreview`。
 
 ---
 
 ## 异常场景说明
 
-1. **配置写错（YAML 语法错 / 必填字段缺失）**：
+> 以上异常在 `validate` 预览阶段同样会被检测，且在正式 `scan` 之前以非零退出码报告，避免生成无效批次。
+
+1. **配置写错（YAML 语法错 / 必填字段缺失 / 坏正则 / 同名章节 / order 冲突）**：
    - 抛 `RuleValidationError`，CLI 显示具体行号列号和字段名，进程退出码 1
-2. **目录不存在**：
+2. **目录不存在 / 非目录 / 不可读**：
    - 抛 `DirectoryNotFoundError`，CLI 显示路径，退出码 1
 3. **空撤销栈**：
    - 抛 `EmptyUndoStackError`，CLI 给出黄色提示"撤销栈为空"，退出码 0（稳定）

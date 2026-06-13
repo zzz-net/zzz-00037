@@ -1,0 +1,9 @@
+name: "两次"
+sections:
+  - name: "S"
+    order: 1
+    namingPatterns:
+      - pattern: "^a$"
+        label: "a"
+      - pattern: "^b$"
+        label: "b"

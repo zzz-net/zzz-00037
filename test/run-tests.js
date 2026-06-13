@@ -763,6 +763,55 @@ test('validate 后 scan / resume 仍沿用原 active batch（不覆盖）', () =
     'resume 输出中应包含原批次 ID');
 });
 
+test('回归: README 命令总览与 CLI --help 命令清单完全一致（防止新增命令漏掉文档）', () => {
+  // 从 CLI help 提取命令名：匹配 `bbcheck <cmd>` 行（去掉参数、选项和描述）
+  const helpRes = runCli('--help');
+  assert.strictEqual(helpRes.status, 0, '--help 应成功');
+  const helpLines = (helpRes.stdout + '\n' + helpRes.stderr).split(/\r?\n/);
+  const helpCmdNames = [];
+  const cmdRe = /^\s*(?:bbcheck\s+)?([a-z][a-z-]+)\b.*/;
+  for (const line of helpLines) {
+    // 跳过选项行（以 - 开头）
+    if (/^\s*(-|--)/.test(line)) continue;
+    const m = line.match(cmdRe);
+    if (m) {
+      const name = m[1];
+      // 只接受已知命令模式：validate, scan, resume, review, status, undo, export, list, history, init-samples
+      if (/^(validate|scan|resume|review|status|undo|export|list|history|init-samples)$/.test(name)) {
+        if (!helpCmdNames.includes(name)) helpCmdNames.push(name);
+      }
+    }
+  }
+  assert.ok(helpCmdNames.length >= 10,
+    `CLI help 应提取到至少 10 个命令，实际=${helpCmdNames.length}：${JSON.stringify(helpCmdNames)}`);
+  assert.strictEqual(helpCmdNames[0], 'validate',
+    'CLI help 第一个命令应为 validate，实际顺序：' + JSON.stringify(helpCmdNames));
+
+  // 从 README 的命令总览代码块中提取命令名
+  const readmePath = path.join(__dirname, '..', 'README.md');
+  const readmeContent = fs.readFileSync(readmePath, 'utf-8');
+  const commandOverviewRe = /## 命令总览[\s\S]*?```\s*\n([\s\S]*?)\n```/;
+  const m2 = readmeContent.match(commandOverviewRe);
+  assert.ok(m2, 'README 应存在「命令总览」章节及代码块');
+  const codeBlock = m2[1];
+  const readmeCmdNames = [];
+  for (const line of codeBlock.split(/\r?\n/)) {
+    const m3 = line.match(/^\s*bbcheck\s+([a-z][a-z-]+)\b/);
+    if (m3) readmeCmdNames.push(m3[1]);
+  }
+  assert.strictEqual(readmeCmdNames.length, helpCmdNames.length,
+    `README 命令数量(${readmeCmdNames.length}) 应等于 CLI help 命令数量(${helpCmdNames.length})。` +
+    `\nCLI help: ${JSON.stringify(helpCmdNames)}` +
+    `\nREADME:   ${JSON.stringify(readmeCmdNames)}`);
+
+  // 逐行比较命令名称和顺序
+  for (let i = 0; i < helpCmdNames.length; i++) {
+    assert.strictEqual(readmeCmdNames[i], helpCmdNames[i],
+      `第 ${i + 1} 个命令不一致：CLI="${helpCmdNames[i]}" vs README="${readmeCmdNames[i]}"` +
+      `\n完整顺序:\n  CLI: ${JSON.stringify(helpCmdNames)}\n  README: ${JSON.stringify(readmeCmdNames)}`);
+  }
+});
+
 // ─────────────────────────────────────────────────────────────
 // 汇总
 // ─────────────────────────────────────────────────────────────
