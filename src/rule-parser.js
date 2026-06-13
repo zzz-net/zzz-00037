@@ -222,7 +222,7 @@ class RuleParser {
       directory: section.directory || null,
       description: section.description || '',
       requiredFiles: [],
-      namingPatterns: section.namingPatterns || [],
+      namingPatterns: [],
       pageRange: section.pageRange || null,
       expiryField: section.expiryField || null,
       signatureRequired: !!section.signatureRequired,

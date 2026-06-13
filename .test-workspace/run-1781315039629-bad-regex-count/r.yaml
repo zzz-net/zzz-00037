@@ -1,0 +1,17 @@
+name: "混合"
+sections:
+  - name: "S1-好"
+    order: 1
+    namingPatterns:
+      - pattern: "^good\.pdf$"
+        label: "good"
+  - name: "S2-坏"
+    order: 2
+    namingPatterns:
+      - pattern: "*invalid*"
+        label: "bad"
+  - name: "S3-好"
+    order: 3
+    namingPatterns:
+      - pattern: "^also-good\.pdf$"
+        label: "also"

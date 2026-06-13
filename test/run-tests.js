@@ -582,6 +582,161 @@ test('validate 不写入 .bbcheck 目录（不产生批次 / 状态文件）', (
   assert.strictEqual(hasActiveBatch, false, 'validate 后不应设置 active-batch');
 });
 
+test('回归: 单条命名规则在章节中只计 1 次（YAML）', () => {
+  const parser = new RuleParser();
+  const p = path.join(makeTempDir('single-pattern-yaml'), 'r.yaml');
+  fs.writeFileSync(p, `name: "单条规则"
+sections:
+  - name: "S1"
+    order: 1
+    directory: "01-s"
+    namingPatterns:
+      - pattern: ^.*\\.pdf$
+        label: "pdf"
+`, 'utf-8');
+  const result = parser.loadForPreview(p);
+  assert.strictEqual(result.errors.length, 0, '应无错误: ' + JSON.stringify(result.errors));
+  assert.strictEqual(result.rule.sections[0].namingPatterns.length, 1,
+    '1 条命名规则在 validated 中应仍为 1 条，实际=' + result.rule.sections[0].namingPatterns.length);
+  assert.strictEqual(result.rule.sections[0].namingPatterns[0].label, 'pdf');
+});
+
+test('回归: 单条命名规则在章节中只计 1 次（JSON）', () => {
+  const parser = new RuleParser();
+  const p = path.join(makeTempDir('single-pattern-json'), 'r.json');
+  fs.writeFileSync(p, JSON.stringify({
+    name: 'JSON单规则',
+    sections: [{
+      name: 'S1', order: 1, directory: '01-s',
+      namingPatterns: [{ pattern: '^.*\\.pdf$', label: 'pdf' }]
+    }]
+  }, null, 2), 'utf-8');
+  const result = parser.loadForPreview(p);
+  assert.strictEqual(result.errors.length, 0, '应无错误: ' + JSON.stringify(result.errors));
+  assert.strictEqual(result.rule.sections[0].namingPatterns.length, 1,
+    'JSON 单条规则不应翻倍，实际=' + result.rule.sections[0].namingPatterns.length);
+});
+
+test('回归: 样例规则 namingPattern 总计应为 11 条（不是 22）', () => {
+  // samples/rule.yaml 各章节 namingPatterns 数量：
+  //   01-投标函: 4,  02-商务资质: 2,  03-财务状况: 4,  04-类似业绩: 4,
+  //   05-项目管理机构: 4,  06-施工组织设计: 2,  07-报价文件: 2
+  // 合计 = 4+2+4+4+4+2+2 = 22 ... 实际计数核对：
+  // 重新数一遍 samples/rule.yaml：
+  //   一、投标函: 2 条 (中文名_签章.ext + 中文名(_v版本号).ext) — 但含 extractVersion
+  //   二、商务资质: 1 条
+  //   三、财务状况: 2 条
+  //   四、类似业绩: 2 条
+  //   五、项目管理机构: 2 条
+  //   六、施工组织设计: 1 条
+  //   七、报价文件: 1 条
+  // 合计 = 2+1+2+2+2+1+1 = 11
+  const parser = new RuleParser();
+  const result = parser.loadForPreview(RULE_PATH);
+  const actual = result.rule.sections.reduce((s, sec) => s + sec.namingPatterns.length, 0);
+  assert.strictEqual(actual, 11,
+    `样例规则命名规则总数应为 11，实际=${actual}。各章节：` +
+    result.rule.sections.map(s => `${s.name}=${s.namingPatterns.length}`).join(', '));
+});
+
+test('回归: 连续两次 preview 不累加（原始 YAML 对象不被污染）', () => {
+  const parser = new RuleParser();
+  const p = path.join(makeTempDir('no-pollution'), 'r.yaml');
+  fs.writeFileSync(p, `name: "两次"
+sections:
+  - name: "S"
+    order: 1
+    namingPatterns:
+      - pattern: "^a$"
+        label: "a"
+      - pattern: "^b$"
+        label: "b"
+`, 'utf-8');
+
+  const r1 = parser.loadForPreview(p);
+  assert.strictEqual(r1.rule.sections[0].namingPatterns.length, 2, '第一次应为 2');
+
+  const r2 = parser.loadForPreview(p);
+  assert.strictEqual(r2.rule.sections[0].namingPatterns.length, 2,
+    '第二次预览不应累加，实际=' + r2.rule.sections[0].namingPatterns.length);
+
+  // 第三次确保稳定
+  const r3 = parser.loadForPreview(p);
+  assert.strictEqual(r3.rule.sections[0].namingPatterns.length, 2,
+    '第三次预览也应为 2，实际=' + r3.rule.sections[0].namingPatterns.length);
+});
+
+test('回归: CLI validate --json 的 summary.namingPatternCount 与各章节明细之和一致', () => {
+  const storeDir = makeTempDir('cli-validate-sum-match');
+  const res = runCli('--store-dir', storeDir, 'validate', '--json', RULE_PATH, DATA_DIR);
+  assert.strictEqual(res.status, 0);
+  let parsed;
+  try { parsed = JSON.parse(res.stdout); } catch (e) {
+    assert.fail('JSON 解析失败: ' + e.message);
+  }
+  const sumFromSections = parsed.summary.sections.reduce(
+    (s, sec) => s + sec.namingPatterns, 0
+  );
+  assert.strictEqual(parsed.summary.namingPatternCount, sumFromSections,
+    `summary.namingPatternCount(${parsed.summary.namingPatternCount}) 应等于各章节之和(${sumFromSections})`);
+  assert.strictEqual(parsed.summary.namingPatternCount, 11,
+    `样例规则命名规则总数应为 11，summary 报告=${parsed.summary.namingPatternCount}`);
+});
+
+test('回归: 坏正则的章节不影响其他章节计数，也不累加', () => {
+  const parser = new RuleParser();
+  const p = path.join(makeTempDir('bad-regex-count'), 'r.yaml');
+  fs.writeFileSync(p, `name: "混合"
+sections:
+  - name: "S1-好"
+    order: 1
+    namingPatterns:
+      - pattern: ^good[.]pdf$
+        label: "good"
+  - name: "S2-坏"
+    order: 2
+    namingPatterns:
+      - pattern: "*invalid*"
+        label: "bad"
+  - name: "S3-好"
+    order: 3
+    namingPatterns:
+      - pattern: ^also-good[.]pdf$
+        label: "also"
+`, 'utf-8');
+  const result = parser.loadForPreview(p);
+  // 坏正则 1 条错误
+  assert.ok(result.errors.some(e => /正则表达式无效/.test(e)),
+    '应检测到坏正则: ' + JSON.stringify(result.errors));
+  // 每个章节仍然只有 1 条（坏正则也会变成一个占位条目，但数量不翻倍）
+  assert.strictEqual(result.rule.sections[0].namingPatterns.length, 1,
+    '好规则 S1 应为 1 条');
+  assert.strictEqual(result.rule.sections[1].namingPatterns.length, 1,
+    '坏规则 S2 也应只有 1 条（占位），实际=' + result.rule.sections[1].namingPatterns.length);
+  assert.strictEqual(result.rule.sections[2].namingPatterns.length, 1,
+    '好规则 S3 应为 1 条');
+  const total = result.rule.sections.reduce((s, sec) => s + sec.namingPatterns.length, 0);
+  assert.strictEqual(total, 3, '3 个章节共 3 条，实际=' + total);
+});
+
+test('回归: 目录不存在时 summary.namingPatternCount 仍正确（不依赖 dir 预览）', () => {
+  const storeDir = makeTempDir('validate-no-dir-count');
+  const nonexistent = path.join(makeTempDir('nope'), 'nothing');
+  const res = runCli('--store-dir', storeDir, 'validate', '--json', RULE_PATH, nonexistent);
+  assert.strictEqual(res.status, 1, '目录不存在应 exit 1');
+  let parsed;
+  try { parsed = JSON.parse(res.stdout); } catch (e) {
+    assert.fail('--json 在错误场景也应输出合法 JSON: ' + e.message + '\nstdout=' + res.stdout.slice(0, 300));
+  }
+  assert.strictEqual(parsed.summary.namingPatternCount, 11,
+    `即使目录不存在，规则命名规则数仍应为 11，实际=${parsed.summary.namingPatternCount}`);
+  const sumFromSections = parsed.summary.sections.reduce(
+    (s, sec) => s + sec.namingPatterns, 0
+  );
+  assert.strictEqual(parsed.summary.namingPatternCount, sumFromSections,
+    '汇总与章节明细之和应一致');
+});
+
 test('validate 后 scan / resume 仍沿用原 active batch（不覆盖）', () => {
   // 1) 先做一次 scan，设置 active-batch
   const storeDir = makeTempDir('validate-preserve-active');
