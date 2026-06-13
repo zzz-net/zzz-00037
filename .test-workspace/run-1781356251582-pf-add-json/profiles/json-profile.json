@@ -1,0 +1,22 @@
+{
+  "name": "json-profile",
+  "createdAt": "2026-06-13T13:10:51.584Z",
+  "lastUsedDir": null,
+  "lastUsedAt": null,
+  "originalRulePath": "D:\\workSpace\\AI__SPACE\\zzz-00037\\.test-workspace\\run-1781356251582-pf-json-rule\\rule.json",
+  "ruleFormat": "json",
+  "ruleContent": "{\n  \"name\": \"JSON测试规则\",\n  \"version\": \"1.0\",\n  \"sections\": [\n    {\n      \"name\": \"章节一\",\n      \"order\": 1,\n      \"directory\": \"01-test\",\n      \"requiredFiles\": [],\n      \"namingPatterns\": []\n    }\n  ]\n}",
+  "ruleData": {
+    "name": "JSON测试规则",
+    "version": "1.0",
+    "sections": [
+      {
+        "name": "章节一",
+        "order": 1,
+        "directory": "01-test",
+        "requiredFiles": [],
+        "namingPatterns": []
+      }
+    ]
+  }
+}

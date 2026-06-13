@@ -1,0 +1,11 @@
+[
+  {
+    "type": "NEW_BATCH",
+    "batchId": "BATCH_mqcdinki_r1he"
+  },
+  {
+    "type": "BASELINE_SAVE",
+    "baselineName": "v1",
+    "previousData": null
+  }
+]

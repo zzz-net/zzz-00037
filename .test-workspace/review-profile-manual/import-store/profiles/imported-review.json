@@ -1,0 +1,34 @@
+{
+  "name": "imported-review",
+  "createdAt": "2026-06-13T13:30:29.292Z",
+  "lastUsedDir": "D:\\workSpace\\AI__SPACE\\zzz-00037\\.test-workspace\\review-profile-manual\\docs",
+  "lastUsedAt": "2026-06-13T13:30:48.226Z",
+  "originalRulePath": "D:\\workSpace\\AI__SPACE\\zzz-00037\\.test-workspace\\review-profile-manual\\rule.yaml",
+  "ruleFormat": "yaml",
+  "ruleContent": "name: \"Reviewer Profile Rule\"\nversion: \"1.0\"\nsections:\n  - name: \"主文件\"\n    order: 1\n    directory: \"01-main\"\n    requiredFiles:\n      - path: \"required.pdf\"\n    namingPatterns:\n      - pattern: \"^required\\\\.pdf$\"\n        label: \"required.pdf\"\r\n",
+  "ruleData": {
+    "name": "Reviewer Profile Rule",
+    "version": "1.0",
+    "sections": [
+      {
+        "name": "主文件",
+        "order": 1,
+        "directory": "01-main",
+        "requiredFiles": [
+          {
+            "path": "required.pdf"
+          }
+        ],
+        "namingPatterns": [
+          {
+            "pattern": "^required\\.pdf$",
+            "label": "required.pdf"
+          }
+        ]
+      }
+    ]
+  },
+  "originalName": "review-main",
+  "importedFrom": "D:\\workSpace\\AI__SPACE\\zzz-00037\\.test-workspace\\review-profile-manual\\review-export.json",
+  "importedAt": "2026-06-13T13:31:53.926Z"
+}

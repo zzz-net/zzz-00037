@@ -1,0 +1,11 @@
+[
+  {
+    "type": "PROFILE_ADD",
+    "profileName": "use-test",
+    "previousData": null
+  },
+  {
+    "type": "NEW_BATCH",
+    "batchId": "BATCH_mqcdirlo_qkiv"
+  }
+]

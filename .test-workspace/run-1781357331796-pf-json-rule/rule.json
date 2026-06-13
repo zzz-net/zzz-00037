@@ -1,0 +1,13 @@
+{
+  "name": "JSON测试规则",
+  "version": "1.0",
+  "sections": [
+    {
+      "name": "章节一",
+      "order": 1,
+      "directory": "01-test",
+      "requiredFiles": [],
+      "namingPatterns": []
+    }
+  ]
+}

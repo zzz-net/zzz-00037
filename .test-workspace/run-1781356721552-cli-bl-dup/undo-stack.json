@@ -1,0 +1,11 @@
+[
+  {
+    "type": "NEW_BATCH",
+    "batchId": "BATCH_mqcdsre0_hy4k"
+  },
+  {
+    "type": "BASELINE_SAVE",
+    "baselineName": "v1",
+    "previousData": null
+  }
+]

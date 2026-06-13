@@ -11,6 +11,7 @@ const { Scanner, DirectoryNotFoundError } = require('./scanner');
 const { StateStore, EmptyUndoStackError } = require('./state-store');
 const { Exporter, ExportError } = require('./exporter');
 const { BaselineManager, BaselineError } = require('./baseline');
+const { ProfileManager, ProfileError } = require('./profile-manager');
 const {
   ISSUE_TYPES, ISSUE_TYPE_LABELS,
   REVIEW_STATUS, REVIEW_STATUS_LABELS,
@@ -22,6 +23,7 @@ const parser = new RuleParser();
 const scanner = new Scanner();
 const exporter = new Exporter();
 const baseline = new BaselineManager();
+const profileMgr = new ProfileManager();
 
 function printIssueTable(issues, opts = {}) {
   const table = new Table({
@@ -99,6 +101,7 @@ yargs
       const newStore = new StateStore(argv.storeDir);
       Object.assign(store, newStore);
       Object.assign(baseline, new BaselineManager(argv.storeDir));
+      Object.assign(profileMgr, new ProfileManager(argv.storeDir));
     }
   });
 
@@ -770,12 +773,20 @@ yargs
         CLAIM: `领取问题 (${action.count || 0}个)`,
         ASSIGN: `转派问题 (${action.count || 0}个)`,
         BASELINE_SAVE: `保存基线 "${action.baselineName || ''}"`,
-        BASELINE_IMPORT: `导入基线 "${action.baselineName || ''}"`
+        BASELINE_IMPORT: `导入基线 "${action.baselineName || ''}"`,
+        PROFILE_ADD: `添加 profile "${action.profileName || ''}"`,
+        PROFILE_REMOVE: `删除 profile "${action.profileName || ''}"`,
+        PROFILE_IMPORT: `导入 profile "${action.profileName || ''}"`
       };
       console.log(chalk.green(`✓ 已撤销: ${typeLabels[action.type] || action.type}`));
-      console.log(chalk.gray(`  批次ID: ${action.batchId}`));
+      if (action.batchId) {
+        console.log(chalk.gray(`  批次ID: ${action.batchId}`));
+      }
       if (action.issueId) {
         console.log(chalk.gray(`  问题ID: ${action.issueId}`));
+      }
+      if (action.profileName) {
+        console.log(chalk.gray(`  Profile: ${action.profileName}`));
       }
 
       const stackSizeNow = store.getUndoStackSize();
@@ -1479,6 +1490,356 @@ yargs
         process.exit(exitCodes[e.code] || 1);
       } else {
         console.error(chalk.red('❌ 基线操作失败: ' + (e.message || e)));
+        process.exit(1);
+      }
+    }
+  });
+
+yargs
+  .command('profile <sub>', '规则包管理：登记常用规则为可复用的 profile', (y) => {
+    y
+      .positional('sub', {
+        describe: '子命令: add / list / show / use / export / import / remove',
+        type: 'string',
+        choices: ['add', 'list', 'show', 'use', 'export', 'import', 'remove']
+      })
+      .option('name', { describe: 'profile 名称', type: 'string' })
+      .option('rule', { describe: '规则文件路径 (add 时使用)', type: 'string' })
+      .option('dir', { describe: '资料目录路径 (use 时使用)', type: 'string' })
+      .option('force', { alias: 'f', describe: '覆盖同名 profile / 强制重新扫描', type: 'boolean', default: false })
+      .option('output', { alias: 'o', describe: '导出文件路径 (export 时使用)', type: 'string' })
+      .option('file', { describe: '导入文件路径 (import 时使用)', type: 'string' })
+      .option('rename', { describe: '导入时重命名 profile', type: 'string' })
+      .option('force-scan', { describe: 'use 时强制重新扫描（即使目录已扫描）', type: 'boolean', default: false });
+  }, async (argv) => {
+    try {
+      const sub = argv.sub;
+
+      if (sub === 'add') {
+        const name = argv.name;
+        const rulePath = argv.rule;
+        if (!name) {
+          console.error(chalk.red('❌ 请指定 profile 名称: --name <名称>'));
+          process.exit(1);
+          return;
+        }
+        if (!rulePath) {
+          console.error(chalk.red('❌ 请指定规则文件路径: --rule <路径>'));
+          process.exit(1);
+          return;
+        }
+
+        const result = profileMgr.add(name, rulePath, { force: argv.force });
+
+        store.pushProfileUndo({
+          type: 'PROFILE_ADD',
+          profileName: name,
+          previousData: result.previousData || null
+        });
+
+        if (result.overwritten) {
+          console.log(chalk.yellow(`⚠ 已覆盖同名 profile "${name}"`));
+        }
+        console.log(chalk.green(`✓ profile "${name}" 已添加`));
+        console.log(chalk.gray(`  规则格式: ${result.ruleFormat.toUpperCase()}`));
+        console.log(chalk.gray(`  规则名称: ${result.ruleName}`));
+        console.log(chalk.gray(`  章节数: ${result.sectionCount}`));
+        console.log(chalk.cyan('\n💡 下一步:'));
+        console.log(`  ${chalk.gray('$')} bbcheck profile use --name ${name} --dir <资料目录>  # 使用该 profile 扫描\n`);
+
+      } else if (sub === 'list') {
+        const profiles = profileMgr.list();
+        if (profiles.length === 0) {
+          console.log(chalk.yellow('⚠ 暂无 profile'));
+          console.log(chalk.gray('  使用 bbcheck profile add --name <名称> --rule <规则路径> 添加'));
+          return;
+        }
+
+        const table = new Table({
+          head: [
+            chalk.cyan('名称'),
+            chalk.cyan('规则名称'),
+            chalk.cyan('格式'),
+            chalk.cyan('章节数'),
+            chalk.cyan('创建时间'),
+            chalk.cyan('最近使用目录'),
+            chalk.cyan('状态')
+          ],
+          colWidths: [22, 26, 10, 10, 22, 30, 10],
+          wordWrap: true
+        });
+
+        for (const p of profiles) {
+          if (p.corrupted) {
+            table.push([
+              chalk.red(p.name),
+              '-',
+              '-',
+              '-',
+              '-',
+              '-',
+              chalk.red('已损坏')
+            ]);
+          } else {
+            table.push([
+              p.name,
+              p.ruleName || '-',
+              p.ruleFormat ? p.ruleFormat.toUpperCase() : '-',
+              p.sectionCount,
+              p.createdAt ? new Date(p.createdAt).toLocaleString() : '-',
+              p.lastUsedDir || '-',
+              chalk.green('正常')
+            ]);
+          }
+        }
+
+        console.log(table.toString());
+        console.log(chalk.gray(`\n共 ${profiles.length} 个 profile`));
+
+      } else if (sub === 'show') {
+        const name = argv.name;
+        if (!name) {
+          console.error(chalk.red('❌ 请指定 profile 名称: --name <名称>'));
+          process.exit(1);
+          return;
+        }
+
+        const info = profileMgr.show(name);
+
+        console.log(chalk.bold.cyan('\n━━━ Profile 详情 ━━━'));
+        console.log(`  名称: ${chalk.white(info.name)}`);
+        console.log(`  创建时间: ${info.createdAt ? new Date(info.createdAt).toLocaleString() : '-'}`);
+        if (info.lastUsedDir) {
+          console.log(`  最近使用目录: ${info.lastUsedDir}`);
+          console.log(`  最近使用时间: ${info.lastUsedAt ? new Date(info.lastUsedAt).toLocaleString() : '-'}`);
+        }
+        console.log(`  原始规则路径: ${info.originalRulePath || '-'}`);
+        console.log();
+
+        console.log(chalk.bold('📋 规则信息:'));
+        console.log(`  规则名称: ${info.ruleName || '-'}`);
+        console.log(`  版本: ${info.ruleVersion || '-'}`);
+        if (info.ruleDescription) {
+          console.log(`  描述: ${info.ruleDescription}`);
+        }
+        console.log(`  格式: ${info.ruleFormat ? info.ruleFormat.toUpperCase() : '-'}`);
+        console.log(`  全局签章要求: ${info.globalSignatureRequired ? chalk.yellow('开启') : '关闭'}`);
+        console.log(`  章节数: ${info.sectionCount}`);
+
+        if (info.sections && info.sections.length > 0) {
+          console.log(chalk.bold('\n📑 章节列表:'));
+          const secTable = new Table({
+            head: [
+              chalk.cyan('Order'),
+              chalk.cyan('章节名'),
+              chalk.cyan('目录'),
+              chalk.cyan('必需文件'),
+              chalk.cyan('命名规则')
+            ],
+            colWidths: [8, 24, 20, 10, 10],
+            wordWrap: true
+          });
+          for (const s of info.sections) {
+            secTable.push([
+              s.order !== null ? s.order : '-',
+              s.name,
+              s.directory || '-',
+              s.requiredFiles,
+              s.namingPatterns
+            ]);
+          }
+          console.log(secTable.toString());
+        }
+
+        if (info.previewLines && info.previewLines.length > 0) {
+          console.log(chalk.bold('\n📄 规则内容预览 (前 20 行):'));
+          console.log(chalk.gray('  ' + info.previewLines.join('\n  ')));
+        }
+        console.log();
+
+      } else if (sub === 'use') {
+        const name = argv.name;
+        const dir = argv.dir;
+        if (!name) {
+          console.error(chalk.red('❌ 请指定 profile 名称: --name <名称>'));
+          process.exit(1);
+          return;
+        }
+        if (!dir) {
+          console.error(chalk.red('❌ 请指定资料目录: --dir <路径>'));
+          process.exit(1);
+          return;
+        }
+
+        console.log(chalk.blue(`📖 加载 profile "${name}"...`));
+        const loaded = profileMgr.load(name);
+        const rule = loaded.rule;
+        console.log(chalk.green(`  ✓ 规则: ${rule.name || '未命名'} (章节: ${rule.sections ? rule.sections.length : 0})`));
+
+        const absDir = path.resolve(dir);
+        if (!fs.existsSync(absDir) || !fs.statSync(absDir).isDirectory()) {
+          throw new DirectoryNotFoundError(absDir);
+        }
+
+        const preScanCheck = store.hasBatchForDirectory(absDir);
+        if (preScanCheck.exists && !argv.forceScan && !argv.force) {
+          console.log(chalk.yellow('⚠ 该目录已有扫描记录:'));
+          console.log(`  最近扫描时间: ${preScanCheck.lastScanTime}`);
+          const validBatches = (preScanCheck.batches || []).filter(bid => store.loadBatch(bid));
+          console.log(`  关联批次: ${validBatches.slice(-3).map(b => b.batchId || b).join(', ')}`);
+          console.log(chalk.gray('  使用 --force-scan 强制重新扫描\n'));
+          if (validBatches.length > 0) {
+            const batchId = validBatches[validBatches.length - 1].batchId || validBatches[validBatches.length - 1];
+            store.setActiveBatch(batchId);
+            const existing = store.loadBatch(batchId);
+            if (existing) {
+              console.log(chalk.cyan(`📋 批次 ${batchId} 的扫描结果:\n`));
+              printIssueTable(existing.issues);
+              printSummary(existing.summary);
+            }
+          }
+          process.exit(0);
+          return;
+        }
+
+        console.log(chalk.blue('🔍 开始扫描目录...'));
+        const result = scanner.scan(absDir, rule);
+        console.log(chalk.green(`  ✓ 扫描完成: 发现 ${result.issues.length} 个问题`));
+        console.log(chalk.gray(`  ✓ 批次ID: ${result.batchId}`));
+        console.log(chalk.gray(`  ✓ 扫描文件数: ${result.scannedFiles.length}`));
+
+        store.saveBatch(result);
+        console.log(chalk.green('  ✓ 状态已保存\n'));
+
+        try {
+          profileMgr.markUsed(name, absDir);
+        } catch (e) {
+          console.log(chalk.yellow(`  ⚠ 更新 profile 使用记录失败: ${e.message}`));
+        }
+
+        printIssueTable(result.issues);
+        printSummary(result.summary);
+
+        if (argv.output) {
+          const outPath = path.resolve(argv.output);
+          const exp = exporter.exportAuto(result, outPath);
+          console.log(chalk.green(`📤 已导出到: ${outPath}`));
+        }
+
+        console.log(chalk.cyan('💡 下一步:'));
+        console.log(`  ${chalk.gray('$')} bbcheck review       # 交互式复核问题`);
+        console.log(`  ${chalk.gray('$')} bbcheck status       # 查看当前批次状态`);
+        console.log(`  ${chalk.gray('$')} bbcheck export <out> # 导出报告`);
+        console.log(`  ${chalk.gray('$')} bbcheck undo         # 撤销本次扫描\n`);
+
+      } else if (sub === 'export') {
+        const name = argv.name;
+        const output = argv.output;
+        if (!name) {
+          console.error(chalk.red('❌ 请指定 profile 名称: --name <名称>'));
+          process.exit(1);
+          return;
+        }
+        if (!output) {
+          console.error(chalk.red('❌ 请指定导出文件路径: -o <路径>'));
+          process.exit(1);
+          return;
+        }
+
+        const result = profileMgr.exportProfile(name, output);
+        console.log(chalk.green(`📤 profile "${name}" 已导出`));
+        console.log(chalk.gray(`  路径: ${result.outputPath}`));
+        console.log(chalk.gray(`  章节数: ${result.sectionCount}`));
+
+      } else if (sub === 'import') {
+        const filePath = argv.file;
+        if (!filePath) {
+          console.error(chalk.red('❌ 请指定导入文件路径: --file <路径>'));
+          process.exit(1);
+          return;
+        }
+
+        const result = profileMgr.importProfile(filePath, {
+          force: argv.force,
+          name: argv.rename || null
+        });
+
+        store.pushProfileUndo({
+          type: 'PROFILE_IMPORT',
+          profileName: result.name,
+          previousData: result.previousData || null
+        });
+
+        if (result.overwritten) {
+          console.log(chalk.yellow(`⚠ 已覆盖同名 profile "${result.name}"`));
+        }
+        console.log(chalk.green(`✓ profile "${result.name}" 已导入`));
+        console.log(chalk.gray(`  章节数: ${result.sectionCount}`));
+
+      } else if (sub === 'remove') {
+        const name = argv.name;
+        if (!name) {
+          console.error(chalk.red('❌ 请指定 profile 名称: --name <名称>'));
+          process.exit(1);
+          return;
+        }
+
+        const result = profileMgr.remove(name);
+
+        store.pushProfileUndo({
+          type: 'PROFILE_REMOVE',
+          profileName: name,
+          previousData: result.previousData || null
+        });
+
+        console.log(chalk.green(`✓ profile "${name}" 已删除`));
+        console.log(chalk.cyan('\n💡 提示:'));
+        console.log(`  ${chalk.gray('$')} bbcheck undo  # 撤销删除\n`);
+
+      } else {
+        console.error(chalk.red(`❌ 未知子命令: ${sub}`));
+        console.log(chalk.gray('可用子命令: add, list, show, use, export, import, remove'));
+        process.exit(1);
+      }
+
+    } catch (e) {
+      if (e instanceof ProfileError) {
+        const exitCodes = {
+          EMPTY_NAME: 1,
+          INVALID_NAME: 1,
+          DUPLICATE_NAME: 1,
+          NOT_FOUND: 1,
+          CORRUPTED: 2,
+          RULE_NOT_FOUND: 1,
+          INVALID_RULE_FORMAT: 1,
+          RULE_READ_ERROR: 1,
+          RULE_PARSE_ERROR: 1,
+          STORAGE_NOT_WRITABLE: 3,
+          FILE_NOT_FOUND: 1,
+          INVALID_DATA: 1
+        };
+        console.error(chalk.red(`❌ ${e.message}`));
+        if (e.code === 'DUPLICATE_NAME') {
+          console.log(chalk.yellow('💡 使用 --force 可覆盖同名 profile'));
+        }
+        if (e.code === 'NOT_FOUND') {
+          const list = profileMgr.list();
+          if (list.length > 0) {
+            console.log(chalk.gray(`\n可用 profile: ${list.map(p => p.name).join(', ')}`));
+          }
+        }
+        process.exit(exitCodes[e.code] || 1);
+      } else if (e instanceof DirectoryNotFoundError) {
+        console.error(chalk.red('❌ 目录错误: ' + e.message));
+        process.exit(1);
+      } else if (e instanceof RuleValidationError) {
+        console.error(chalk.red('❌ 规则错误: ' + e.message));
+        process.exit(1);
+      } else {
+        console.error(chalk.red('❌ Profile 操作失败: ' + (e.message || e)));
+        if (e.stack) {
+          console.error(chalk.gray(e.stack));
+        }
         process.exit(1);
       }
     }

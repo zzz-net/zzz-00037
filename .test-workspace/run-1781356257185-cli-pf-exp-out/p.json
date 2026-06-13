@@ -1,0 +1,226 @@
+{
+  "_meta": {
+    "version": "1.0",
+    "exportedAt": "2026-06-13T13:10:57.476Z",
+    "type": "bbcheck-profile"
+  },
+  "profile": {
+    "name": "exp-cli",
+    "createdAt": "2026-06-13T13:10:57.152Z",
+    "lastUsedDir": null,
+    "lastUsedAt": null,
+    "originalRulePath": "D:\\workSpace\\AI__SPACE\\zzz-00037\\samples\\rule.yaml",
+    "ruleFormat": "yaml",
+    "ruleContent": "name: \"XX建设项目投标文件装订规则\"\r\ndescription: \"用于XX建设项目投标文件完整性检查、命名规范校验、页码连续性和签章核验\"\r\nversion: \"1.2\"\r\nglobalSignatureRequired: false\r\nglobalPageRange: null\r\nglobalExpiryField: null\r\nglobalNamingPattern: \"^[\\\\u4e00-\\\\u9fa5A-Za-z0-9_\\\\-]+\\\\.(pdf|doc|docx|xls|xlsx|png|jpg)$\"\r\n\r\nsections:\r\n  - name: \"一、投标函\"\r\n    order: 1\r\n    directory: \"01-投标函\"\r\n    description: \"正本投标函及相关声明文件，全部需要签章\"\r\n    signatureRequired: true\r\n    requiredFiles:\r\n      - path: \"投标函_签章.pdf\"\r\n        description: \"正式投标函，必须加盖单位公章及法定代表人签章\"\r\n      - path: \"法定代表人身份证明_签章.pdf\"\r\n        description: \"法定代表人身份证明书\"\r\n      - path: \"法定代表人授权委托书_签章.pdf\"\r\n        optional: true\r\n        description: \"如投标代表为被授权人则必需\"\r\n    namingPatterns:\r\n      - pattern: \"^[\\\\u4e00-\\\\u9fa5]{2,}_签章\\\\.(pdf|docx)$\"\r\n        label: \"中文名_签章.ext\"\r\n      - pattern: \"^[\\\\u4e00-\\\\u9fa5]{2,}(?:_v(\\\\d+)(?:\\\\.\\\\d+)*)?\\\\.(pdf|docx)$\"\r\n        label: \"中文名(_v版本号).ext\"\r\n        extractVersion: true\r\n        versionGroup: 1\r\n    pageRange: \"1-10\"\r\n    expiryField: null\r\n\r\n  - name: \"二、商务资质文件\"\r\n    order: 2\r\n    directory: \"02-商务资质\"\r\n    description: \"营业执照、资质证书、ISO认证等，注意有效期检查\"\r\n    signatureRequired: false\r\n    requiredFiles:\r\n      - path: \"营业执照副本.pdf\"\r\n        description: \"有效期内的营业执照\"\r\n      - path: \"资质等级证书.pdf\"\r\n        description: \"建设行政主管部门颁发的资质证书\"\r\n      - path: \"安全生产许可证.pdf\"\r\n    namingPatterns:\r\n      - pattern: \"^[\\\\u4e00-\\\\u9fa5]{2,}(?:_v(\\\\d+)(?:\\\\.\\\\d+)*)?\\\\.(pdf|jpg|png)$\"\r\n        label: \"中文名(_v版本号).ext\"\r\n        extractVersion: true\r\n        versionGroup: 1\r\n    pageRange: \"11-35\"\r\n    expiryField:\r\n      fieldName: \"cert_expiry\"\r\n      dateFormat: \"YYYY-MM-DD\"\r\n\r\n  - name: \"三、财务状况\"\r\n    order: 3\r\n    directory: \"03-财务状况\"\r\n    description: \"近三年经审计的财务报表及银行资信证明\"\r\n    requiredFiles:\r\n      - path: \"2023年度审计报告.pdf\"\r\n      - path: \"2022年度审计报告.pdf\"\r\n      - path: \"2021年度审计报告.pdf\"\r\n      - path: \"银行资信证明.pdf\"\r\n    namingPatterns:\r\n      - pattern: \"^(\\\\d{4})年度[\\\\u4e00-\\\\u9fa5]+\\\\.pdf$\"\r\n        label: \"年度财务相关\"\r\n      - pattern: \"^[\\\\u4e00-\\\\u9fa5]{2,10}\\\\.(pdf|xls|xlsx)$\"\r\n        label: \"中文财务文件\"\r\n    pageRange: \"36-70\"\r\n\r\n  - name: \"四、类似业绩\"\r\n    order: 4\r\n    directory: \"04-类似业绩\"\r\n    description: \"近三年类似项目业绩证明材料，每页合同需关键页\"\r\n    requiredFiles:\r\n      - path: \"业绩汇总表.xlsx\"\r\n    namingPatterns:\r\n      - pattern: \"^业绩_\\\\d{4}_[\\\\u4e00-\\\\u9fa5A-Za-z0-9]+\\\\.pdf$\"\r\n        label: \"业绩_年份_项目名.pdf\"\r\n      - pattern: \"^(合同|成交通知|验收)_.*\\\\.(pdf|jpg|png)$\"\r\n        label: \"合同/成交通知/验收_xxx\"\r\n    pageRange: \"71-120\"\r\n    allowUntracked: true\r\n\r\n  - name: \"五、项目管理机构\"\r\n    order: 5\r\n    directory: \"05-项目管理机构\"\r\n    description: \"项目班子人员资质、社保证明等\"\r\n    signatureRequired: true\r\n    requiredFiles:\r\n      - path: \"项目经理简历表_签章.pdf\"\r\n      - path: \"项目技术负责人简历表_签章.pdf\"\r\n    namingPatterns:\r\n      - pattern: \"^[\\\\u4e00-\\\\u9fa5]{2,}(?:_v(\\\\d+)(?:\\\\.\\\\d+)*)?(?:_签章)?\\\\.(pdf|docx)$\"\r\n        label: \"中文名(_v版本号)(_签章).ext\"\r\n        extractVersion: true\r\n        versionGroup: 1\r\n      - pattern: \"^[\\\\u4e00-\\\\u9fa5]{2,}_社保证明\\\\.pdf$\"\r\n        label: \"人名_社保证明.pdf\"\r\n    pageRange: \"121-150\"\r\n    expiryField:\r\n      fieldName: \"cert_expiry\"\r\n\r\n  - name: \"六、施工组织设计\"\r\n    order: 6\r\n    directory: \"06-施工组织设计\"\r\n    description: \"技术方案核心部分，页码必须连续\"\r\n    requiredFiles:\r\n      - path: \"施工组织设计.pdf\"\r\n    namingPatterns:\r\n      - pattern: \"^[\\\\u4e00-\\\\u9fa5A-Za-z0-9_\\\\-]+\\\\.pdf$\"\r\n        label: \"中文名称.pdf\"\r\n    pageRange: \"151-280\"\r\n\r\n  - name: \"七、报价文件\"\r\n    order: 7\r\n    directory: \"07-报价文件\"\r\n    description: \"报价相关文件，全部需要签章\"\r\n    signatureRequired: true\r\n    requiredFiles:\r\n      - path: \"报价一览表_签章.pdf\"\r\n        signatureRequired: true\r\n      - path: \"分项报价表_签章.xlsx\"\r\n        signatureRequired: true\r\n      - path: \"总价_已签章.pdf\"\r\n    namingPatterns:\r\n      - pattern: \"^[\\\\u4e00-\\\\u9fa5]{2,}_(?:签章|已签章)\\\\.(pdf|xls|xlsx)$\"\r\n        label: \"中文名_签章/已签章.ext\"\r\n    pageRange: \"281-310\"\r\n",
+    "ruleData": {
+      "name": "XX建设项目投标文件装订规则",
+      "description": "用于XX建设项目投标文件完整性检查、命名规范校验、页码连续性和签章核验",
+      "version": "1.2",
+      "globalSignatureRequired": false,
+      "globalPageRange": null,
+      "globalExpiryField": null,
+      "globalNamingPattern": "^[\\u4e00-\\u9fa5A-Za-z0-9_\\-]+\\.(pdf|doc|docx|xls|xlsx|png|jpg)$",
+      "sections": [
+        {
+          "name": "一、投标函",
+          "order": 1,
+          "directory": "01-投标函",
+          "description": "正本投标函及相关声明文件，全部需要签章",
+          "signatureRequired": true,
+          "requiredFiles": [
+            {
+              "path": "投标函_签章.pdf",
+              "description": "正式投标函，必须加盖单位公章及法定代表人签章"
+            },
+            {
+              "path": "法定代表人身份证明_签章.pdf",
+              "description": "法定代表人身份证明书"
+            },
+            {
+              "path": "法定代表人授权委托书_签章.pdf",
+              "optional": true,
+              "description": "如投标代表为被授权人则必需"
+            }
+          ],
+          "namingPatterns": [
+            {
+              "pattern": "^[\\u4e00-\\u9fa5]{2,}_签章\\.(pdf|docx)$",
+              "label": "中文名_签章.ext"
+            },
+            {
+              "pattern": "^[\\u4e00-\\u9fa5]{2,}(?:_v(\\d+)(?:\\.\\d+)*)?\\.(pdf|docx)$",
+              "label": "中文名(_v版本号).ext",
+              "extractVersion": true,
+              "versionGroup": 1
+            }
+          ],
+          "pageRange": "1-10",
+          "expiryField": null
+        },
+        {
+          "name": "二、商务资质文件",
+          "order": 2,
+          "directory": "02-商务资质",
+          "description": "营业执照、资质证书、ISO认证等，注意有效期检查",
+          "signatureRequired": false,
+          "requiredFiles": [
+            {
+              "path": "营业执照副本.pdf",
+              "description": "有效期内的营业执照"
+            },
+            {
+              "path": "资质等级证书.pdf",
+              "description": "建设行政主管部门颁发的资质证书"
+            },
+            {
+              "path": "安全生产许可证.pdf"
+            }
+          ],
+          "namingPatterns": [
+            {
+              "pattern": "^[\\u4e00-\\u9fa5]{2,}(?:_v(\\d+)(?:\\.\\d+)*)?\\.(pdf|jpg|png)$",
+              "label": "中文名(_v版本号).ext",
+              "extractVersion": true,
+              "versionGroup": 1
+            }
+          ],
+          "pageRange": "11-35",
+          "expiryField": {
+            "fieldName": "cert_expiry",
+            "dateFormat": "YYYY-MM-DD"
+          }
+        },
+        {
+          "name": "三、财务状况",
+          "order": 3,
+          "directory": "03-财务状况",
+          "description": "近三年经审计的财务报表及银行资信证明",
+          "requiredFiles": [
+            {
+              "path": "2023年度审计报告.pdf"
+            },
+            {
+              "path": "2022年度审计报告.pdf"
+            },
+            {
+              "path": "2021年度审计报告.pdf"
+            },
+            {
+              "path": "银行资信证明.pdf"
+            }
+          ],
+          "namingPatterns": [
+            {
+              "pattern": "^(\\d{4})年度[\\u4e00-\\u9fa5]+\\.pdf$",
+              "label": "年度财务相关"
+            },
+            {
+              "pattern": "^[\\u4e00-\\u9fa5]{2,10}\\.(pdf|xls|xlsx)$",
+              "label": "中文财务文件"
+            }
+          ],
+          "pageRange": "36-70"
+        },
+        {
+          "name": "四、类似业绩",
+          "order": 4,
+          "directory": "04-类似业绩",
+          "description": "近三年类似项目业绩证明材料，每页合同需关键页",
+          "requiredFiles": [
+            {
+              "path": "业绩汇总表.xlsx"
+            }
+          ],
+          "namingPatterns": [
+            {
+              "pattern": "^业绩_\\d{4}_[\\u4e00-\\u9fa5A-Za-z0-9]+\\.pdf$",
+              "label": "业绩_年份_项目名.pdf"
+            },
+            {
+              "pattern": "^(合同|成交通知|验收)_.*\\.(pdf|jpg|png)$",
+              "label": "合同/成交通知/验收_xxx"
+            }
+          ],
+          "pageRange": "71-120",
+          "allowUntracked": true
+        },
+        {
+          "name": "五、项目管理机构",
+          "order": 5,
+          "directory": "05-项目管理机构",
+          "description": "项目班子人员资质、社保证明等",
+          "signatureRequired": true,
+          "requiredFiles": [
+            {
+              "path": "项目经理简历表_签章.pdf"
+            },
+            {
+              "path": "项目技术负责人简历表_签章.pdf"
+            }
+          ],
+          "namingPatterns": [
+            {
+              "pattern": "^[\\u4e00-\\u9fa5]{2,}(?:_v(\\d+)(?:\\.\\d+)*)?(?:_签章)?\\.(pdf|docx)$",
+              "label": "中文名(_v版本号)(_签章).ext",
+              "extractVersion": true,
+              "versionGroup": 1
+            },
+            {
+              "pattern": "^[\\u4e00-\\u9fa5]{2,}_社保证明\\.pdf$",
+              "label": "人名_社保证明.pdf"
+            }
+          ],
+          "pageRange": "121-150",
+          "expiryField": {
+            "fieldName": "cert_expiry"
+          }
+        },
+        {
+          "name": "六、施工组织设计",
+          "order": 6,
+          "directory": "06-施工组织设计",
+          "description": "技术方案核心部分，页码必须连续",
+          "requiredFiles": [
+            {
+              "path": "施工组织设计.pdf"
+            }
+          ],
+          "namingPatterns": [
+            {
+              "pattern": "^[\\u4e00-\\u9fa5A-Za-z0-9_\\-]+\\.pdf$",
+              "label": "中文名称.pdf"
+            }
+          ],
+          "pageRange": "151-280"
+        },
+        {
+          "name": "七、报价文件",
+          "order": 7,
+          "directory": "07-报价文件",
+          "description": "报价相关文件，全部需要签章",
+          "signatureRequired": true,
+          "requiredFiles": [
+            {
+              "path": "报价一览表_签章.pdf",
+              "signatureRequired": true
+            },
+            {
+              "path": "分项报价表_签章.xlsx",
+              "signatureRequired": true
+            },
+            {
+              "path": "总价_已签章.pdf"
+            }
+          ],
+          "namingPatterns": [
+            {
+              "pattern": "^[\\u4e00-\\u9fa5]{2,}_(?:签章|已签章)\\.(pdf|xls|xlsx)$",
+              "label": "中文名_签章/已签章.ext"
+            }
+          ],
+          "pageRange": "281-310"
+        }
+      ]
+    }
+  }
+}

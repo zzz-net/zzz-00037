@@ -1,0 +1,15 @@
+[
+  {
+    "type": "NEW_BATCH",
+    "batchId": "BATCH_mqce5md9_nemq"
+  },
+  {
+    "type": "BASELINE_SAVE",
+    "baselineName": "v1",
+    "previousData": null
+  },
+  {
+    "type": "NEW_BATCH",
+    "batchId": "BATCH_mqce5mds_1ump"
+  }
+]

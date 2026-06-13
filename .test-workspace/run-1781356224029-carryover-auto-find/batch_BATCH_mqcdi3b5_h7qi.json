@@ -1,0 +1,5179 @@
+{
+  "batchId": "BATCH_mqcdi3b5_h7qi",
+  "scanTime": "2026-06-13T13:10:24.065Z",
+  "rulePath": "D:\\workSpace\\AI__SPACE\\zzz-00037\\samples\\rule.yaml",
+  "targetDir": "D:\\workSpace\\AI__SPACE\\zzz-00037\\samples\\资料目录",
+  "directorySignature": "7579748adcfcf7c9910f8a628ced2f32d79e959aae4f726ddee624717e1f75e0",
+  "issues": [
+    {
+      "id": "ISSUE_mqcdi3bi_6eauqf",
+      "type": "DUPLICATE_VERSION",
+      "severity": "error",
+      "message": "章节[一、投标函] 检测到重复版本文件: 01-投标函\\投标函_v1.pdf(版本:1), 01-投标函\\投标函_v2.pdf(版本:2)",
+      "targetPath": "01-投标函\\投标函_v1.pdf",
+      "expected": "仅保留一个版本",
+      "actual": "存在 2 个版本",
+      "details": {
+        "section": "一、投标函",
+        "files": [
+          {
+            "path": "01-投标函\\投标函_v1.pdf",
+            "version": "1"
+          },
+          {
+            "path": "01-投标函\\投标函_v2.pdf",
+            "version": "2"
+          }
+        ]
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3bi_wzsfdg",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[一、投标函] 页码不连续: 缺失第 3 页",
+      "targetPath": "01-投标函",
+      "expected": "存在第 3 页的文件",
+      "actual": "未找到第 3 页",
+      "details": {
+        "section": "一、投标函",
+        "missingPage": 3,
+        "range": {
+          "start": 1,
+          "end": 10
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3bi_nuxstk",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[一、投标函] 页码不连续: 缺失第 4 页",
+      "targetPath": "01-投标函",
+      "expected": "存在第 4 页的文件",
+      "actual": "未找到第 4 页",
+      "details": {
+        "section": "一、投标函",
+        "missingPage": 4,
+        "range": {
+          "start": 1,
+          "end": 10
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3bi_17wg13",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[一、投标函] 页码不连续: 缺失第 5 页",
+      "targetPath": "01-投标函",
+      "expected": "存在第 5 页的文件",
+      "actual": "未找到第 5 页",
+      "details": {
+        "section": "一、投标函",
+        "missingPage": 5,
+        "range": {
+          "start": 1,
+          "end": 10
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3bi_07w89k",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[一、投标函] 页码不连续: 缺失第 6 页",
+      "targetPath": "01-投标函",
+      "expected": "存在第 6 页的文件",
+      "actual": "未找到第 6 页",
+      "details": {
+        "section": "一、投标函",
+        "missingPage": 6,
+        "range": {
+          "start": 1,
+          "end": 10
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3bi_ddj9qo",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[一、投标函] 页码不连续: 缺失第 7 页",
+      "targetPath": "01-投标函",
+      "expected": "存在第 7 页的文件",
+      "actual": "未找到第 7 页",
+      "details": {
+        "section": "一、投标函",
+        "missingPage": 7,
+        "range": {
+          "start": 1,
+          "end": 10
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3bi_uor4r4",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[一、投标函] 页码不连续: 缺失第 8 页",
+      "targetPath": "01-投标函",
+      "expected": "存在第 8 页的文件",
+      "actual": "未找到第 8 页",
+      "details": {
+        "section": "一、投标函",
+        "missingPage": 8,
+        "range": {
+          "start": 1,
+          "end": 10
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3bi_4h592m",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[一、投标函] 页码不连续: 缺失第 9 页",
+      "targetPath": "01-投标函",
+      "expected": "存在第 9 页的文件",
+      "actual": "未找到第 9 页",
+      "details": {
+        "section": "一、投标函",
+        "missingPage": 9,
+        "range": {
+          "start": 1,
+          "end": 10
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3bi_55ab0i",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[一、投标函] 页码不连续: 缺失第 10 页",
+      "targetPath": "01-投标函",
+      "expected": "存在第 10 页的文件",
+      "actual": "未找到第 10 页",
+      "details": {
+        "section": "一、投标函",
+        "missingPage": 10,
+        "range": {
+          "start": 1,
+          "end": 10
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3bj_izbysl",
+      "type": "MISSING_SIGNATURE",
+      "severity": "warn",
+      "message": "章节[一、投标函] 可能缺少签章: 01-投标函\\投标函_v1.pdf (文件名未包含签章标识)",
+      "targetPath": "01-投标函\\投标函_v1.pdf",
+      "expected": "文件名包含\"签章/盖章/签名/签字/_signed\"等标识",
+      "actual": "投标函_v1.pdf",
+      "details": {
+        "section": "一、投标函",
+        "file": "01-投标函\\投标函_v1.pdf",
+        "sizeCheck": false
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3bj_5hj5uc",
+      "type": "MISSING_SIGNATURE",
+      "severity": "warn",
+      "message": "章节[一、投标函] 可能缺少签章: 01-投标函\\投标函_v2.pdf (文件名未包含签章标识)",
+      "targetPath": "01-投标函\\投标函_v2.pdf",
+      "expected": "文件名包含\"签章/盖章/签名/签字/_signed\"等标识",
+      "actual": "投标函_v2.pdf",
+      "details": {
+        "section": "一、投标函",
+        "file": "01-投标函\\投标函_v2.pdf",
+        "sizeCheck": false
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3bo_zom4mo",
+      "type": "MISSING_FILE",
+      "severity": "error",
+      "message": "章节[二、商务资质文件] 缺少必需文件: 02-商务资质\\资质等级证书.pdf",
+      "targetPath": "02-商务资质\\资质等级证书.pdf",
+      "expected": "资质等级证书.pdf",
+      "actual": null,
+      "details": {
+        "section": "二、商务资质文件",
+        "file": "资质等级证书.pdf",
+        "description": "建设行政主管部门颁发的资质证书"
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3bo_c366ik",
+      "type": "MISSING_FILE",
+      "severity": "error",
+      "message": "章节[二、商务资质文件] 缺少必需文件: 02-商务资质\\安全生产许可证.pdf",
+      "targetPath": "02-商务资质\\安全生产许可证.pdf",
+      "expected": "安全生产许可证.pdf",
+      "actual": null,
+      "details": {
+        "section": "二、商务资质文件",
+        "file": "安全生产许可证.pdf",
+        "description": ""
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3bp_wvc46x",
+      "type": "NAMING_ERROR",
+      "severity": "warn",
+      "message": "章节[二、商务资质文件] 文件命名不符合规则: 02-商务资质\\ISO认证_20180601.pdf",
+      "targetPath": "02-商务资质\\ISO认证_20180601.pdf",
+      "expected": "中文名(_v版本号).ext",
+      "actual": "ISO认证_20180601.pdf",
+      "details": {
+        "section": "二、商务资质文件",
+        "patterns": [
+          "中文名(_v版本号).ext"
+        ]
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3bp_44dj7l",
+      "type": "NAMING_ERROR",
+      "severity": "warn",
+      "message": "章节[二、商务资质文件] 文件命名不符合规则: 02-商务资质\\安全生产许可证_20191231.pdf",
+      "targetPath": "02-商务资质\\安全生产许可证_20191231.pdf",
+      "expected": "中文名(_v版本号).ext",
+      "actual": "安全生产许可证_20191231.pdf",
+      "details": {
+        "section": "二、商务资质文件",
+        "patterns": [
+          "中文名(_v版本号).ext"
+        ]
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3bp_4ikf71",
+      "type": "DUPLICATE_VERSION",
+      "severity": "error",
+      "message": "章节[二、商务资质文件] 检测到重复版本文件: 02-商务资质\\资质等级证书_v1.pdf(版本:1), 02-商务资质\\资质等级证书_v2.pdf(版本:2)",
+      "targetPath": "02-商务资质\\资质等级证书_v1.pdf",
+      "expected": "仅保留一个版本",
+      "actual": "存在 2 个版本",
+      "details": {
+        "section": "二、商务资质文件",
+        "files": [
+          {
+            "path": "02-商务资质\\资质等级证书_v1.pdf",
+            "version": "1"
+          },
+          {
+            "path": "02-商务资质\\资质等级证书_v2.pdf",
+            "version": "2"
+          }
+        ]
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3bp_c8t4mj",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "warn",
+      "message": "章节[二、商务资质文件] 页码超出范围: 实际页码 1-20191231, 期望 11-35",
+      "targetPath": "02-商务资质",
+      "expected": "11-35",
+      "actual": "1-20191231",
+      "details": {
+        "section": "二、商务资质文件",
+        "expectedRange": {
+          "start": 11,
+          "end": 35
+        },
+        "actualRange": {
+          "start": 1,
+          "end": 20191231
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3bp_8ycl1l",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[二、商务资质文件] 页码不连续: 缺失第 11 页",
+      "targetPath": "02-商务资质",
+      "expected": "存在第 11 页的文件",
+      "actual": "未找到第 11 页",
+      "details": {
+        "section": "二、商务资质文件",
+        "missingPage": 11,
+        "range": {
+          "start": 11,
+          "end": 35
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3bp_3mqgsd",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[二、商务资质文件] 页码不连续: 缺失第 12 页",
+      "targetPath": "02-商务资质",
+      "expected": "存在第 12 页的文件",
+      "actual": "未找到第 12 页",
+      "details": {
+        "section": "二、商务资质文件",
+        "missingPage": 12,
+        "range": {
+          "start": 11,
+          "end": 35
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3bp_jux5cq",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[二、商务资质文件] 页码不连续: 缺失第 13 页",
+      "targetPath": "02-商务资质",
+      "expected": "存在第 13 页的文件",
+      "actual": "未找到第 13 页",
+      "details": {
+        "section": "二、商务资质文件",
+        "missingPage": 13,
+        "range": {
+          "start": 11,
+          "end": 35
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3bp_y1crtd",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[二、商务资质文件] 页码不连续: 缺失第 14 页",
+      "targetPath": "02-商务资质",
+      "expected": "存在第 14 页的文件",
+      "actual": "未找到第 14 页",
+      "details": {
+        "section": "二、商务资质文件",
+        "missingPage": 14,
+        "range": {
+          "start": 11,
+          "end": 35
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3bp_u44mmt",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[二、商务资质文件] 页码不连续: 缺失第 15 页",
+      "targetPath": "02-商务资质",
+      "expected": "存在第 15 页的文件",
+      "actual": "未找到第 15 页",
+      "details": {
+        "section": "二、商务资质文件",
+        "missingPage": 15,
+        "range": {
+          "start": 11,
+          "end": 35
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3bp_zffbat",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[二、商务资质文件] 页码不连续: 缺失第 16 页",
+      "targetPath": "02-商务资质",
+      "expected": "存在第 16 页的文件",
+      "actual": "未找到第 16 页",
+      "details": {
+        "section": "二、商务资质文件",
+        "missingPage": 16,
+        "range": {
+          "start": 11,
+          "end": 35
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3bp_5thw8c",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[二、商务资质文件] 页码不连续: 缺失第 17 页",
+      "targetPath": "02-商务资质",
+      "expected": "存在第 17 页的文件",
+      "actual": "未找到第 17 页",
+      "details": {
+        "section": "二、商务资质文件",
+        "missingPage": 17,
+        "range": {
+          "start": 11,
+          "end": 35
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3bp_ib83vd",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[二、商务资质文件] 页码不连续: 缺失第 18 页",
+      "targetPath": "02-商务资质",
+      "expected": "存在第 18 页的文件",
+      "actual": "未找到第 18 页",
+      "details": {
+        "section": "二、商务资质文件",
+        "missingPage": 18,
+        "range": {
+          "start": 11,
+          "end": 35
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3bp_c0k4hd",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[二、商务资质文件] 页码不连续: 缺失第 19 页",
+      "targetPath": "02-商务资质",
+      "expected": "存在第 19 页的文件",
+      "actual": "未找到第 19 页",
+      "details": {
+        "section": "二、商务资质文件",
+        "missingPage": 19,
+        "range": {
+          "start": 11,
+          "end": 35
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3bp_36n9bz",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[二、商务资质文件] 页码不连续: 缺失第 20 页",
+      "targetPath": "02-商务资质",
+      "expected": "存在第 20 页的文件",
+      "actual": "未找到第 20 页",
+      "details": {
+        "section": "二、商务资质文件",
+        "missingPage": 20,
+        "range": {
+          "start": 11,
+          "end": 35
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3bp_r6zdpi",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[二、商务资质文件] 页码不连续: 缺失第 21 页",
+      "targetPath": "02-商务资质",
+      "expected": "存在第 21 页的文件",
+      "actual": "未找到第 21 页",
+      "details": {
+        "section": "二、商务资质文件",
+        "missingPage": 21,
+        "range": {
+          "start": 11,
+          "end": 35
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3bp_o79eue",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[二、商务资质文件] 页码不连续: 缺失第 22 页",
+      "targetPath": "02-商务资质",
+      "expected": "存在第 22 页的文件",
+      "actual": "未找到第 22 页",
+      "details": {
+        "section": "二、商务资质文件",
+        "missingPage": 22,
+        "range": {
+          "start": 11,
+          "end": 35
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3bp_8r4sax",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[二、商务资质文件] 页码不连续: 缺失第 23 页",
+      "targetPath": "02-商务资质",
+      "expected": "存在第 23 页的文件",
+      "actual": "未找到第 23 页",
+      "details": {
+        "section": "二、商务资质文件",
+        "missingPage": 23,
+        "range": {
+          "start": 11,
+          "end": 35
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3bp_h2idmq",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[二、商务资质文件] 页码不连续: 缺失第 24 页",
+      "targetPath": "02-商务资质",
+      "expected": "存在第 24 页的文件",
+      "actual": "未找到第 24 页",
+      "details": {
+        "section": "二、商务资质文件",
+        "missingPage": 24,
+        "range": {
+          "start": 11,
+          "end": 35
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3bp_k0rh47",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[二、商务资质文件] 页码不连续: 缺失第 25 页",
+      "targetPath": "02-商务资质",
+      "expected": "存在第 25 页的文件",
+      "actual": "未找到第 25 页",
+      "details": {
+        "section": "二、商务资质文件",
+        "missingPage": 25,
+        "range": {
+          "start": 11,
+          "end": 35
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3bp_fdofg5",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[二、商务资质文件] 页码不连续: 缺失第 26 页",
+      "targetPath": "02-商务资质",
+      "expected": "存在第 26 页的文件",
+      "actual": "未找到第 26 页",
+      "details": {
+        "section": "二、商务资质文件",
+        "missingPage": 26,
+        "range": {
+          "start": 11,
+          "end": 35
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3bp_ryo0i4",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[二、商务资质文件] 页码不连续: 缺失第 27 页",
+      "targetPath": "02-商务资质",
+      "expected": "存在第 27 页的文件",
+      "actual": "未找到第 27 页",
+      "details": {
+        "section": "二、商务资质文件",
+        "missingPage": 27,
+        "range": {
+          "start": 11,
+          "end": 35
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3bp_8hfve1",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[二、商务资质文件] 页码不连续: 缺失第 28 页",
+      "targetPath": "02-商务资质",
+      "expected": "存在第 28 页的文件",
+      "actual": "未找到第 28 页",
+      "details": {
+        "section": "二、商务资质文件",
+        "missingPage": 28,
+        "range": {
+          "start": 11,
+          "end": 35
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3bp_8dd39g",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[二、商务资质文件] 页码不连续: 缺失第 29 页",
+      "targetPath": "02-商务资质",
+      "expected": "存在第 29 页的文件",
+      "actual": "未找到第 29 页",
+      "details": {
+        "section": "二、商务资质文件",
+        "missingPage": 29,
+        "range": {
+          "start": 11,
+          "end": 35
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3bp_uu7sen",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[二、商务资质文件] 页码不连续: 缺失第 30 页",
+      "targetPath": "02-商务资质",
+      "expected": "存在第 30 页的文件",
+      "actual": "未找到第 30 页",
+      "details": {
+        "section": "二、商务资质文件",
+        "missingPage": 30,
+        "range": {
+          "start": 11,
+          "end": 35
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3bp_lgule2",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[二、商务资质文件] 页码不连续: 缺失第 31 页",
+      "targetPath": "02-商务资质",
+      "expected": "存在第 31 页的文件",
+      "actual": "未找到第 31 页",
+      "details": {
+        "section": "二、商务资质文件",
+        "missingPage": 31,
+        "range": {
+          "start": 11,
+          "end": 35
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3bp_sv5d9j",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[二、商务资质文件] 页码不连续: 缺失第 32 页",
+      "targetPath": "02-商务资质",
+      "expected": "存在第 32 页的文件",
+      "actual": "未找到第 32 页",
+      "details": {
+        "section": "二、商务资质文件",
+        "missingPage": 32,
+        "range": {
+          "start": 11,
+          "end": 35
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3bp_ajtp83",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[二、商务资质文件] 页码不连续: 缺失第 33 页",
+      "targetPath": "02-商务资质",
+      "expected": "存在第 33 页的文件",
+      "actual": "未找到第 33 页",
+      "details": {
+        "section": "二、商务资质文件",
+        "missingPage": 33,
+        "range": {
+          "start": 11,
+          "end": 35
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3bp_m9ohno",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[二、商务资质文件] 页码不连续: 缺失第 34 页",
+      "targetPath": "02-商务资质",
+      "expected": "存在第 34 页的文件",
+      "actual": "未找到第 34 页",
+      "details": {
+        "section": "二、商务资质文件",
+        "missingPage": 34,
+        "range": {
+          "start": 11,
+          "end": 35
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3bp_8hjbsl",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[二、商务资质文件] 页码不连续: 缺失第 35 页",
+      "targetPath": "02-商务资质",
+      "expected": "存在第 35 页的文件",
+      "actual": "未找到第 35 页",
+      "details": {
+        "section": "二、商务资质文件",
+        "missingPage": 35,
+        "range": {
+          "start": 11,
+          "end": 35
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3bp_ductt8",
+      "type": "EXPIRED_FIELD",
+      "severity": "warn",
+      "message": "章节[二、商务资质文件] 检测到过期日期: 02-商务资质\\ISO认证_20180601.pdf (到期日: 2018-06-01)",
+      "targetPath": "02-商务资质\\ISO认证_20180601.pdf",
+      "expected": "日期 >= 2026-06-13",
+      "actual": "2018-06-01",
+      "details": {
+        "section": "二、商务资质文件",
+        "expiryDate": "2018-05-31",
+        "fieldName": "cert_expiry"
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3bp_barv7d",
+      "type": "EXPIRED_FIELD",
+      "severity": "warn",
+      "message": "章节[二、商务资质文件] 检测到过期日期: 02-商务资质\\安全生产许可证_20191231.pdf (到期日: 2019-12-31)",
+      "targetPath": "02-商务资质\\安全生产许可证_20191231.pdf",
+      "expected": "日期 >= 2026-06-13",
+      "actual": "2019-12-31",
+      "details": {
+        "section": "二、商务资质文件",
+        "expiryDate": "2019-12-30",
+        "fieldName": "cert_expiry"
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3br_mdnulf",
+      "type": "MISSING_FILE",
+      "severity": "error",
+      "message": "章节[三、财务状况] 缺少必需文件: 03-财务状况\\2021年度审计报告.pdf",
+      "targetPath": "03-财务状况\\2021年度审计报告.pdf",
+      "expected": "2021年度审计报告.pdf",
+      "actual": null,
+      "details": {
+        "section": "三、财务状况",
+        "file": "2021年度审计报告.pdf",
+        "description": ""
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3bs_iy0xle",
+      "type": "NAMING_ERROR",
+      "severity": "warn",
+      "message": "章节[三、财务状况] 文件命名不符合规则: 03-财务状况\\2023年度审计报告_v2.pdf",
+      "targetPath": "03-财务状况\\2023年度审计报告_v2.pdf",
+      "expected": "年度财务相关 或 中文财务文件",
+      "actual": "2023年度审计报告_v2.pdf",
+      "details": {
+        "section": "三、财务状况",
+        "patterns": [
+          "年度财务相关",
+          "中文财务文件"
+        ]
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3bs_dv360z",
+      "type": "NAMING_ERROR",
+      "severity": "warn",
+      "message": "章节[三、财务状况] 文件命名不符合规则: 03-财务状况\\财务错误格式.exe",
+      "targetPath": "03-财务状况\\财务错误格式.exe",
+      "expected": "年度财务相关 或 中文财务文件",
+      "actual": "财务错误格式.exe",
+      "details": {
+        "section": "三、财务状况",
+        "patterns": [
+          "年度财务相关",
+          "中文财务文件"
+        ]
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3bs_55pt7u",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "warn",
+      "message": "章节[三、财务状况] 页码超出范围: 实际页码 2022-2023, 期望 36-70",
+      "targetPath": "03-财务状况",
+      "expected": "36-70",
+      "actual": "2022-2023",
+      "details": {
+        "section": "三、财务状况",
+        "expectedRange": {
+          "start": 36,
+          "end": 70
+        },
+        "actualRange": {
+          "start": 2022,
+          "end": 2023
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3bs_4ds8i9",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[三、财务状况] 页码不连续: 缺失第 36 页",
+      "targetPath": "03-财务状况",
+      "expected": "存在第 36 页的文件",
+      "actual": "未找到第 36 页",
+      "details": {
+        "section": "三、财务状况",
+        "missingPage": 36,
+        "range": {
+          "start": 36,
+          "end": 70
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3bs_73l8es",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[三、财务状况] 页码不连续: 缺失第 37 页",
+      "targetPath": "03-财务状况",
+      "expected": "存在第 37 页的文件",
+      "actual": "未找到第 37 页",
+      "details": {
+        "section": "三、财务状况",
+        "missingPage": 37,
+        "range": {
+          "start": 36,
+          "end": 70
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3bs_q938zf",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[三、财务状况] 页码不连续: 缺失第 38 页",
+      "targetPath": "03-财务状况",
+      "expected": "存在第 38 页的文件",
+      "actual": "未找到第 38 页",
+      "details": {
+        "section": "三、财务状况",
+        "missingPage": 38,
+        "range": {
+          "start": 36,
+          "end": 70
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3bs_1bxid2",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[三、财务状况] 页码不连续: 缺失第 39 页",
+      "targetPath": "03-财务状况",
+      "expected": "存在第 39 页的文件",
+      "actual": "未找到第 39 页",
+      "details": {
+        "section": "三、财务状况",
+        "missingPage": 39,
+        "range": {
+          "start": 36,
+          "end": 70
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3bs_m0ec3v",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[三、财务状况] 页码不连续: 缺失第 40 页",
+      "targetPath": "03-财务状况",
+      "expected": "存在第 40 页的文件",
+      "actual": "未找到第 40 页",
+      "details": {
+        "section": "三、财务状况",
+        "missingPage": 40,
+        "range": {
+          "start": 36,
+          "end": 70
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3bs_hyb9be",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[三、财务状况] 页码不连续: 缺失第 41 页",
+      "targetPath": "03-财务状况",
+      "expected": "存在第 41 页的文件",
+      "actual": "未找到第 41 页",
+      "details": {
+        "section": "三、财务状况",
+        "missingPage": 41,
+        "range": {
+          "start": 36,
+          "end": 70
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3bs_l1ios2",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[三、财务状况] 页码不连续: 缺失第 42 页",
+      "targetPath": "03-财务状况",
+      "expected": "存在第 42 页的文件",
+      "actual": "未找到第 42 页",
+      "details": {
+        "section": "三、财务状况",
+        "missingPage": 42,
+        "range": {
+          "start": 36,
+          "end": 70
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3bs_rfp6do",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[三、财务状况] 页码不连续: 缺失第 43 页",
+      "targetPath": "03-财务状况",
+      "expected": "存在第 43 页的文件",
+      "actual": "未找到第 43 页",
+      "details": {
+        "section": "三、财务状况",
+        "missingPage": 43,
+        "range": {
+          "start": 36,
+          "end": 70
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3bs_jb7mzi",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[三、财务状况] 页码不连续: 缺失第 44 页",
+      "targetPath": "03-财务状况",
+      "expected": "存在第 44 页的文件",
+      "actual": "未找到第 44 页",
+      "details": {
+        "section": "三、财务状况",
+        "missingPage": 44,
+        "range": {
+          "start": 36,
+          "end": 70
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3bs_sbgih2",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[三、财务状况] 页码不连续: 缺失第 45 页",
+      "targetPath": "03-财务状况",
+      "expected": "存在第 45 页的文件",
+      "actual": "未找到第 45 页",
+      "details": {
+        "section": "三、财务状况",
+        "missingPage": 45,
+        "range": {
+          "start": 36,
+          "end": 70
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3bs_aa0m2k",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[三、财务状况] 页码不连续: 缺失第 46 页",
+      "targetPath": "03-财务状况",
+      "expected": "存在第 46 页的文件",
+      "actual": "未找到第 46 页",
+      "details": {
+        "section": "三、财务状况",
+        "missingPage": 46,
+        "range": {
+          "start": 36,
+          "end": 70
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3bs_7qxf9e",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[三、财务状况] 页码不连续: 缺失第 47 页",
+      "targetPath": "03-财务状况",
+      "expected": "存在第 47 页的文件",
+      "actual": "未找到第 47 页",
+      "details": {
+        "section": "三、财务状况",
+        "missingPage": 47,
+        "range": {
+          "start": 36,
+          "end": 70
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3bs_tf2f7e",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[三、财务状况] 页码不连续: 缺失第 48 页",
+      "targetPath": "03-财务状况",
+      "expected": "存在第 48 页的文件",
+      "actual": "未找到第 48 页",
+      "details": {
+        "section": "三、财务状况",
+        "missingPage": 48,
+        "range": {
+          "start": 36,
+          "end": 70
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3bs_438alu",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[三、财务状况] 页码不连续: 缺失第 49 页",
+      "targetPath": "03-财务状况",
+      "expected": "存在第 49 页的文件",
+      "actual": "未找到第 49 页",
+      "details": {
+        "section": "三、财务状况",
+        "missingPage": 49,
+        "range": {
+          "start": 36,
+          "end": 70
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3bs_z6s0q7",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[三、财务状况] 页码不连续: 缺失第 50 页",
+      "targetPath": "03-财务状况",
+      "expected": "存在第 50 页的文件",
+      "actual": "未找到第 50 页",
+      "details": {
+        "section": "三、财务状况",
+        "missingPage": 50,
+        "range": {
+          "start": 36,
+          "end": 70
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3bs_nzekq2",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[三、财务状况] 页码不连续: 缺失第 51 页",
+      "targetPath": "03-财务状况",
+      "expected": "存在第 51 页的文件",
+      "actual": "未找到第 51 页",
+      "details": {
+        "section": "三、财务状况",
+        "missingPage": 51,
+        "range": {
+          "start": 36,
+          "end": 70
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3bs_tqf8yz",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[三、财务状况] 页码不连续: 缺失第 52 页",
+      "targetPath": "03-财务状况",
+      "expected": "存在第 52 页的文件",
+      "actual": "未找到第 52 页",
+      "details": {
+        "section": "三、财务状况",
+        "missingPage": 52,
+        "range": {
+          "start": 36,
+          "end": 70
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3bs_omyigk",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[三、财务状况] 页码不连续: 缺失第 53 页",
+      "targetPath": "03-财务状况",
+      "expected": "存在第 53 页的文件",
+      "actual": "未找到第 53 页",
+      "details": {
+        "section": "三、财务状况",
+        "missingPage": 53,
+        "range": {
+          "start": 36,
+          "end": 70
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3bs_pzxmfn",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[三、财务状况] 页码不连续: 缺失第 54 页",
+      "targetPath": "03-财务状况",
+      "expected": "存在第 54 页的文件",
+      "actual": "未找到第 54 页",
+      "details": {
+        "section": "三、财务状况",
+        "missingPage": 54,
+        "range": {
+          "start": 36,
+          "end": 70
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3bs_2kge5d",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[三、财务状况] 页码不连续: 缺失第 55 页",
+      "targetPath": "03-财务状况",
+      "expected": "存在第 55 页的文件",
+      "actual": "未找到第 55 页",
+      "details": {
+        "section": "三、财务状况",
+        "missingPage": 55,
+        "range": {
+          "start": 36,
+          "end": 70
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3bs_6efgxi",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[三、财务状况] 页码不连续: 缺失第 56 页",
+      "targetPath": "03-财务状况",
+      "expected": "存在第 56 页的文件",
+      "actual": "未找到第 56 页",
+      "details": {
+        "section": "三、财务状况",
+        "missingPage": 56,
+        "range": {
+          "start": 36,
+          "end": 70
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3bs_fuis0c",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[三、财务状况] 页码不连续: 缺失第 57 页",
+      "targetPath": "03-财务状况",
+      "expected": "存在第 57 页的文件",
+      "actual": "未找到第 57 页",
+      "details": {
+        "section": "三、财务状况",
+        "missingPage": 57,
+        "range": {
+          "start": 36,
+          "end": 70
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3bs_qlbmbk",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[三、财务状况] 页码不连续: 缺失第 58 页",
+      "targetPath": "03-财务状况",
+      "expected": "存在第 58 页的文件",
+      "actual": "未找到第 58 页",
+      "details": {
+        "section": "三、财务状况",
+        "missingPage": 58,
+        "range": {
+          "start": 36,
+          "end": 70
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3bs_2v82nm",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[三、财务状况] 页码不连续: 缺失第 59 页",
+      "targetPath": "03-财务状况",
+      "expected": "存在第 59 页的文件",
+      "actual": "未找到第 59 页",
+      "details": {
+        "section": "三、财务状况",
+        "missingPage": 59,
+        "range": {
+          "start": 36,
+          "end": 70
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3bs_jd5go7",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[三、财务状况] 页码不连续: 缺失第 60 页",
+      "targetPath": "03-财务状况",
+      "expected": "存在第 60 页的文件",
+      "actual": "未找到第 60 页",
+      "details": {
+        "section": "三、财务状况",
+        "missingPage": 60,
+        "range": {
+          "start": 36,
+          "end": 70
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3bs_5jh9j3",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[三、财务状况] 页码不连续: 缺失第 61 页",
+      "targetPath": "03-财务状况",
+      "expected": "存在第 61 页的文件",
+      "actual": "未找到第 61 页",
+      "details": {
+        "section": "三、财务状况",
+        "missingPage": 61,
+        "range": {
+          "start": 36,
+          "end": 70
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3bs_czhzy3",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[三、财务状况] 页码不连续: 缺失第 62 页",
+      "targetPath": "03-财务状况",
+      "expected": "存在第 62 页的文件",
+      "actual": "未找到第 62 页",
+      "details": {
+        "section": "三、财务状况",
+        "missingPage": 62,
+        "range": {
+          "start": 36,
+          "end": 70
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3bs_sibsjt",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[三、财务状况] 页码不连续: 缺失第 63 页",
+      "targetPath": "03-财务状况",
+      "expected": "存在第 63 页的文件",
+      "actual": "未找到第 63 页",
+      "details": {
+        "section": "三、财务状况",
+        "missingPage": 63,
+        "range": {
+          "start": 36,
+          "end": 70
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3bs_4tnd5w",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[三、财务状况] 页码不连续: 缺失第 64 页",
+      "targetPath": "03-财务状况",
+      "expected": "存在第 64 页的文件",
+      "actual": "未找到第 64 页",
+      "details": {
+        "section": "三、财务状况",
+        "missingPage": 64,
+        "range": {
+          "start": 36,
+          "end": 70
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3bs_y578fd",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[三、财务状况] 页码不连续: 缺失第 65 页",
+      "targetPath": "03-财务状况",
+      "expected": "存在第 65 页的文件",
+      "actual": "未找到第 65 页",
+      "details": {
+        "section": "三、财务状况",
+        "missingPage": 65,
+        "range": {
+          "start": 36,
+          "end": 70
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3bs_9epktf",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[三、财务状况] 页码不连续: 缺失第 66 页",
+      "targetPath": "03-财务状况",
+      "expected": "存在第 66 页的文件",
+      "actual": "未找到第 66 页",
+      "details": {
+        "section": "三、财务状况",
+        "missingPage": 66,
+        "range": {
+          "start": 36,
+          "end": 70
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3bs_2i6iqv",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[三、财务状况] 页码不连续: 缺失第 67 页",
+      "targetPath": "03-财务状况",
+      "expected": "存在第 67 页的文件",
+      "actual": "未找到第 67 页",
+      "details": {
+        "section": "三、财务状况",
+        "missingPage": 67,
+        "range": {
+          "start": 36,
+          "end": 70
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3bs_ujr1ug",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[三、财务状况] 页码不连续: 缺失第 68 页",
+      "targetPath": "03-财务状况",
+      "expected": "存在第 68 页的文件",
+      "actual": "未找到第 68 页",
+      "details": {
+        "section": "三、财务状况",
+        "missingPage": 68,
+        "range": {
+          "start": 36,
+          "end": 70
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3bs_utgwcw",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[三、财务状况] 页码不连续: 缺失第 69 页",
+      "targetPath": "03-财务状况",
+      "expected": "存在第 69 页的文件",
+      "actual": "未找到第 69 页",
+      "details": {
+        "section": "三、财务状况",
+        "missingPage": 69,
+        "range": {
+          "start": 36,
+          "end": 70
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3bs_uns777",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[三、财务状况] 页码不连续: 缺失第 70 页",
+      "targetPath": "03-财务状况",
+      "expected": "存在第 70 页的文件",
+      "actual": "未找到第 70 页",
+      "details": {
+        "section": "三、财务状况",
+        "missingPage": 70,
+        "range": {
+          "start": 36,
+          "end": 70
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3bt_lxenf3",
+      "type": "NAMING_ERROR",
+      "severity": "warn",
+      "message": "章节[四、类似业绩] 文件命名不符合规则: 04-类似业绩\\业绩_2023_科技园项目_合同.pdf",
+      "targetPath": "04-类似业绩\\业绩_2023_科技园项目_合同.pdf",
+      "expected": "业绩_年份_项目名.pdf 或 合同/成交通知/验收_xxx",
+      "actual": "业绩_2023_科技园项目_合同.pdf",
+      "details": {
+        "section": "四、类似业绩",
+        "patterns": [
+          "业绩_年份_项目名.pdf",
+          "合同/成交通知/验收_xxx"
+        ]
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3bt_rot9ru",
+      "type": "NAMING_ERROR",
+      "severity": "warn",
+      "message": "章节[四、类似业绩] 文件命名不符合规则: 04-类似业绩\\未命名扫描件.jpg",
+      "targetPath": "04-类似业绩\\未命名扫描件.jpg",
+      "expected": "业绩_年份_项目名.pdf 或 合同/成交通知/验收_xxx",
+      "actual": "未命名扫描件.jpg",
+      "details": {
+        "section": "四、类似业绩",
+        "patterns": [
+          "业绩_年份_项目名.pdf",
+          "合同/成交通知/验收_xxx"
+        ]
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3bt_kkgz4m",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "warn",
+      "message": "章节[四、类似业绩] 页码超出范围: 实际页码 2022-2023, 期望 71-120",
+      "targetPath": "04-类似业绩",
+      "expected": "71-120",
+      "actual": "2022-2023",
+      "details": {
+        "section": "四、类似业绩",
+        "expectedRange": {
+          "start": 71,
+          "end": 120
+        },
+        "actualRange": {
+          "start": 2022,
+          "end": 2023
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3bt_thbt2u",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[四、类似业绩] 页码不连续: 缺失第 71 页",
+      "targetPath": "04-类似业绩",
+      "expected": "存在第 71 页的文件",
+      "actual": "未找到第 71 页",
+      "details": {
+        "section": "四、类似业绩",
+        "missingPage": 71,
+        "range": {
+          "start": 71,
+          "end": 120
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3bt_j5m5e0",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[四、类似业绩] 页码不连续: 缺失第 72 页",
+      "targetPath": "04-类似业绩",
+      "expected": "存在第 72 页的文件",
+      "actual": "未找到第 72 页",
+      "details": {
+        "section": "四、类似业绩",
+        "missingPage": 72,
+        "range": {
+          "start": 71,
+          "end": 120
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3bt_jsz3xx",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[四、类似业绩] 页码不连续: 缺失第 73 页",
+      "targetPath": "04-类似业绩",
+      "expected": "存在第 73 页的文件",
+      "actual": "未找到第 73 页",
+      "details": {
+        "section": "四、类似业绩",
+        "missingPage": 73,
+        "range": {
+          "start": 71,
+          "end": 120
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3bt_7wiw58",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[四、类似业绩] 页码不连续: 缺失第 74 页",
+      "targetPath": "04-类似业绩",
+      "expected": "存在第 74 页的文件",
+      "actual": "未找到第 74 页",
+      "details": {
+        "section": "四、类似业绩",
+        "missingPage": 74,
+        "range": {
+          "start": 71,
+          "end": 120
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3bt_e8hqhl",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[四、类似业绩] 页码不连续: 缺失第 75 页",
+      "targetPath": "04-类似业绩",
+      "expected": "存在第 75 页的文件",
+      "actual": "未找到第 75 页",
+      "details": {
+        "section": "四、类似业绩",
+        "missingPage": 75,
+        "range": {
+          "start": 71,
+          "end": 120
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3bt_ryfwgs",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[四、类似业绩] 页码不连续: 缺失第 76 页",
+      "targetPath": "04-类似业绩",
+      "expected": "存在第 76 页的文件",
+      "actual": "未找到第 76 页",
+      "details": {
+        "section": "四、类似业绩",
+        "missingPage": 76,
+        "range": {
+          "start": 71,
+          "end": 120
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3bt_pe35ys",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[四、类似业绩] 页码不连续: 缺失第 77 页",
+      "targetPath": "04-类似业绩",
+      "expected": "存在第 77 页的文件",
+      "actual": "未找到第 77 页",
+      "details": {
+        "section": "四、类似业绩",
+        "missingPage": 77,
+        "range": {
+          "start": 71,
+          "end": 120
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3bt_fv0cnv",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[四、类似业绩] 页码不连续: 缺失第 78 页",
+      "targetPath": "04-类似业绩",
+      "expected": "存在第 78 页的文件",
+      "actual": "未找到第 78 页",
+      "details": {
+        "section": "四、类似业绩",
+        "missingPage": 78,
+        "range": {
+          "start": 71,
+          "end": 120
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3bt_l83g5x",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[四、类似业绩] 页码不连续: 缺失第 79 页",
+      "targetPath": "04-类似业绩",
+      "expected": "存在第 79 页的文件",
+      "actual": "未找到第 79 页",
+      "details": {
+        "section": "四、类似业绩",
+        "missingPage": 79,
+        "range": {
+          "start": 71,
+          "end": 120
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3bt_19flzx",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[四、类似业绩] 页码不连续: 缺失第 80 页",
+      "targetPath": "04-类似业绩",
+      "expected": "存在第 80 页的文件",
+      "actual": "未找到第 80 页",
+      "details": {
+        "section": "四、类似业绩",
+        "missingPage": 80,
+        "range": {
+          "start": 71,
+          "end": 120
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3bu_9oksp3",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[四、类似业绩] 页码不连续: 缺失第 81 页",
+      "targetPath": "04-类似业绩",
+      "expected": "存在第 81 页的文件",
+      "actual": "未找到第 81 页",
+      "details": {
+        "section": "四、类似业绩",
+        "missingPage": 81,
+        "range": {
+          "start": 71,
+          "end": 120
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3bu_v86mys",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[四、类似业绩] 页码不连续: 缺失第 82 页",
+      "targetPath": "04-类似业绩",
+      "expected": "存在第 82 页的文件",
+      "actual": "未找到第 82 页",
+      "details": {
+        "section": "四、类似业绩",
+        "missingPage": 82,
+        "range": {
+          "start": 71,
+          "end": 120
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3bu_xwpyg3",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[四、类似业绩] 页码不连续: 缺失第 83 页",
+      "targetPath": "04-类似业绩",
+      "expected": "存在第 83 页的文件",
+      "actual": "未找到第 83 页",
+      "details": {
+        "section": "四、类似业绩",
+        "missingPage": 83,
+        "range": {
+          "start": 71,
+          "end": 120
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3bu_yhdf4b",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[四、类似业绩] 页码不连续: 缺失第 84 页",
+      "targetPath": "04-类似业绩",
+      "expected": "存在第 84 页的文件",
+      "actual": "未找到第 84 页",
+      "details": {
+        "section": "四、类似业绩",
+        "missingPage": 84,
+        "range": {
+          "start": 71,
+          "end": 120
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3bu_khn159",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[四、类似业绩] 页码不连续: 缺失第 85 页",
+      "targetPath": "04-类似业绩",
+      "expected": "存在第 85 页的文件",
+      "actual": "未找到第 85 页",
+      "details": {
+        "section": "四、类似业绩",
+        "missingPage": 85,
+        "range": {
+          "start": 71,
+          "end": 120
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3bu_yju52d",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[四、类似业绩] 页码不连续: 缺失第 86 页",
+      "targetPath": "04-类似业绩",
+      "expected": "存在第 86 页的文件",
+      "actual": "未找到第 86 页",
+      "details": {
+        "section": "四、类似业绩",
+        "missingPage": 86,
+        "range": {
+          "start": 71,
+          "end": 120
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3bu_lkpl4z",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[四、类似业绩] 页码不连续: 缺失第 87 页",
+      "targetPath": "04-类似业绩",
+      "expected": "存在第 87 页的文件",
+      "actual": "未找到第 87 页",
+      "details": {
+        "section": "四、类似业绩",
+        "missingPage": 87,
+        "range": {
+          "start": 71,
+          "end": 120
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3bu_0vgrh7",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[四、类似业绩] 页码不连续: 缺失第 88 页",
+      "targetPath": "04-类似业绩",
+      "expected": "存在第 88 页的文件",
+      "actual": "未找到第 88 页",
+      "details": {
+        "section": "四、类似业绩",
+        "missingPage": 88,
+        "range": {
+          "start": 71,
+          "end": 120
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3bu_3r6535",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[四、类似业绩] 页码不连续: 缺失第 89 页",
+      "targetPath": "04-类似业绩",
+      "expected": "存在第 89 页的文件",
+      "actual": "未找到第 89 页",
+      "details": {
+        "section": "四、类似业绩",
+        "missingPage": 89,
+        "range": {
+          "start": 71,
+          "end": 120
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3bu_tyagiv",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[四、类似业绩] 页码不连续: 缺失第 90 页",
+      "targetPath": "04-类似业绩",
+      "expected": "存在第 90 页的文件",
+      "actual": "未找到第 90 页",
+      "details": {
+        "section": "四、类似业绩",
+        "missingPage": 90,
+        "range": {
+          "start": 71,
+          "end": 120
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3bu_xg41wv",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[四、类似业绩] 页码不连续: 缺失第 91 页",
+      "targetPath": "04-类似业绩",
+      "expected": "存在第 91 页的文件",
+      "actual": "未找到第 91 页",
+      "details": {
+        "section": "四、类似业绩",
+        "missingPage": 91,
+        "range": {
+          "start": 71,
+          "end": 120
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3bu_ofade9",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[四、类似业绩] 页码不连续: 缺失第 92 页",
+      "targetPath": "04-类似业绩",
+      "expected": "存在第 92 页的文件",
+      "actual": "未找到第 92 页",
+      "details": {
+        "section": "四、类似业绩",
+        "missingPage": 92,
+        "range": {
+          "start": 71,
+          "end": 120
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3bu_vtm33o",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[四、类似业绩] 页码不连续: 缺失第 93 页",
+      "targetPath": "04-类似业绩",
+      "expected": "存在第 93 页的文件",
+      "actual": "未找到第 93 页",
+      "details": {
+        "section": "四、类似业绩",
+        "missingPage": 93,
+        "range": {
+          "start": 71,
+          "end": 120
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3bu_1m7ur3",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[四、类似业绩] 页码不连续: 缺失第 94 页",
+      "targetPath": "04-类似业绩",
+      "expected": "存在第 94 页的文件",
+      "actual": "未找到第 94 页",
+      "details": {
+        "section": "四、类似业绩",
+        "missingPage": 94,
+        "range": {
+          "start": 71,
+          "end": 120
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3bu_zzkgsc",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[四、类似业绩] 页码不连续: 缺失第 95 页",
+      "targetPath": "04-类似业绩",
+      "expected": "存在第 95 页的文件",
+      "actual": "未找到第 95 页",
+      "details": {
+        "section": "四、类似业绩",
+        "missingPage": 95,
+        "range": {
+          "start": 71,
+          "end": 120
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3bu_dn5d8r",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[四、类似业绩] 页码不连续: 缺失第 96 页",
+      "targetPath": "04-类似业绩",
+      "expected": "存在第 96 页的文件",
+      "actual": "未找到第 96 页",
+      "details": {
+        "section": "四、类似业绩",
+        "missingPage": 96,
+        "range": {
+          "start": 71,
+          "end": 120
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3bu_rbaulb",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[四、类似业绩] 页码不连续: 缺失第 97 页",
+      "targetPath": "04-类似业绩",
+      "expected": "存在第 97 页的文件",
+      "actual": "未找到第 97 页",
+      "details": {
+        "section": "四、类似业绩",
+        "missingPage": 97,
+        "range": {
+          "start": 71,
+          "end": 120
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3bu_c9krnm",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[四、类似业绩] 页码不连续: 缺失第 98 页",
+      "targetPath": "04-类似业绩",
+      "expected": "存在第 98 页的文件",
+      "actual": "未找到第 98 页",
+      "details": {
+        "section": "四、类似业绩",
+        "missingPage": 98,
+        "range": {
+          "start": 71,
+          "end": 120
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3bu_jqv6po",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[四、类似业绩] 页码不连续: 缺失第 99 页",
+      "targetPath": "04-类似业绩",
+      "expected": "存在第 99 页的文件",
+      "actual": "未找到第 99 页",
+      "details": {
+        "section": "四、类似业绩",
+        "missingPage": 99,
+        "range": {
+          "start": 71,
+          "end": 120
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3bu_pp8uqs",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[四、类似业绩] 页码不连续: 缺失第 100 页",
+      "targetPath": "04-类似业绩",
+      "expected": "存在第 100 页的文件",
+      "actual": "未找到第 100 页",
+      "details": {
+        "section": "四、类似业绩",
+        "missingPage": 100,
+        "range": {
+          "start": 71,
+          "end": 120
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3bu_mzk1s7",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[四、类似业绩] 页码不连续: 缺失第 101 页",
+      "targetPath": "04-类似业绩",
+      "expected": "存在第 101 页的文件",
+      "actual": "未找到第 101 页",
+      "details": {
+        "section": "四、类似业绩",
+        "missingPage": 101,
+        "range": {
+          "start": 71,
+          "end": 120
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3bu_ti56pw",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[四、类似业绩] 页码不连续: 缺失第 102 页",
+      "targetPath": "04-类似业绩",
+      "expected": "存在第 102 页的文件",
+      "actual": "未找到第 102 页",
+      "details": {
+        "section": "四、类似业绩",
+        "missingPage": 102,
+        "range": {
+          "start": 71,
+          "end": 120
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3bu_n5plfc",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[四、类似业绩] 页码不连续: 缺失第 103 页",
+      "targetPath": "04-类似业绩",
+      "expected": "存在第 103 页的文件",
+      "actual": "未找到第 103 页",
+      "details": {
+        "section": "四、类似业绩",
+        "missingPage": 103,
+        "range": {
+          "start": 71,
+          "end": 120
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3bu_spuey0",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[四、类似业绩] 页码不连续: 缺失第 104 页",
+      "targetPath": "04-类似业绩",
+      "expected": "存在第 104 页的文件",
+      "actual": "未找到第 104 页",
+      "details": {
+        "section": "四、类似业绩",
+        "missingPage": 104,
+        "range": {
+          "start": 71,
+          "end": 120
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3bu_01ie39",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[四、类似业绩] 页码不连续: 缺失第 105 页",
+      "targetPath": "04-类似业绩",
+      "expected": "存在第 105 页的文件",
+      "actual": "未找到第 105 页",
+      "details": {
+        "section": "四、类似业绩",
+        "missingPage": 105,
+        "range": {
+          "start": 71,
+          "end": 120
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3bu_eh7de5",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[四、类似业绩] 页码不连续: 缺失第 106 页",
+      "targetPath": "04-类似业绩",
+      "expected": "存在第 106 页的文件",
+      "actual": "未找到第 106 页",
+      "details": {
+        "section": "四、类似业绩",
+        "missingPage": 106,
+        "range": {
+          "start": 71,
+          "end": 120
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3bu_saqxgx",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[四、类似业绩] 页码不连续: 缺失第 107 页",
+      "targetPath": "04-类似业绩",
+      "expected": "存在第 107 页的文件",
+      "actual": "未找到第 107 页",
+      "details": {
+        "section": "四、类似业绩",
+        "missingPage": 107,
+        "range": {
+          "start": 71,
+          "end": 120
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3bu_67eso3",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[四、类似业绩] 页码不连续: 缺失第 108 页",
+      "targetPath": "04-类似业绩",
+      "expected": "存在第 108 页的文件",
+      "actual": "未找到第 108 页",
+      "details": {
+        "section": "四、类似业绩",
+        "missingPage": 108,
+        "range": {
+          "start": 71,
+          "end": 120
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3bu_6eszxj",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[四、类似业绩] 页码不连续: 缺失第 109 页",
+      "targetPath": "04-类似业绩",
+      "expected": "存在第 109 页的文件",
+      "actual": "未找到第 109 页",
+      "details": {
+        "section": "四、类似业绩",
+        "missingPage": 109,
+        "range": {
+          "start": 71,
+          "end": 120
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3bu_ni8yps",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[四、类似业绩] 页码不连续: 缺失第 110 页",
+      "targetPath": "04-类似业绩",
+      "expected": "存在第 110 页的文件",
+      "actual": "未找到第 110 页",
+      "details": {
+        "section": "四、类似业绩",
+        "missingPage": 110,
+        "range": {
+          "start": 71,
+          "end": 120
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3bu_pjv3n2",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[四、类似业绩] 页码不连续: 缺失第 111 页",
+      "targetPath": "04-类似业绩",
+      "expected": "存在第 111 页的文件",
+      "actual": "未找到第 111 页",
+      "details": {
+        "section": "四、类似业绩",
+        "missingPage": 111,
+        "range": {
+          "start": 71,
+          "end": 120
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3bu_boijbv",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[四、类似业绩] 页码不连续: 缺失第 112 页",
+      "targetPath": "04-类似业绩",
+      "expected": "存在第 112 页的文件",
+      "actual": "未找到第 112 页",
+      "details": {
+        "section": "四、类似业绩",
+        "missingPage": 112,
+        "range": {
+          "start": 71,
+          "end": 120
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3bu_dcxyyc",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[四、类似业绩] 页码不连续: 缺失第 113 页",
+      "targetPath": "04-类似业绩",
+      "expected": "存在第 113 页的文件",
+      "actual": "未找到第 113 页",
+      "details": {
+        "section": "四、类似业绩",
+        "missingPage": 113,
+        "range": {
+          "start": 71,
+          "end": 120
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3bu_zxbqoj",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[四、类似业绩] 页码不连续: 缺失第 114 页",
+      "targetPath": "04-类似业绩",
+      "expected": "存在第 114 页的文件",
+      "actual": "未找到第 114 页",
+      "details": {
+        "section": "四、类似业绩",
+        "missingPage": 114,
+        "range": {
+          "start": 71,
+          "end": 120
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3bu_tb5s1n",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[四、类似业绩] 页码不连续: 缺失第 115 页",
+      "targetPath": "04-类似业绩",
+      "expected": "存在第 115 页的文件",
+      "actual": "未找到第 115 页",
+      "details": {
+        "section": "四、类似业绩",
+        "missingPage": 115,
+        "range": {
+          "start": 71,
+          "end": 120
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3bu_a1q5ml",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[四、类似业绩] 页码不连续: 缺失第 116 页",
+      "targetPath": "04-类似业绩",
+      "expected": "存在第 116 页的文件",
+      "actual": "未找到第 116 页",
+      "details": {
+        "section": "四、类似业绩",
+        "missingPage": 116,
+        "range": {
+          "start": 71,
+          "end": 120
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3bu_jcoyee",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[四、类似业绩] 页码不连续: 缺失第 117 页",
+      "targetPath": "04-类似业绩",
+      "expected": "存在第 117 页的文件",
+      "actual": "未找到第 117 页",
+      "details": {
+        "section": "四、类似业绩",
+        "missingPage": 117,
+        "range": {
+          "start": 71,
+          "end": 120
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3bu_rwnlxv",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[四、类似业绩] 页码不连续: 缺失第 118 页",
+      "targetPath": "04-类似业绩",
+      "expected": "存在第 118 页的文件",
+      "actual": "未找到第 118 页",
+      "details": {
+        "section": "四、类似业绩",
+        "missingPage": 118,
+        "range": {
+          "start": 71,
+          "end": 120
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3bu_mmuzhp",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[四、类似业绩] 页码不连续: 缺失第 119 页",
+      "targetPath": "04-类似业绩",
+      "expected": "存在第 119 页的文件",
+      "actual": "未找到第 119 页",
+      "details": {
+        "section": "四、类似业绩",
+        "missingPage": 119,
+        "range": {
+          "start": 71,
+          "end": 120
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3bu_skrp47",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[四、类似业绩] 页码不连续: 缺失第 120 页",
+      "targetPath": "04-类似业绩",
+      "expected": "存在第 120 页的文件",
+      "actual": "未找到第 120 页",
+      "details": {
+        "section": "四、类似业绩",
+        "missingPage": 120,
+        "range": {
+          "start": 71,
+          "end": 120
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3bv_ps5hog",
+      "type": "MISSING_FILE",
+      "severity": "error",
+      "message": "章节[五、项目管理机构] 缺少必需文件: 05-项目管理机构\\项目技术负责人简历表_签章.pdf",
+      "targetPath": "05-项目管理机构\\项目技术负责人简历表_签章.pdf",
+      "expected": "项目技术负责人简历表_签章.pdf",
+      "actual": null,
+      "details": {
+        "section": "五、项目管理机构",
+        "file": "项目技术负责人简历表_签章.pdf",
+        "description": ""
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3bv_vmc1uw",
+      "type": "NAMING_ERROR",
+      "severity": "warn",
+      "message": "章节[五、项目管理机构] 文件命名不符合规则: 05-项目管理机构\\李工_建造师证_20170501.pdf",
+      "targetPath": "05-项目管理机构\\李工_建造师证_20170501.pdf",
+      "expected": "中文名(_v版本号)(_签章).ext 或 人名_社保证明.pdf",
+      "actual": "李工_建造师证_20170501.pdf",
+      "details": {
+        "section": "五、项目管理机构",
+        "patterns": [
+          "中文名(_v版本号)(_签章).ext",
+          "人名_社保证明.pdf"
+        ]
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3bv_lhdnmr",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "warn",
+      "message": "章节[五、项目管理机构] 页码超出范围: 实际页码 20170501-20170501, 期望 121-150",
+      "targetPath": "05-项目管理机构",
+      "expected": "121-150",
+      "actual": "20170501-20170501",
+      "details": {
+        "section": "五、项目管理机构",
+        "expectedRange": {
+          "start": 121,
+          "end": 150
+        },
+        "actualRange": {
+          "start": 20170501,
+          "end": 20170501
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3bv_v52sfu",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[五、项目管理机构] 页码不连续: 缺失第 121 页",
+      "targetPath": "05-项目管理机构",
+      "expected": "存在第 121 页的文件",
+      "actual": "未找到第 121 页",
+      "details": {
+        "section": "五、项目管理机构",
+        "missingPage": 121,
+        "range": {
+          "start": 121,
+          "end": 150
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3bw_96j08p",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[五、项目管理机构] 页码不连续: 缺失第 122 页",
+      "targetPath": "05-项目管理机构",
+      "expected": "存在第 122 页的文件",
+      "actual": "未找到第 122 页",
+      "details": {
+        "section": "五、项目管理机构",
+        "missingPage": 122,
+        "range": {
+          "start": 121,
+          "end": 150
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3bw_f083gw",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[五、项目管理机构] 页码不连续: 缺失第 123 页",
+      "targetPath": "05-项目管理机构",
+      "expected": "存在第 123 页的文件",
+      "actual": "未找到第 123 页",
+      "details": {
+        "section": "五、项目管理机构",
+        "missingPage": 123,
+        "range": {
+          "start": 121,
+          "end": 150
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3bw_z88ylk",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[五、项目管理机构] 页码不连续: 缺失第 124 页",
+      "targetPath": "05-项目管理机构",
+      "expected": "存在第 124 页的文件",
+      "actual": "未找到第 124 页",
+      "details": {
+        "section": "五、项目管理机构",
+        "missingPage": 124,
+        "range": {
+          "start": 121,
+          "end": 150
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3bw_zdu7ov",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[五、项目管理机构] 页码不连续: 缺失第 125 页",
+      "targetPath": "05-项目管理机构",
+      "expected": "存在第 125 页的文件",
+      "actual": "未找到第 125 页",
+      "details": {
+        "section": "五、项目管理机构",
+        "missingPage": 125,
+        "range": {
+          "start": 121,
+          "end": 150
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3bw_t4rss4",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[五、项目管理机构] 页码不连续: 缺失第 126 页",
+      "targetPath": "05-项目管理机构",
+      "expected": "存在第 126 页的文件",
+      "actual": "未找到第 126 页",
+      "details": {
+        "section": "五、项目管理机构",
+        "missingPage": 126,
+        "range": {
+          "start": 121,
+          "end": 150
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3bw_8cd227",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[五、项目管理机构] 页码不连续: 缺失第 127 页",
+      "targetPath": "05-项目管理机构",
+      "expected": "存在第 127 页的文件",
+      "actual": "未找到第 127 页",
+      "details": {
+        "section": "五、项目管理机构",
+        "missingPage": 127,
+        "range": {
+          "start": 121,
+          "end": 150
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3bw_qqc8c5",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[五、项目管理机构] 页码不连续: 缺失第 128 页",
+      "targetPath": "05-项目管理机构",
+      "expected": "存在第 128 页的文件",
+      "actual": "未找到第 128 页",
+      "details": {
+        "section": "五、项目管理机构",
+        "missingPage": 128,
+        "range": {
+          "start": 121,
+          "end": 150
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3bw_5gvnif",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[五、项目管理机构] 页码不连续: 缺失第 129 页",
+      "targetPath": "05-项目管理机构",
+      "expected": "存在第 129 页的文件",
+      "actual": "未找到第 129 页",
+      "details": {
+        "section": "五、项目管理机构",
+        "missingPage": 129,
+        "range": {
+          "start": 121,
+          "end": 150
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3bw_62v5nu",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[五、项目管理机构] 页码不连续: 缺失第 130 页",
+      "targetPath": "05-项目管理机构",
+      "expected": "存在第 130 页的文件",
+      "actual": "未找到第 130 页",
+      "details": {
+        "section": "五、项目管理机构",
+        "missingPage": 130,
+        "range": {
+          "start": 121,
+          "end": 150
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3bw_hmvmia",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[五、项目管理机构] 页码不连续: 缺失第 131 页",
+      "targetPath": "05-项目管理机构",
+      "expected": "存在第 131 页的文件",
+      "actual": "未找到第 131 页",
+      "details": {
+        "section": "五、项目管理机构",
+        "missingPage": 131,
+        "range": {
+          "start": 121,
+          "end": 150
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3bw_yyhjwj",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[五、项目管理机构] 页码不连续: 缺失第 132 页",
+      "targetPath": "05-项目管理机构",
+      "expected": "存在第 132 页的文件",
+      "actual": "未找到第 132 页",
+      "details": {
+        "section": "五、项目管理机构",
+        "missingPage": 132,
+        "range": {
+          "start": 121,
+          "end": 150
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3bw_944dz8",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[五、项目管理机构] 页码不连续: 缺失第 133 页",
+      "targetPath": "05-项目管理机构",
+      "expected": "存在第 133 页的文件",
+      "actual": "未找到第 133 页",
+      "details": {
+        "section": "五、项目管理机构",
+        "missingPage": 133,
+        "range": {
+          "start": 121,
+          "end": 150
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3bw_70asau",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[五、项目管理机构] 页码不连续: 缺失第 134 页",
+      "targetPath": "05-项目管理机构",
+      "expected": "存在第 134 页的文件",
+      "actual": "未找到第 134 页",
+      "details": {
+        "section": "五、项目管理机构",
+        "missingPage": 134,
+        "range": {
+          "start": 121,
+          "end": 150
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3bw_1lo3zr",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[五、项目管理机构] 页码不连续: 缺失第 135 页",
+      "targetPath": "05-项目管理机构",
+      "expected": "存在第 135 页的文件",
+      "actual": "未找到第 135 页",
+      "details": {
+        "section": "五、项目管理机构",
+        "missingPage": 135,
+        "range": {
+          "start": 121,
+          "end": 150
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3bw_mmmy3k",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[五、项目管理机构] 页码不连续: 缺失第 136 页",
+      "targetPath": "05-项目管理机构",
+      "expected": "存在第 136 页的文件",
+      "actual": "未找到第 136 页",
+      "details": {
+        "section": "五、项目管理机构",
+        "missingPage": 136,
+        "range": {
+          "start": 121,
+          "end": 150
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3bw_zkteo9",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[五、项目管理机构] 页码不连续: 缺失第 137 页",
+      "targetPath": "05-项目管理机构",
+      "expected": "存在第 137 页的文件",
+      "actual": "未找到第 137 页",
+      "details": {
+        "section": "五、项目管理机构",
+        "missingPage": 137,
+        "range": {
+          "start": 121,
+          "end": 150
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3bw_k5rku5",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[五、项目管理机构] 页码不连续: 缺失第 138 页",
+      "targetPath": "05-项目管理机构",
+      "expected": "存在第 138 页的文件",
+      "actual": "未找到第 138 页",
+      "details": {
+        "section": "五、项目管理机构",
+        "missingPage": 138,
+        "range": {
+          "start": 121,
+          "end": 150
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3bw_ige7cp",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[五、项目管理机构] 页码不连续: 缺失第 139 页",
+      "targetPath": "05-项目管理机构",
+      "expected": "存在第 139 页的文件",
+      "actual": "未找到第 139 页",
+      "details": {
+        "section": "五、项目管理机构",
+        "missingPage": 139,
+        "range": {
+          "start": 121,
+          "end": 150
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3bw_sj4oxv",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[五、项目管理机构] 页码不连续: 缺失第 140 页",
+      "targetPath": "05-项目管理机构",
+      "expected": "存在第 140 页的文件",
+      "actual": "未找到第 140 页",
+      "details": {
+        "section": "五、项目管理机构",
+        "missingPage": 140,
+        "range": {
+          "start": 121,
+          "end": 150
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3bw_gpg57b",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[五、项目管理机构] 页码不连续: 缺失第 141 页",
+      "targetPath": "05-项目管理机构",
+      "expected": "存在第 141 页的文件",
+      "actual": "未找到第 141 页",
+      "details": {
+        "section": "五、项目管理机构",
+        "missingPage": 141,
+        "range": {
+          "start": 121,
+          "end": 150
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3bw_831ucb",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[五、项目管理机构] 页码不连续: 缺失第 142 页",
+      "targetPath": "05-项目管理机构",
+      "expected": "存在第 142 页的文件",
+      "actual": "未找到第 142 页",
+      "details": {
+        "section": "五、项目管理机构",
+        "missingPage": 142,
+        "range": {
+          "start": 121,
+          "end": 150
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3bw_sexir2",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[五、项目管理机构] 页码不连续: 缺失第 143 页",
+      "targetPath": "05-项目管理机构",
+      "expected": "存在第 143 页的文件",
+      "actual": "未找到第 143 页",
+      "details": {
+        "section": "五、项目管理机构",
+        "missingPage": 143,
+        "range": {
+          "start": 121,
+          "end": 150
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3bw_febi6r",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[五、项目管理机构] 页码不连续: 缺失第 144 页",
+      "targetPath": "05-项目管理机构",
+      "expected": "存在第 144 页的文件",
+      "actual": "未找到第 144 页",
+      "details": {
+        "section": "五、项目管理机构",
+        "missingPage": 144,
+        "range": {
+          "start": 121,
+          "end": 150
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3bw_18f42e",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[五、项目管理机构] 页码不连续: 缺失第 145 页",
+      "targetPath": "05-项目管理机构",
+      "expected": "存在第 145 页的文件",
+      "actual": "未找到第 145 页",
+      "details": {
+        "section": "五、项目管理机构",
+        "missingPage": 145,
+        "range": {
+          "start": 121,
+          "end": 150
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3bw_ty124h",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[五、项目管理机构] 页码不连续: 缺失第 146 页",
+      "targetPath": "05-项目管理机构",
+      "expected": "存在第 146 页的文件",
+      "actual": "未找到第 146 页",
+      "details": {
+        "section": "五、项目管理机构",
+        "missingPage": 146,
+        "range": {
+          "start": 121,
+          "end": 150
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3bx_t2udm6",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[五、项目管理机构] 页码不连续: 缺失第 147 页",
+      "targetPath": "05-项目管理机构",
+      "expected": "存在第 147 页的文件",
+      "actual": "未找到第 147 页",
+      "details": {
+        "section": "五、项目管理机构",
+        "missingPage": 147,
+        "range": {
+          "start": 121,
+          "end": 150
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3bx_y2bd4d",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[五、项目管理机构] 页码不连续: 缺失第 148 页",
+      "targetPath": "05-项目管理机构",
+      "expected": "存在第 148 页的文件",
+      "actual": "未找到第 148 页",
+      "details": {
+        "section": "五、项目管理机构",
+        "missingPage": 148,
+        "range": {
+          "start": 121,
+          "end": 150
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3bx_3mdp7k",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[五、项目管理机构] 页码不连续: 缺失第 149 页",
+      "targetPath": "05-项目管理机构",
+      "expected": "存在第 149 页的文件",
+      "actual": "未找到第 149 页",
+      "details": {
+        "section": "五、项目管理机构",
+        "missingPage": 149,
+        "range": {
+          "start": 121,
+          "end": 150
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3bx_jc5cnn",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[五、项目管理机构] 页码不连续: 缺失第 150 页",
+      "targetPath": "05-项目管理机构",
+      "expected": "存在第 150 页的文件",
+      "actual": "未找到第 150 页",
+      "details": {
+        "section": "五、项目管理机构",
+        "missingPage": 150,
+        "range": {
+          "start": 121,
+          "end": 150
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3bx_p2i4ub",
+      "type": "EXPIRED_FIELD",
+      "severity": "warn",
+      "message": "章节[五、项目管理机构] 检测到过期日期: 05-项目管理机构\\李工_建造师证_20170501.pdf (到期日: 2017-05-01)",
+      "targetPath": "05-项目管理机构\\李工_建造师证_20170501.pdf",
+      "expected": "日期 >= 2026-06-13",
+      "actual": "2017-05-01",
+      "details": {
+        "section": "五、项目管理机构",
+        "expiryDate": "2017-04-30",
+        "fieldName": "cert_expiry"
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3c0_u1jsx2",
+      "type": "MISSING_SIGNATURE",
+      "severity": "warn",
+      "message": "章节[五、项目管理机构] 可能缺少签章: 05-项目管理机构\\张工_社保证明.pdf (文件名未包含签章标识)",
+      "targetPath": "05-项目管理机构\\张工_社保证明.pdf",
+      "expected": "文件名包含\"签章/盖章/签名/签字/_signed\"等标识",
+      "actual": "张工_社保证明.pdf",
+      "details": {
+        "section": "五、项目管理机构",
+        "file": "05-项目管理机构\\张工_社保证明.pdf",
+        "sizeCheck": false
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3c4_sywc60",
+      "type": "MISSING_SIGNATURE",
+      "severity": "warn",
+      "message": "章节[五、项目管理机构] 可能缺少签章: 05-项目管理机构\\李工_建造师证_20170501.pdf (文件名未包含签章标识)",
+      "targetPath": "05-项目管理机构\\李工_建造师证_20170501.pdf",
+      "expected": "文件名包含\"签章/盖章/签名/签字/_signed\"等标识",
+      "actual": "李工_建造师证_20170501.pdf",
+      "details": {
+        "section": "五、项目管理机构",
+        "file": "05-项目管理机构\\李工_建造师证_20170501.pdf",
+        "sizeCheck": false
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3c8_22rvbd",
+      "type": "MISSING_SIGNATURE",
+      "severity": "warn",
+      "message": "章节[五、项目管理机构] 可能缺少签章: 05-项目管理机构\\项目技术负责人简历表.pdf (文件名未包含签章标识)",
+      "targetPath": "05-项目管理机构\\项目技术负责人简历表.pdf",
+      "expected": "文件名包含\"签章/盖章/签名/签字/_signed\"等标识",
+      "actual": "项目技术负责人简历表.pdf",
+      "details": {
+        "section": "五、项目管理机构",
+        "file": "05-项目管理机构\\项目技术负责人简历表.pdf",
+        "sizeCheck": false
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3ci_qass26",
+      "type": "NAMING_ERROR",
+      "severity": "warn",
+      "message": "章节[六、施工组织设计] 文件命名不符合规则: 06-施工组织设计\\临时草稿.tmp",
+      "targetPath": "06-施工组织设计\\临时草稿.tmp",
+      "expected": "中文名称.pdf",
+      "actual": "临时草稿.tmp",
+      "details": {
+        "section": "六、施工组织设计",
+        "patterns": [
+          "中文名称.pdf"
+        ]
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3ci_3t6t2i",
+      "type": "NAMING_ERROR",
+      "severity": "warn",
+      "message": "章节[六、施工组织设计] 文件命名不符合规则: 06-施工组织设计\\进度计划_错误命名.docx!!!",
+      "targetPath": "06-施工组织设计\\进度计划_错误命名.docx!!!",
+      "expected": "中文名称.pdf",
+      "actual": "进度计划_错误命名.docx!!!",
+      "details": {
+        "section": "六、施工组织设计",
+        "patterns": [
+          "中文名称.pdf"
+        ]
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3cj_mlrqpm",
+      "type": "MISSING_FILE",
+      "severity": "error",
+      "message": "章节[七、报价文件] 缺少必需文件: 07-报价文件\\报价一览表_签章.pdf",
+      "targetPath": "07-报价文件\\报价一览表_签章.pdf",
+      "expected": "报价一览表_签章.pdf",
+      "actual": null,
+      "details": {
+        "section": "七、报价文件",
+        "file": "报价一览表_签章.pdf",
+        "description": ""
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3cj_qvx8n7",
+      "type": "MISSING_FILE",
+      "severity": "error",
+      "message": "章节[七、报价文件] 缺少必需文件: 07-报价文件\\分项报价表_签章.xlsx",
+      "targetPath": "07-报价文件\\分项报价表_签章.xlsx",
+      "expected": "分项报价表_签章.xlsx",
+      "actual": null,
+      "details": {
+        "section": "七、报价文件",
+        "file": "分项报价表_签章.xlsx",
+        "description": ""
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3cj_sjoer3",
+      "type": "MISSING_FILE",
+      "severity": "error",
+      "message": "章节[七、报价文件] 缺少必需文件: 07-报价文件\\总价_已签章.pdf",
+      "targetPath": "07-报价文件\\总价_已签章.pdf",
+      "expected": "总价_已签章.pdf",
+      "actual": null,
+      "details": {
+        "section": "七、报价文件",
+        "file": "总价_已签章.pdf",
+        "description": ""
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3cj_6hlbbi",
+      "type": "NAMING_ERROR",
+      "severity": "warn",
+      "message": "章节[七、报价文件] 文件命名不符合规则: 07-报价文件\\分项报价表.xlsx",
+      "targetPath": "07-报价文件\\分项报价表.xlsx",
+      "expected": "中文名_签章/已签章.ext",
+      "actual": "分项报价表.xlsx",
+      "details": {
+        "section": "七、报价文件",
+        "patterns": [
+          "中文名_签章/已签章.ext"
+        ]
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3cj_uulffs",
+      "type": "NAMING_ERROR",
+      "severity": "warn",
+      "message": "章节[七、报价文件] 文件命名不符合规则: 07-报价文件\\总价.pdf",
+      "targetPath": "07-报价文件\\总价.pdf",
+      "expected": "中文名_签章/已签章.ext",
+      "actual": "总价.pdf",
+      "details": {
+        "section": "七、报价文件",
+        "patterns": [
+          "中文名_签章/已签章.ext"
+        ]
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3cj_pgyizu",
+      "type": "NAMING_ERROR",
+      "severity": "warn",
+      "message": "章节[七、报价文件] 文件命名不符合规则: 07-报价文件\\总价_v1.pdf",
+      "targetPath": "07-报价文件\\总价_v1.pdf",
+      "expected": "中文名_签章/已签章.ext",
+      "actual": "总价_v1.pdf",
+      "details": {
+        "section": "七、报价文件",
+        "patterns": [
+          "中文名_签章/已签章.ext"
+        ]
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3cj_0bygrg",
+      "type": "NAMING_ERROR",
+      "severity": "warn",
+      "message": "章节[七、报价文件] 文件命名不符合规则: 07-报价文件\\总价_v2.pdf",
+      "targetPath": "07-报价文件\\总价_v2.pdf",
+      "expected": "中文名_签章/已签章.ext",
+      "actual": "总价_v2.pdf",
+      "details": {
+        "section": "七、报价文件",
+        "patterns": [
+          "中文名_签章/已签章.ext"
+        ]
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3cj_z68ryq",
+      "type": "NAMING_ERROR",
+      "severity": "warn",
+      "message": "章节[七、报价文件] 文件命名不符合规则: 07-报价文件\\报价一览表.pdf",
+      "targetPath": "07-报价文件\\报价一览表.pdf",
+      "expected": "中文名_签章/已签章.ext",
+      "actual": "报价一览表.pdf",
+      "details": {
+        "section": "七、报价文件",
+        "patterns": [
+          "中文名_签章/已签章.ext"
+        ]
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3cj_vwncfl",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "warn",
+      "message": "章节[七、报价文件] 页码超出范围: 实际页码 1-2, 期望 281-310",
+      "targetPath": "07-报价文件",
+      "expected": "281-310",
+      "actual": "1-2",
+      "details": {
+        "section": "七、报价文件",
+        "expectedRange": {
+          "start": 281,
+          "end": 310
+        },
+        "actualRange": {
+          "start": 1,
+          "end": 2
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3ck_d4hehv",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[七、报价文件] 页码不连续: 缺失第 281 页",
+      "targetPath": "07-报价文件",
+      "expected": "存在第 281 页的文件",
+      "actual": "未找到第 281 页",
+      "details": {
+        "section": "七、报价文件",
+        "missingPage": 281,
+        "range": {
+          "start": 281,
+          "end": 310
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3ck_sg2ess",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[七、报价文件] 页码不连续: 缺失第 282 页",
+      "targetPath": "07-报价文件",
+      "expected": "存在第 282 页的文件",
+      "actual": "未找到第 282 页",
+      "details": {
+        "section": "七、报价文件",
+        "missingPage": 282,
+        "range": {
+          "start": 281,
+          "end": 310
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3ck_mkdg42",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[七、报价文件] 页码不连续: 缺失第 283 页",
+      "targetPath": "07-报价文件",
+      "expected": "存在第 283 页的文件",
+      "actual": "未找到第 283 页",
+      "details": {
+        "section": "七、报价文件",
+        "missingPage": 283,
+        "range": {
+          "start": 281,
+          "end": 310
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3ck_f2tr2d",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[七、报价文件] 页码不连续: 缺失第 284 页",
+      "targetPath": "07-报价文件",
+      "expected": "存在第 284 页的文件",
+      "actual": "未找到第 284 页",
+      "details": {
+        "section": "七、报价文件",
+        "missingPage": 284,
+        "range": {
+          "start": 281,
+          "end": 310
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3ck_hzexa9",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[七、报价文件] 页码不连续: 缺失第 285 页",
+      "targetPath": "07-报价文件",
+      "expected": "存在第 285 页的文件",
+      "actual": "未找到第 285 页",
+      "details": {
+        "section": "七、报价文件",
+        "missingPage": 285,
+        "range": {
+          "start": 281,
+          "end": 310
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3ck_djhb97",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[七、报价文件] 页码不连续: 缺失第 286 页",
+      "targetPath": "07-报价文件",
+      "expected": "存在第 286 页的文件",
+      "actual": "未找到第 286 页",
+      "details": {
+        "section": "七、报价文件",
+        "missingPage": 286,
+        "range": {
+          "start": 281,
+          "end": 310
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3ck_7p61kq",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[七、报价文件] 页码不连续: 缺失第 287 页",
+      "targetPath": "07-报价文件",
+      "expected": "存在第 287 页的文件",
+      "actual": "未找到第 287 页",
+      "details": {
+        "section": "七、报价文件",
+        "missingPage": 287,
+        "range": {
+          "start": 281,
+          "end": 310
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3ck_0y9tyk",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[七、报价文件] 页码不连续: 缺失第 288 页",
+      "targetPath": "07-报价文件",
+      "expected": "存在第 288 页的文件",
+      "actual": "未找到第 288 页",
+      "details": {
+        "section": "七、报价文件",
+        "missingPage": 288,
+        "range": {
+          "start": 281,
+          "end": 310
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3ck_u9xvdm",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[七、报价文件] 页码不连续: 缺失第 289 页",
+      "targetPath": "07-报价文件",
+      "expected": "存在第 289 页的文件",
+      "actual": "未找到第 289 页",
+      "details": {
+        "section": "七、报价文件",
+        "missingPage": 289,
+        "range": {
+          "start": 281,
+          "end": 310
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3ck_lfmj5y",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[七、报价文件] 页码不连续: 缺失第 290 页",
+      "targetPath": "07-报价文件",
+      "expected": "存在第 290 页的文件",
+      "actual": "未找到第 290 页",
+      "details": {
+        "section": "七、报价文件",
+        "missingPage": 290,
+        "range": {
+          "start": 281,
+          "end": 310
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3ck_7xz846",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[七、报价文件] 页码不连续: 缺失第 291 页",
+      "targetPath": "07-报价文件",
+      "expected": "存在第 291 页的文件",
+      "actual": "未找到第 291 页",
+      "details": {
+        "section": "七、报价文件",
+        "missingPage": 291,
+        "range": {
+          "start": 281,
+          "end": 310
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3ck_blltez",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[七、报价文件] 页码不连续: 缺失第 292 页",
+      "targetPath": "07-报价文件",
+      "expected": "存在第 292 页的文件",
+      "actual": "未找到第 292 页",
+      "details": {
+        "section": "七、报价文件",
+        "missingPage": 292,
+        "range": {
+          "start": 281,
+          "end": 310
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3ck_5qioiy",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[七、报价文件] 页码不连续: 缺失第 293 页",
+      "targetPath": "07-报价文件",
+      "expected": "存在第 293 页的文件",
+      "actual": "未找到第 293 页",
+      "details": {
+        "section": "七、报价文件",
+        "missingPage": 293,
+        "range": {
+          "start": 281,
+          "end": 310
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3ck_91h8eo",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[七、报价文件] 页码不连续: 缺失第 294 页",
+      "targetPath": "07-报价文件",
+      "expected": "存在第 294 页的文件",
+      "actual": "未找到第 294 页",
+      "details": {
+        "section": "七、报价文件",
+        "missingPage": 294,
+        "range": {
+          "start": 281,
+          "end": 310
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3ck_5108ua",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[七、报价文件] 页码不连续: 缺失第 295 页",
+      "targetPath": "07-报价文件",
+      "expected": "存在第 295 页的文件",
+      "actual": "未找到第 295 页",
+      "details": {
+        "section": "七、报价文件",
+        "missingPage": 295,
+        "range": {
+          "start": 281,
+          "end": 310
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3ck_5nzhtx",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[七、报价文件] 页码不连续: 缺失第 296 页",
+      "targetPath": "07-报价文件",
+      "expected": "存在第 296 页的文件",
+      "actual": "未找到第 296 页",
+      "details": {
+        "section": "七、报价文件",
+        "missingPage": 296,
+        "range": {
+          "start": 281,
+          "end": 310
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3ck_mk04gn",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[七、报价文件] 页码不连续: 缺失第 297 页",
+      "targetPath": "07-报价文件",
+      "expected": "存在第 297 页的文件",
+      "actual": "未找到第 297 页",
+      "details": {
+        "section": "七、报价文件",
+        "missingPage": 297,
+        "range": {
+          "start": 281,
+          "end": 310
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3ck_yzqwao",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[七、报价文件] 页码不连续: 缺失第 298 页",
+      "targetPath": "07-报价文件",
+      "expected": "存在第 298 页的文件",
+      "actual": "未找到第 298 页",
+      "details": {
+        "section": "七、报价文件",
+        "missingPage": 298,
+        "range": {
+          "start": 281,
+          "end": 310
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3ck_0olqu4",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[七、报价文件] 页码不连续: 缺失第 299 页",
+      "targetPath": "07-报价文件",
+      "expected": "存在第 299 页的文件",
+      "actual": "未找到第 299 页",
+      "details": {
+        "section": "七、报价文件",
+        "missingPage": 299,
+        "range": {
+          "start": 281,
+          "end": 310
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3ck_j7ursm",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[七、报价文件] 页码不连续: 缺失第 300 页",
+      "targetPath": "07-报价文件",
+      "expected": "存在第 300 页的文件",
+      "actual": "未找到第 300 页",
+      "details": {
+        "section": "七、报价文件",
+        "missingPage": 300,
+        "range": {
+          "start": 281,
+          "end": 310
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3ck_0jb0io",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[七、报价文件] 页码不连续: 缺失第 301 页",
+      "targetPath": "07-报价文件",
+      "expected": "存在第 301 页的文件",
+      "actual": "未找到第 301 页",
+      "details": {
+        "section": "七、报价文件",
+        "missingPage": 301,
+        "range": {
+          "start": 281,
+          "end": 310
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3ck_673mjs",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[七、报价文件] 页码不连续: 缺失第 302 页",
+      "targetPath": "07-报价文件",
+      "expected": "存在第 302 页的文件",
+      "actual": "未找到第 302 页",
+      "details": {
+        "section": "七、报价文件",
+        "missingPage": 302,
+        "range": {
+          "start": 281,
+          "end": 310
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3ck_7ffo50",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[七、报价文件] 页码不连续: 缺失第 303 页",
+      "targetPath": "07-报价文件",
+      "expected": "存在第 303 页的文件",
+      "actual": "未找到第 303 页",
+      "details": {
+        "section": "七、报价文件",
+        "missingPage": 303,
+        "range": {
+          "start": 281,
+          "end": 310
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3ck_0hbdxl",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[七、报价文件] 页码不连续: 缺失第 304 页",
+      "targetPath": "07-报价文件",
+      "expected": "存在第 304 页的文件",
+      "actual": "未找到第 304 页",
+      "details": {
+        "section": "七、报价文件",
+        "missingPage": 304,
+        "range": {
+          "start": 281,
+          "end": 310
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3cl_npzxmy",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[七、报价文件] 页码不连续: 缺失第 305 页",
+      "targetPath": "07-报价文件",
+      "expected": "存在第 305 页的文件",
+      "actual": "未找到第 305 页",
+      "details": {
+        "section": "七、报价文件",
+        "missingPage": 305,
+        "range": {
+          "start": 281,
+          "end": 310
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3cl_61stgr",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[七、报价文件] 页码不连续: 缺失第 306 页",
+      "targetPath": "07-报价文件",
+      "expected": "存在第 306 页的文件",
+      "actual": "未找到第 306 页",
+      "details": {
+        "section": "七、报价文件",
+        "missingPage": 306,
+        "range": {
+          "start": 281,
+          "end": 310
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3cl_fkabde",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[七、报价文件] 页码不连续: 缺失第 307 页",
+      "targetPath": "07-报价文件",
+      "expected": "存在第 307 页的文件",
+      "actual": "未找到第 307 页",
+      "details": {
+        "section": "七、报价文件",
+        "missingPage": 307,
+        "range": {
+          "start": 281,
+          "end": 310
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3cl_3rte01",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[七、报价文件] 页码不连续: 缺失第 308 页",
+      "targetPath": "07-报价文件",
+      "expected": "存在第 308 页的文件",
+      "actual": "未找到第 308 页",
+      "details": {
+        "section": "七、报价文件",
+        "missingPage": 308,
+        "range": {
+          "start": 281,
+          "end": 310
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3cl_0lqa1u",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[七、报价文件] 页码不连续: 缺失第 309 页",
+      "targetPath": "07-报价文件",
+      "expected": "存在第 309 页的文件",
+      "actual": "未找到第 309 页",
+      "details": {
+        "section": "七、报价文件",
+        "missingPage": 309,
+        "range": {
+          "start": 281,
+          "end": 310
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3cl_2icroo",
+      "type": "PAGE_DISCONTINUITY",
+      "severity": "error",
+      "message": "章节[七、报价文件] 页码不连续: 缺失第 310 页",
+      "targetPath": "07-报价文件",
+      "expected": "存在第 310 页的文件",
+      "actual": "未找到第 310 页",
+      "details": {
+        "section": "七、报价文件",
+        "missingPage": 310,
+        "range": {
+          "start": 281,
+          "end": 310
+        }
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3cl_zd0rzy",
+      "type": "MISSING_SIGNATURE",
+      "severity": "warn",
+      "message": "章节[七、报价文件] 可能缺少签章: 07-报价文件\\分项报价表.xlsx (文件名未包含签章标识)",
+      "targetPath": "07-报价文件\\分项报价表.xlsx",
+      "expected": "文件名包含\"签章/盖章/签名/签字/_signed\"等标识",
+      "actual": "分项报价表.xlsx",
+      "details": {
+        "section": "七、报价文件",
+        "file": "07-报价文件\\分项报价表.xlsx",
+        "sizeCheck": false
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3cm_ypja3q",
+      "type": "MISSING_SIGNATURE",
+      "severity": "warn",
+      "message": "章节[七、报价文件] 可能缺少签章: 07-报价文件\\总价.pdf (文件名未包含签章标识)",
+      "targetPath": "07-报价文件\\总价.pdf",
+      "expected": "文件名包含\"签章/盖章/签名/签字/_signed\"等标识",
+      "actual": "总价.pdf",
+      "details": {
+        "section": "七、报价文件",
+        "file": "07-报价文件\\总价.pdf",
+        "sizeCheck": false
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3cn_50sfau",
+      "type": "MISSING_SIGNATURE",
+      "severity": "warn",
+      "message": "章节[七、报价文件] 可能缺少签章: 07-报价文件\\总价_v1.pdf (文件名未包含签章标识)",
+      "targetPath": "07-报价文件\\总价_v1.pdf",
+      "expected": "文件名包含\"签章/盖章/签名/签字/_signed\"等标识",
+      "actual": "总价_v1.pdf",
+      "details": {
+        "section": "七、报价文件",
+        "file": "07-报价文件\\总价_v1.pdf",
+        "sizeCheck": false
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3cn_z32uig",
+      "type": "MISSING_SIGNATURE",
+      "severity": "warn",
+      "message": "章节[七、报价文件] 可能缺少签章: 07-报价文件\\总价_v2.pdf (文件名未包含签章标识)",
+      "targetPath": "07-报价文件\\总价_v2.pdf",
+      "expected": "文件名包含\"签章/盖章/签名/签字/_signed\"等标识",
+      "actual": "总价_v2.pdf",
+      "details": {
+        "section": "七、报价文件",
+        "file": "07-报价文件\\总价_v2.pdf",
+        "sizeCheck": false
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3co_doj0ot",
+      "type": "MISSING_SIGNATURE",
+      "severity": "warn",
+      "message": "章节[七、报价文件] 可能缺少签章: 07-报价文件\\报价一览表.pdf (文件名未包含签章标识)",
+      "targetPath": "07-报价文件\\报价一览表.pdf",
+      "expected": "文件名包含\"签章/盖章/签名/签字/_signed\"等标识",
+      "actual": "报价一览表.pdf",
+      "details": {
+        "section": "七、报价文件",
+        "file": "07-报价文件\\报价一览表.pdf",
+        "sizeCheck": false
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3co_2o8gdl",
+      "type": "UNTRACKED_FILE",
+      "severity": "info",
+      "message": "章节[一、投标函] 存在未纳入规则的文件: 01-投标函\\投标函_v1.pdf",
+      "targetPath": "01-投标函\\投标函_v1.pdf",
+      "expected": "在规则中定义该文件的用途",
+      "actual": "01-投标函\\投标函_v1.pdf",
+      "details": {
+        "section": "一、投标函"
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3co_qffyic",
+      "type": "UNTRACKED_FILE",
+      "severity": "info",
+      "message": "章节[一、投标函] 存在未纳入规则的文件: 01-投标函\\投标函_v2.pdf",
+      "targetPath": "01-投标函\\投标函_v2.pdf",
+      "expected": "在规则中定义该文件的用途",
+      "actual": "01-投标函\\投标函_v2.pdf",
+      "details": {
+        "section": "一、投标函"
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3co_7dw7l6",
+      "type": "UNTRACKED_FILE",
+      "severity": "info",
+      "message": "章节[二、商务资质文件] 存在未纳入规则的文件: 02-商务资质\\安全生产许可证_20191231.pdf",
+      "targetPath": "02-商务资质\\安全生产许可证_20191231.pdf",
+      "expected": "在规则中定义该文件的用途",
+      "actual": "02-商务资质\\安全生产许可证_20191231.pdf",
+      "details": {
+        "section": "二、商务资质文件"
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3co_r54pym",
+      "type": "UNTRACKED_FILE",
+      "severity": "info",
+      "message": "章节[二、商务资质文件] 存在未纳入规则的文件: 02-商务资质\\资质等级证书_v1.pdf",
+      "targetPath": "02-商务资质\\资质等级证书_v1.pdf",
+      "expected": "在规则中定义该文件的用途",
+      "actual": "02-商务资质\\资质等级证书_v1.pdf",
+      "details": {
+        "section": "二、商务资质文件"
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3co_064q5i",
+      "type": "UNTRACKED_FILE",
+      "severity": "info",
+      "message": "章节[二、商务资质文件] 存在未纳入规则的文件: 02-商务资质\\资质等级证书_v2.pdf",
+      "targetPath": "02-商务资质\\资质等级证书_v2.pdf",
+      "expected": "在规则中定义该文件的用途",
+      "actual": "02-商务资质\\资质等级证书_v2.pdf",
+      "details": {
+        "section": "二、商务资质文件"
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3co_qwxu85",
+      "type": "UNTRACKED_FILE",
+      "severity": "info",
+      "message": "章节[二、商务资质文件] 存在未纳入规则的文件: 02-商务资质\\资质等级证书_v3.1.pdf",
+      "targetPath": "02-商务资质\\资质等级证书_v3.1.pdf",
+      "expected": "在规则中定义该文件的用途",
+      "actual": "02-商务资质\\资质等级证书_v3.1.pdf",
+      "details": {
+        "section": "二、商务资质文件"
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3co_8jptp8",
+      "type": "UNTRACKED_FILE",
+      "severity": "info",
+      "message": "章节[二、商务资质文件] 存在未纳入规则的文件: 02-商务资质\\ISO认证_20180601.pdf",
+      "targetPath": "02-商务资质\\ISO认证_20180601.pdf",
+      "expected": "在规则中定义该文件的用途",
+      "actual": "02-商务资质\\ISO认证_20180601.pdf",
+      "details": {
+        "section": "二、商务资质文件"
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3co_fcec8q",
+      "type": "UNTRACKED_FILE",
+      "severity": "info",
+      "message": "章节[三、财务状况] 存在未纳入规则的文件: 03-财务状况\\2023年度审计报告_v2.pdf",
+      "targetPath": "03-财务状况\\2023年度审计报告_v2.pdf",
+      "expected": "在规则中定义该文件的用途",
+      "actual": "03-财务状况\\2023年度审计报告_v2.pdf",
+      "details": {
+        "section": "三、财务状况"
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3co_znv4zv",
+      "type": "UNTRACKED_FILE",
+      "severity": "info",
+      "message": "章节[三、财务状况] 存在未纳入规则的文件: 03-财务状况\\财务错误格式.exe",
+      "targetPath": "03-财务状况\\财务错误格式.exe",
+      "expected": "在规则中定义该文件的用途",
+      "actual": "03-财务状况\\财务错误格式.exe",
+      "details": {
+        "section": "三、财务状况"
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3co_7ido5g",
+      "type": "UNTRACKED_FILE",
+      "severity": "info",
+      "message": "章节[五、项目管理机构] 存在未纳入规则的文件: 05-项目管理机构\\李工_建造师证_20170501.pdf",
+      "targetPath": "05-项目管理机构\\李工_建造师证_20170501.pdf",
+      "expected": "在规则中定义该文件的用途",
+      "actual": "05-项目管理机构\\李工_建造师证_20170501.pdf",
+      "details": {
+        "section": "五、项目管理机构"
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3cp_wcyche",
+      "type": "UNTRACKED_FILE",
+      "severity": "info",
+      "message": "章节[五、项目管理机构] 存在未纳入规则的文件: 05-项目管理机构\\项目技术负责人简历表.pdf",
+      "targetPath": "05-项目管理机构\\项目技术负责人简历表.pdf",
+      "expected": "在规则中定义该文件的用途",
+      "actual": "05-项目管理机构\\项目技术负责人简历表.pdf",
+      "details": {
+        "section": "五、项目管理机构"
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3cp_g2s7jt",
+      "type": "UNTRACKED_FILE",
+      "severity": "info",
+      "message": "章节[五、项目管理机构] 存在未纳入规则的文件: 05-项目管理机构\\张工_社保证明.pdf",
+      "targetPath": "05-项目管理机构\\张工_社保证明.pdf",
+      "expected": "在规则中定义该文件的用途",
+      "actual": "05-项目管理机构\\张工_社保证明.pdf",
+      "details": {
+        "section": "五、项目管理机构"
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3cp_jd1tx7",
+      "type": "UNTRACKED_FILE",
+      "severity": "info",
+      "message": "章节[六、施工组织设计] 存在未纳入规则的文件: 06-施工组织设计\\进度计划_错误命名.docx!!!",
+      "targetPath": "06-施工组织设计\\进度计划_错误命名.docx!!!",
+      "expected": "在规则中定义该文件的用途",
+      "actual": "06-施工组织设计\\进度计划_错误命名.docx!!!",
+      "details": {
+        "section": "六、施工组织设计"
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3cp_xlv7ih",
+      "type": "UNTRACKED_FILE",
+      "severity": "info",
+      "message": "章节[六、施工组织设计] 存在未纳入规则的文件: 06-施工组织设计\\临时草稿.tmp",
+      "targetPath": "06-施工组织设计\\临时草稿.tmp",
+      "expected": "在规则中定义该文件的用途",
+      "actual": "06-施工组织设计\\临时草稿.tmp",
+      "details": {
+        "section": "六、施工组织设计"
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3cp_0074rq",
+      "type": "UNTRACKED_FILE",
+      "severity": "info",
+      "message": "章节[七、报价文件] 存在未纳入规则的文件: 07-报价文件\\报价一览表.pdf",
+      "targetPath": "07-报价文件\\报价一览表.pdf",
+      "expected": "在规则中定义该文件的用途",
+      "actual": "07-报价文件\\报价一览表.pdf",
+      "details": {
+        "section": "七、报价文件"
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3cp_hci76a",
+      "type": "UNTRACKED_FILE",
+      "severity": "info",
+      "message": "章节[七、报价文件] 存在未纳入规则的文件: 07-报价文件\\分项报价表.xlsx",
+      "targetPath": "07-报价文件\\分项报价表.xlsx",
+      "expected": "在规则中定义该文件的用途",
+      "actual": "07-报价文件\\分项报价表.xlsx",
+      "details": {
+        "section": "七、报价文件"
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3cp_5e7bcf",
+      "type": "UNTRACKED_FILE",
+      "severity": "info",
+      "message": "章节[七、报价文件] 存在未纳入规则的文件: 07-报价文件\\总价_v1.pdf",
+      "targetPath": "07-报价文件\\总价_v1.pdf",
+      "expected": "在规则中定义该文件的用途",
+      "actual": "07-报价文件\\总价_v1.pdf",
+      "details": {
+        "section": "七、报价文件"
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3cp_pde6wz",
+      "type": "UNTRACKED_FILE",
+      "severity": "info",
+      "message": "章节[七、报价文件] 存在未纳入规则的文件: 07-报价文件\\总价_v2.pdf",
+      "targetPath": "07-报价文件\\总价_v2.pdf",
+      "expected": "在规则中定义该文件的用途",
+      "actual": "07-报价文件\\总价_v2.pdf",
+      "details": {
+        "section": "七、报价文件"
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3cp_t12oab",
+      "type": "UNTRACKED_FILE",
+      "severity": "info",
+      "message": "章节[七、报价文件] 存在未纳入规则的文件: 07-报价文件\\总价.pdf",
+      "targetPath": "07-报价文件\\总价.pdf",
+      "expected": "在规则中定义该文件的用途",
+      "actual": "07-报价文件\\总价.pdf",
+      "details": {
+        "section": "七、报价文件"
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3cq_51f7ns",
+      "type": "UNTRACKED_FILE",
+      "severity": "info",
+      "message": "未纳入规则的文件: 99-临时目录\\临时-内部说明.docx",
+      "targetPath": "99-临时目录\\临时-内部说明.docx",
+      "expected": "在规则中定义该文件的用途",
+      "actual": "99-临时目录\\临时-内部说明.docx",
+      "details": {
+        "section": null
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    },
+    {
+      "id": "ISSUE_mqcdi3cq_w69b2e",
+      "type": "UNTRACKED_FILE",
+      "severity": "info",
+      "message": "未纳入规则的文件: 99-临时目录\\扫描件_未整理.pdf",
+      "targetPath": "99-临时目录\\扫描件_未整理.pdf",
+      "expected": "在规则中定义该文件的用途",
+      "actual": "99-临时目录\\扫描件_未整理.pdf",
+      "details": {
+        "section": null
+      },
+      "reviewStatus": "pending",
+      "handler": null,
+      "assignee": null,
+      "remark": null,
+      "reviewHistory": []
+    }
+  ],
+  "scannedFiles": [
+    "01-投标函\\法定代表人身份证明_签章.pdf",
+    "01-投标函\\投标函_签章.pdf",
+    "01-投标函\\投标函_v1.pdf",
+    "01-投标函\\投标函_v2.pdf",
+    "02-商务资质\\安全生产许可证_20191231.pdf",
+    "02-商务资质\\营业执照副本.pdf",
+    "02-商务资质\\资质等级证书_v1.pdf",
+    "02-商务资质\\资质等级证书_v2.pdf",
+    "02-商务资质\\资质等级证书_v3.1.pdf",
+    "02-商务资质\\ISO认证_20180601.pdf",
+    "03-财务状况\\2022年度审计报告.pdf",
+    "03-财务状况\\2023年度审计报告_v2.pdf",
+    "03-财务状况\\2023年度审计报告.pdf",
+    "03-财务状况\\财务错误格式.exe",
+    "03-财务状况\\银行资信证明.pdf",
+    "04-类似业绩\\合同_商业大厦项目.pdf",
+    "04-类似业绩\\未命名扫描件.jpg",
+    "04-类似业绩\\业绩_2022_软件园项目.pdf",
+    "04-类似业绩\\业绩_2023_科技园项目_合同.pdf",
+    "04-类似业绩\\业绩汇总表.xlsx",
+    "05-项目管理机构\\李工_建造师证_20170501.pdf",
+    "05-项目管理机构\\项目技术负责人简历表.pdf",
+    "05-项目管理机构\\项目经理简历表_签章.pdf",
+    "05-项目管理机构\\张工_社保证明.pdf",
+    "06-施工组织设计\\进度计划_错误命名.docx!!!",
+    "06-施工组织设计\\临时草稿.tmp",
+    "06-施工组织设计\\施工组织设计.pdf",
+    "07-报价文件\\报价一览表.pdf",
+    "07-报价文件\\分项报价表.xlsx",
+    "07-报价文件\\总价_v1.pdf",
+    "07-报价文件\\总价_v2.pdf",
+    "07-报价文件\\总价.pdf",
+    "99-临时目录\\临时-内部说明.docx",
+    "99-临时目录\\扫描件_未整理.pdf"
+  ],
+  "summary": {
+    "total": 240,
+    "byType": {
+      "DUPLICATE_VERSION": 2,
+      "PAGE_DISCONTINUITY": 183,
+      "MISSING_SIGNATURE": 10,
+      "MISSING_FILE": 7,
+      "NAMING_ERROR": 14,
+      "EXPIRED_FIELD": 3,
+      "UNTRACKED_FILE": 21
+    },
+    "byStatus": {
+      "pending": 240,
+      "confirmed": 0,
+      "ignored": 0
+    }
+  }
+}

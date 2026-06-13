@@ -8,6 +8,7 @@ const { StateStore } = require('../src/state-store');
 const { Exporter } = require('../src/exporter');
 const { REVIEW_STATUS } = require('../src/models');
 const { BaselineManager, BaselineError } = require('../src/baseline');
+const { ProfileManager, ProfileError } = require('../src/profile-manager');
 
 const TEST_ROOT = path.join(__dirname, '..', '.test-workspace');
 const SAMPLES_DIR = path.join(__dirname, '..', 'samples');
@@ -778,7 +779,7 @@ test('回归: README 命令总览与 CLI --help 命令清单完全一致（防�
     if (m) {
       const name = m[1];
       // 只接受已知命令模式：validate, scan, resume, review, carryover, status, undo, export, list, history, init-samples
-      if (/^(validate|scan|resume|review|carryover|status|undo|export|list|history|init-samples|claim|assign|baseline)$/.test(name)) {
+      if (/^(validate|scan|resume|review|carryover|status|undo|export|list|history|init-samples|claim|assign|baseline|profile)$/.test(name)) {
         if (!helpCmdNames.includes(name)) helpCmdNames.push(name);
       }
     }
@@ -2133,6 +2134,652 @@ test('回归: README 命令总览包含 baseline 命令', () => {
   assert.ok(m, 'README 应存在「命令总览」章节');
   const codeBlock = m[1];
   assert.ok(/bbcheck baseline\b/.test(codeBlock), 'README 命令总览中应包含 bbcheck baseline');
+});
+
+// ─────────────────────────────────────────────────────────────
+// 测试 11: profile 规则包管理
+// ─────────────────────────────────────────────────────────────
+suite('新功能: profile add / list / show');
+
+test('profile add — 添加 YAML 规则成功', () => {
+  const storeDir = makeTempDir('pf-add');
+  const pm = new ProfileManager(storeDir);
+  const result = pm.add('test-profile', RULE_PATH);
+  assert.strictEqual(result.name, 'test-profile');
+  assert.strictEqual(result.overwritten, false);
+  assert.strictEqual(result.ruleFormat, 'yaml');
+  assert.ok(result.sectionCount > 0, '应有章节数');
+});
+
+test('profile add — 添加 JSON 规则成功', () => {
+  const storeDir = makeTempDir('pf-add-json');
+  const pm = new ProfileManager(storeDir);
+  const jsonRulePath = path.join(makeTempDir('pf-json-rule'), 'rule.json');
+  const ruleObj = {
+    name: 'JSON测试规则',
+    version: '1.0',
+    sections: [
+      { name: '章节一', order: 1, directory: '01-test', requiredFiles: [], namingPatterns: [] }
+    ]
+  };
+  fs.writeFileSync(jsonRulePath, JSON.stringify(ruleObj, null, 2), 'utf-8');
+  const result = pm.add('json-profile', jsonRulePath);
+  assert.strictEqual(result.ruleFormat, 'json');
+  assert.strictEqual(result.sectionCount, 1);
+});
+
+test('profile add — 同名不覆盖时报错', () => {
+  const storeDir = makeTempDir('pf-add-dup');
+  const pm = new ProfileManager(storeDir);
+  pm.add('dup-test', RULE_PATH);
+  assert.throws(() => pm.add('dup-test', RULE_PATH), /已存在/);
+});
+
+test('profile add — 同名 force 覆盖', () => {
+  const storeDir = makeTempDir('pf-add-force');
+  const pm = new ProfileManager(storeDir);
+  pm.add('force-test', RULE_PATH);
+  const result = pm.add('force-test', RULE_PATH, { force: true });
+  assert.strictEqual(result.overwritten, true);
+  assert.ok(result.previousData !== null, '应有 previousData');
+});
+
+test('profile add — 空名称报错', () => {
+  const storeDir = makeTempDir('pf-add-empty');
+  const pm = new ProfileManager(storeDir);
+  assert.throws(() => pm.add('', RULE_PATH), /不能为空/);
+});
+
+test('profile add — 非法字符名称报错', () => {
+  const storeDir = makeTempDir('pf-add-badname');
+  const pm = new ProfileManager(storeDir);
+  assert.throws(() => pm.add('bad name!', RULE_PATH), /非法字符/);
+});
+
+test('profile add — 规则文件不存在报错', () => {
+  const storeDir = makeTempDir('pf-add-nofile');
+  const pm = new ProfileManager(storeDir);
+  assert.throws(() => pm.add('t', '/nonexistent/rule.yaml'), /不存在/);
+});
+
+test('profile add — 不支持的格式报错', () => {
+  const storeDir = makeTempDir('pf-add-badfmt');
+  const pm = new ProfileManager(storeDir);
+  const badFile = path.join(makeTempDir('pf-badfmt-file'), 'rule.txt');
+  fs.writeFileSync(badFile, 'not a yaml or json', 'utf-8');
+  assert.throws(() => pm.add('t', badFile), /不支持.*格式/);
+});
+
+test('profile add — 规则文件语法错误报错', () => {
+  const storeDir = makeTempDir('pf-add-parsed');
+  const pm = new ProfileManager(storeDir);
+  const badFile = path.join(makeTempDir('pf-parsed-file'), 'bad.yaml');
+  fs.writeFileSync(badFile, 'key: [unclosed\n', 'utf-8');
+  assert.throws(() => pm.add('t', badFile), /解析失败/);
+});
+
+test('profile list — 空时返回空数组', () => {
+  const storeDir = makeTempDir('pf-list-empty');
+  const pm = new ProfileManager(storeDir);
+  const list = pm.list();
+  assert.strictEqual(list.length, 0);
+});
+
+test('profile list — 列出已添加的 profile', () => {
+  const storeDir = makeTempDir('pf-list');
+  const pm = new ProfileManager(storeDir);
+  pm.add('alpha', RULE_PATH);
+  pm.add('beta', RULE_PATH);
+  const list = pm.list();
+  assert.strictEqual(list.length, 2);
+  const names = list.map(p => p.name);
+  assert.ok(names.includes('alpha'));
+  assert.ok(names.includes('beta'));
+});
+
+test('profile list — 损坏文件标记为 corrupted', () => {
+  const storeDir = makeTempDir('pf-list-corrupt');
+  const pm = new ProfileManager(storeDir);
+  const profilesDir = path.join(storeDir, 'profiles');
+  if (!fs.existsSync(profilesDir)) fs.mkdirSync(profilesDir, { recursive: true });
+  fs.writeFileSync(path.join(profilesDir, 'bad.json'), 'not valid json{{{', 'utf-8');
+  const list = pm.list();
+  assert.strictEqual(list.length, 1);
+  assert.strictEqual(list[0].name, 'bad');
+  assert.strictEqual(list[0].corrupted, true);
+});
+
+test('profile show — 正常展示 profile 详情', () => {
+  const storeDir = makeTempDir('pf-show');
+  const pm = new ProfileManager(storeDir);
+  pm.add('show-test', RULE_PATH);
+  const info = pm.show('show-test');
+  assert.strictEqual(info.name, 'show-test');
+  assert.ok(info.createdAt, '应有创建时间');
+  assert.strictEqual(info.ruleFormat, 'yaml');
+  assert.ok(info.ruleName, '应有规则名称');
+  assert.ok(Array.isArray(info.sections), '应有章节列表');
+  assert.ok(info.sections.length > 0, '应至少有一个章节');
+  assert.ok(Array.isArray(info.previewLines), '应有预览行');
+});
+
+test('profile show — 不存在报错', () => {
+  const storeDir = makeTempDir('pf-show-notfound');
+  const pm = new ProfileManager(storeDir);
+  assert.throws(() => pm.show('nonexistent'), /不存在/);
+});
+
+test('profile show — 损坏文件报错', () => {
+  const storeDir = makeTempDir('pf-show-corrupt');
+  const pm = new ProfileManager(storeDir);
+  const profilesDir = path.join(storeDir, 'profiles');
+  if (!fs.existsSync(profilesDir)) fs.mkdirSync(profilesDir, { recursive: true });
+  fs.writeFileSync(path.join(profilesDir, 'corrupt.json'), 'not valid json{{{', 'utf-8');
+  assert.throws(() => pm.show('corrupt'), /已损坏/);
+});
+
+suite('新功能: profile remove');
+
+test('profile remove — 删除成功', () => {
+  const storeDir = makeTempDir('pf-remove');
+  const pm = new ProfileManager(storeDir);
+  pm.add('to-remove', RULE_PATH);
+  const listBefore = pm.list();
+  assert.strictEqual(listBefore.length, 1);
+  const result = pm.remove('to-remove');
+  assert.strictEqual(result.name, 'to-remove');
+  assert.ok(result.previousData !== null, '应有 previousData');
+  const listAfter = pm.list();
+  assert.strictEqual(listAfter.length, 0);
+});
+
+test('profile remove — 不存在报错', () => {
+  const storeDir = makeTempDir('pf-remove-notfound');
+  const pm = new ProfileManager(storeDir);
+  assert.throws(() => pm.remove('nonexistent'), /不存在/);
+});
+
+suite('新功能: profile export / import');
+
+test('profile export — 导出 JSON 文件', () => {
+  const storeDir = makeTempDir('pf-export');
+  const pm = new ProfileManager(storeDir);
+  pm.add('exp-test', RULE_PATH);
+  const outFile = path.join(makeTempDir('pf-export-out'), 'profile.json');
+  const result = pm.exportProfile('exp-test', outFile);
+  assert.ok(fs.existsSync(outFile), '导出文件应存在');
+  const data = JSON.parse(fs.readFileSync(outFile, 'utf-8'));
+  assert.strictEqual(data._meta.type, 'bbcheck-profile');
+  assert.strictEqual(data.profile.name, 'exp-test');
+  assert.ok(Array.isArray(data.profile.ruleData.sections));
+});
+
+test('profile export — 不存在报错', () => {
+  const storeDir = makeTempDir('pf-export-notfound');
+  const pm = new ProfileManager(storeDir);
+  const outFile = path.join(makeTempDir('pf-export-nf-out'), 'p.json');
+  assert.throws(() => pm.exportProfile('nonexistent', outFile), /不存在/);
+});
+
+test('profile import — 导入有效文件', () => {
+  const storeDir = makeTempDir('pf-import');
+  const pm1 = new ProfileManager(storeDir);
+  pm1.add('v1', RULE_PATH);
+  const outFile = path.join(makeTempDir('pf-import-out'), 'profile.json');
+  pm1.exportProfile('v1', outFile);
+
+  const importStoreDir = makeTempDir('pf-import-dest');
+  const pm2 = new ProfileManager(importStoreDir);
+  const result = pm2.importProfile(outFile);
+  assert.strictEqual(result.name, 'v1');
+  assert.strictEqual(result.overwritten, false);
+  const list = pm2.list();
+  assert.strictEqual(list.length, 1);
+  assert.strictEqual(list[0].name, 'v1');
+});
+
+test('profile import — 导入时重命名', () => {
+  const storeDir = makeTempDir('pf-import-rename');
+  const pm1 = new ProfileManager(storeDir);
+  pm1.add('original', RULE_PATH);
+  const outFile = path.join(makeTempDir('pf-import-rename-out'), 'p.json');
+  pm1.exportProfile('original', outFile);
+
+  const importStoreDir = makeTempDir('pf-import-rename-dest');
+  const pm2 = new ProfileManager(importStoreDir);
+  const result = pm2.importProfile(outFile, { name: 'renamed' });
+  assert.strictEqual(result.name, 'renamed');
+  const info = pm2.show('renamed');
+  assert.ok(info, '应能以新名称加载');
+});
+
+test('profile import — 同名不覆盖报错', () => {
+  const storeDir = makeTempDir('pf-import-dup');
+  const pm = new ProfileManager(storeDir);
+  pm.add('dup', RULE_PATH);
+  const outFile = path.join(makeTempDir('pf-import-dup-out'), 'p.json');
+  pm.exportProfile('dup', outFile);
+  assert.throws(() => pm.importProfile(outFile), /已存在/);
+});
+
+test('profile import — 同名 force 覆盖', () => {
+  const storeDir = makeTempDir('pf-import-force');
+  const pm = new ProfileManager(storeDir);
+  pm.add('dup-f', RULE_PATH);
+  const outFile = path.join(makeTempDir('pf-import-force-out'), 'p.json');
+  pm.exportProfile('dup-f', outFile);
+  const result = pm.importProfile(outFile, { force: true });
+  assert.strictEqual(result.overwritten, true);
+});
+
+test('profile import — 损坏文件报错', () => {
+  const storeDir = makeTempDir('pf-import-corrupt');
+  const pm = new ProfileManager(storeDir);
+  const corruptFile = path.join(makeTempDir('pf-import-corrupt-file'), 'bad.json');
+  fs.writeFileSync(corruptFile, 'not valid json{{{', 'utf-8');
+  assert.throws(() => pm.importProfile(corruptFile), /已损坏/);
+});
+
+test('profile import — 非 profile 文件报错', () => {
+  const storeDir = makeTempDir('pf-import-wrong');
+  const pm = new ProfileManager(storeDir);
+  const wrongFile = path.join(makeTempDir('pf-import-wrong-file'), 'wrong.json');
+  fs.writeFileSync(wrongFile, JSON.stringify({ foo: 'bar' }), 'utf-8');
+  assert.throws(() => pm.importProfile(wrongFile), /不是有效的 bbcheck profile/);
+});
+
+test('profile import — 文件不存在报错', () => {
+  const storeDir = makeTempDir('pf-import-nofile');
+  const pm = new ProfileManager(storeDir);
+  assert.throws(() => pm.importProfile('/nonexistent/file.json'), /不存在/);
+});
+
+suite('新功能: profile load / markUsed');
+
+test('profile load — 加载规则用于扫描', () => {
+  const storeDir = makeTempDir('pf-load');
+  const pm = new ProfileManager(storeDir);
+  pm.add('load-test', RULE_PATH);
+  const loaded = pm.load('load-test');
+  assert.ok(loaded.rule, '应返回 rule 对象');
+  assert.ok(Array.isArray(loaded.rule.sections), '应有 sections 数组');
+  assert.strictEqual(loaded.profileName, 'load-test');
+});
+
+test('profile load — 不存在报错', () => {
+  const storeDir = makeTempDir('pf-load-notfound');
+  const pm = new ProfileManager(storeDir);
+  assert.throws(() => pm.load('nonexistent'), /不存在/);
+});
+
+test('profile load — 缺少规则数据报错', () => {
+  const storeDir = makeTempDir('pf-load-broken');
+  const pm = new ProfileManager(storeDir);
+  const profilesDir = path.join(storeDir, 'profiles');
+  if (!fs.existsSync(profilesDir)) fs.mkdirSync(profilesDir, { recursive: true });
+  fs.writeFileSync(path.join(profilesDir, 'broken.json'), JSON.stringify({
+    name: 'broken',
+    createdAt: new Date().toISOString(),
+    ruleData: null
+  }), 'utf-8');
+  assert.throws(() => pm.load('broken'), /缺少规则数据/);
+});
+
+test('profile markUsed — 更新最近使用目录', () => {
+  const storeDir = makeTempDir('pf-markused');
+  const pm = new ProfileManager(storeDir);
+  pm.add('mark-test', RULE_PATH);
+  pm.markUsed('mark-test', DATA_DIR);
+  const info = pm.show('mark-test');
+  assert.strictEqual(info.lastUsedDir, path.resolve(DATA_DIR));
+  assert.ok(info.lastUsedAt, '应有 lastUsedAt');
+});
+
+test('profile markUsed — 不存在报错', () => {
+  const storeDir = makeTempDir('pf-markused-notfound');
+  const pm = new ProfileManager(storeDir);
+  assert.throws(() => pm.markUsed('nonexistent', DATA_DIR), /不存在/);
+});
+
+suite('新功能: profile undo 撤销');
+
+test('undo profile add — 新 profile 被删除', () => {
+  const storeDir = makeTempDir('pf-undo-add');
+  const store = new StateStore(storeDir);
+  const pm = new ProfileManager(storeDir);
+  const result = pm.add('undo-test', RULE_PATH);
+  store.pushProfileUndo({
+    type: 'PROFILE_ADD',
+    profileName: 'undo-test',
+    previousData: result.previousData || null
+  });
+  const listBefore = pm.list();
+  assert.strictEqual(listBefore.length, 1);
+  const action = store.undo();
+  assert.strictEqual(action.type, 'PROFILE_ADD');
+  assert.strictEqual(action.profileName, 'undo-test');
+  const listAfter = pm.list();
+  assert.strictEqual(listAfter.length, 0);
+});
+
+test('undo profile add — 覆盖 profile 恢复原内容', () => {
+  const storeDir = makeTempDir('pf-undo-overwrite');
+  const store = new StateStore(storeDir);
+  const pm = new ProfileManager(storeDir);
+  const r1 = pm.add('overwrite', RULE_PATH);
+  store.pushProfileUndo({
+    type: 'PROFILE_ADD',
+    profileName: 'overwrite',
+    previousData: r1.previousData || null
+  });
+  const jsonRulePath = path.join(makeTempDir('pf-undo-ov-json'), 'rule.json');
+  fs.writeFileSync(jsonRulePath, JSON.stringify({
+    name: '简化规则', sections: [{ name: 'S1', order: 1 }]
+  }), 'utf-8');
+  const r2 = pm.add('overwrite', jsonRulePath, { force: true });
+  store.pushProfileUndo({
+    type: 'PROFILE_ADD',
+    profileName: 'overwrite',
+    previousData: r2.previousData || null
+  });
+  const infoBefore = pm.show('overwrite');
+  assert.strictEqual(infoBefore.ruleName, '简化规则');
+  store.undo();
+  const infoAfter = pm.show('overwrite');
+  assert.notStrictEqual(infoAfter.ruleName, '简化规则', '应恢复为原规则');
+});
+
+test('undo profile remove — 删除后恢复', () => {
+  const storeDir = makeTempDir('pf-undo-remove');
+  const store = new StateStore(storeDir);
+  const pm = new ProfileManager(storeDir);
+  pm.add('restore-test', RULE_PATH);
+  const removeResult = pm.remove('restore-test');
+  store.pushProfileUndo({
+    type: 'PROFILE_REMOVE',
+    profileName: 'restore-test',
+    previousData: removeResult.previousData || null
+  });
+  assert.strictEqual(pm.list().length, 0);
+  store.undo();
+  assert.strictEqual(pm.list().length, 1);
+  const info = pm.show('restore-test');
+  assert.ok(info, '应能恢复并显示');
+});
+
+test('undo profile import — 导入被撤销', () => {
+  const storeDir = makeTempDir('pf-undo-imp-src');
+  const pm1 = new ProfileManager(storeDir);
+  pm1.add('v1', RULE_PATH);
+  const outFile = path.join(makeTempDir('pf-undo-imp-out'), 'p.json');
+  pm1.exportProfile('v1', outFile);
+
+  const importStoreDir = makeTempDir('pf-undo-imp-dest');
+  const store2 = new StateStore(importStoreDir);
+  const pm2 = new ProfileManager(importStoreDir);
+  const importResult = pm2.importProfile(outFile);
+  store2.pushProfileUndo({
+    type: 'PROFILE_IMPORT',
+    profileName: importResult.name,
+    previousData: importResult.previousData || null
+  });
+  assert.strictEqual(pm2.list().length, 1);
+  store2.undo();
+  assert.strictEqual(pm2.list().length, 0);
+});
+
+suite('新功能: profile 跨重启持久化');
+
+test('跨重启：profile 在新实例中可读取', () => {
+  const storeDir = makeTempDir('pf-persist');
+  const pm1 = new ProfileManager(storeDir);
+  pm1.add('persist-test', RULE_PATH);
+  pm1.markUsed('persist-test', DATA_DIR);
+
+  const pm2 = new ProfileManager(storeDir);
+  const list = pm2.list();
+  assert.strictEqual(list.length, 1);
+  assert.strictEqual(list[0].name, 'persist-test');
+  assert.strictEqual(list[0].lastUsedDir, path.resolve(DATA_DIR));
+
+  const info = pm2.show('persist-test');
+  assert.ok(info, '新实例应能 show profile');
+  assert.ok(info.sectionCount > 0);
+});
+
+test('跨重启：撤销栈持久化可撤销 profile add', () => {
+  const storeDir = makeTempDir('pf-persist-undo');
+  const store1 = new StateStore(storeDir);
+  const pm1 = new ProfileManager(storeDir);
+  const result = pm1.add('undo-persist', RULE_PATH);
+  store1.pushProfileUndo({
+    type: 'PROFILE_ADD',
+    profileName: 'undo-persist',
+    previousData: result.previousData || null
+  });
+
+  const store2 = new StateStore(storeDir);
+  const pm2 = new ProfileManager(storeDir);
+  assert.strictEqual(pm2.list().length, 1);
+  assert.ok(store2.getUndoStackSize() >= 1);
+  store2.undo();
+  assert.strictEqual(pm2.list().length, 0);
+});
+
+test('跨重启：导出再导入，数据完整', () => {
+  const storeDir = makeTempDir('pf-persist-exp');
+  const pm1 = new ProfileManager(storeDir);
+  pm1.add('v1', RULE_PATH);
+  const outFile = path.join(makeTempDir('pf-persist-exp-file'), 'p.json');
+  pm1.exportProfile('v1', outFile);
+
+  const importStoreDir = makeTempDir('pf-persist-exp-dest');
+  const pm2 = new ProfileManager(importStoreDir);
+  pm2.importProfile(outFile);
+
+  const pm3 = new ProfileManager(importStoreDir);
+  const list = pm3.list();
+  assert.strictEqual(list.length, 1);
+  const info = pm3.show('v1');
+  assert.ok(info.sectionCount > 0);
+  const loaded = pm3.load('v1');
+  assert.ok(loaded.rule.sections.length > 0);
+});
+
+suite('新功能: profile CLI 命令');
+
+test('CLI profile add — 添加成功', () => {
+  const storeDir = makeTempDir('cli-pf-add');
+  const res = runCli('--store-dir', storeDir, 'profile', 'add', '--name', 'myprof', '--rule', RULE_PATH);
+  assert.strictEqual(res.status, 0, 'profile add 应成功');
+  assert.ok(/已添加/.test(res.stdout), '输出应含"已添加"');
+  assert.ok(/myprof/.test(res.stdout), '输出应含 profile 名称');
+});
+
+test('CLI profile list — 显示 profile 列表', () => {
+  const storeDir = makeTempDir('cli-pf-list');
+  runCli('--store-dir', storeDir, 'profile', 'add', '--name', 'list-test', '--rule', RULE_PATH);
+  const res = runCli('--store-dir', storeDir, 'profile', 'list');
+  assert.strictEqual(res.status, 0);
+  assert.ok(/list-test/.test(res.stdout), '列表应包含 profile 名称');
+});
+
+test('CLI profile list — 空时提示', () => {
+  const storeDir = makeTempDir('cli-pf-list-empty');
+  const res = runCli('--store-dir', storeDir, 'profile', 'list');
+  assert.strictEqual(res.status, 0);
+  assert.ok(/暂无 profile/.test(res.stdout), '空时应提示暂无');
+});
+
+test('CLI profile show — 详情展示', () => {
+  const storeDir = makeTempDir('cli-pf-show');
+  runCli('--store-dir', storeDir, 'profile', 'add', '--name', 'show-me', '--rule', RULE_PATH);
+  const res = runCli('--store-dir', storeDir, 'profile', 'show', '--name', 'show-me');
+  assert.strictEqual(res.status, 0);
+  assert.ok(/Profile 详情/.test(res.stdout), '应含详情标题');
+  assert.ok(/章节数/.test(res.stdout), '应含章节数');
+});
+
+test('CLI profile show — 不存在退出码 1', () => {
+  const storeDir = makeTempDir('cli-pf-show-nf');
+  const res = runCli('--store-dir', storeDir, 'profile', 'show', '--name', 'does-not-exist');
+  assert.strictEqual(res.status, 1);
+  assert.ok(/不存在/.test(res.stdout + res.stderr), '应提示不存在');
+});
+
+test('CLI profile use — 使用 profile 扫描目录', () => {
+  const storeDir = makeTempDir('cli-pf-use');
+  runCli('--store-dir', storeDir, 'profile', 'add', '--name', 'use-test', '--rule', RULE_PATH);
+  const res = runCli('--store-dir', storeDir, 'profile', 'use', '--name', 'use-test', '--dir', DATA_DIR, '--force-scan');
+  assert.strictEqual(res.status, 0, 'profile use 应成功');
+  assert.ok(/扫描完成/.test(res.stdout), '应输出扫描完成');
+  assert.ok(/发现.*个问题/.test(res.stdout), '应报告问题数');
+});
+
+test('CLI profile use — 目录不存在退出码 1', () => {
+  const storeDir = makeTempDir('cli-pf-use-nodir');
+  runCli('--store-dir', storeDir, 'profile', 'add', '--name', 't', '--rule', RULE_PATH);
+  const res = runCli('--store-dir', storeDir, 'profile', 'use', '--name', 't', '--dir', '/nonexistent/dir/xyz');
+  assert.strictEqual(res.status, 1);
+  assert.ok(/不存在|目录错误/.test(res.stdout + res.stderr), '应提示目录错误');
+});
+
+test('CLI profile use — profile 不存在退出码 1', () => {
+  const storeDir = makeTempDir('cli-pf-use-nopf');
+  const res = runCli('--store-dir', storeDir, 'profile', 'use', '--name', 'nope', '--dir', DATA_DIR);
+  assert.strictEqual(res.status, 1);
+});
+
+test('CLI profile export — 导出成功', () => {
+  const storeDir = makeTempDir('cli-pf-exp');
+  runCli('--store-dir', storeDir, 'profile', 'add', '--name', 'exp-cli', '--rule', RULE_PATH);
+  const outFile = path.join(makeTempDir('cli-pf-exp-out'), 'p.json');
+  const res = runCli('--store-dir', storeDir, 'profile', 'export', '--name', 'exp-cli', '-o', outFile);
+  assert.strictEqual(res.status, 0);
+  assert.ok(fs.existsSync(outFile), '导出文件应存在');
+  assert.ok(/已导出/.test(res.stdout), '输出应含"已导出"');
+});
+
+test('CLI profile import — 导入成功', () => {
+  const storeDir = makeTempDir('cli-pf-imp-src');
+  runCli('--store-dir', storeDir, 'profile', 'add', '--name', 'imp-src', '--rule', RULE_PATH);
+  const outFile = path.join(makeTempDir('cli-pf-imp-out'), 'p.json');
+  runCli('--store-dir', storeDir, 'profile', 'export', '--name', 'imp-src', '-o', outFile);
+
+  const storeDir2 = makeTempDir('cli-pf-imp-dest');
+  const res = runCli('--store-dir', storeDir2, 'profile', 'import', '--file', outFile);
+  assert.strictEqual(res.status, 0);
+  assert.ok(/已导入/.test(res.stdout), '输出应含"已导入"');
+  const listRes = runCli('--store-dir', storeDir2, 'profile', 'list');
+  assert.ok(/imp-src/.test(listRes.stdout), '导入后应能列出');
+});
+
+test('CLI profile import — 重命名导入', () => {
+  const storeDir = makeTempDir('cli-pf-imp-rn-src');
+  runCli('--store-dir', storeDir, 'profile', 'add', '--name', 'orig', '--rule', RULE_PATH);
+  const outFile = path.join(makeTempDir('cli-pf-imp-rn-out'), 'p.json');
+  runCli('--store-dir', storeDir, 'profile', 'export', '--name', 'orig', '-o', outFile);
+
+  const storeDir2 = makeTempDir('cli-pf-imp-rn-dest');
+  const res = runCli('--store-dir', storeDir2, 'profile', 'import', '--file', outFile, '--rename', 'renamed-cli');
+  assert.strictEqual(res.status, 0);
+  const listRes = runCli('--store-dir', storeDir2, 'profile', 'list');
+  assert.ok(/renamed-cli/.test(listRes.stdout), '应以重命名后名称列出');
+});
+
+test('CLI profile import — 损坏文件退出码 2', () => {
+  const storeDir = makeTempDir('cli-pf-imp-corrupt');
+  const corruptFile = path.join(makeTempDir('cli-pf-imp-corrupt-file'), 'bad.json');
+  fs.writeFileSync(corruptFile, 'not valid json{{{', 'utf-8');
+  const res = runCli('--store-dir', storeDir, 'profile', 'import', '--file', corruptFile);
+  assert.strictEqual(res.status, 2, '损坏文件应退出码 2');
+});
+
+test('CLI profile remove — 删除成功', () => {
+  const storeDir = makeTempDir('cli-pf-remove');
+  runCli('--store-dir', storeDir, 'profile', 'add', '--name', 'to-delete', '--rule', RULE_PATH);
+  const res = runCli('--store-dir', storeDir, 'profile', 'remove', '--name', 'to-delete');
+  assert.strictEqual(res.status, 0);
+  assert.ok(/已删除/.test(res.stdout), '输出应含"已删除"');
+  const listRes = runCli('--store-dir', storeDir, 'profile', 'list');
+  assert.ok(/暂无 profile/.test(listRes.stdout), '删除后应无 profile');
+});
+
+test('CLI profile remove — 不存在退出码 1', () => {
+  const storeDir = makeTempDir('cli-pf-remove-nf');
+  const res = runCli('--store-dir', storeDir, 'profile', 'remove', '--name', 'nope');
+  assert.strictEqual(res.status, 1);
+});
+
+test('CLI undo — 撤销 profile add', () => {
+  const storeDir = makeTempDir('cli-pf-undo-add');
+  runCli('--store-dir', storeDir, 'profile', 'add', '--name', 'undo-me', '--rule', RULE_PATH);
+  const undoRes = runCli('--store-dir', storeDir, 'undo');
+  assert.strictEqual(undoRes.status, 0);
+  assert.ok(/添加 profile/.test(undoRes.stdout), '输出应含"添加 profile"');
+  const listRes = runCli('--store-dir', storeDir, 'profile', 'list');
+  assert.ok(/暂无 profile/.test(listRes.stdout), '撤销后应无 profile');
+});
+
+test('CLI undo — 撤销 profile remove', () => {
+  const storeDir = makeTempDir('cli-pf-undo-remove');
+  runCli('--store-dir', storeDir, 'profile', 'add', '--name', 'back', '--rule', RULE_PATH);
+  runCli('--store-dir', storeDir, 'profile', 'remove', '--name', 'back');
+  const undoRes = runCli('--store-dir', storeDir, 'undo');
+  assert.strictEqual(undoRes.status, 0);
+  assert.ok(/删除 profile/.test(undoRes.stdout), '输出应含"删除 profile"');
+  const listRes = runCli('--store-dir', storeDir, 'profile', 'list');
+  assert.ok(/back/.test(listRes.stdout), '撤销删除后应恢复 profile');
+});
+
+test('CLI undo — 撤销 profile import', () => {
+  const storeDir = makeTempDir('cli-pf-undo-imp-src');
+  runCli('--store-dir', storeDir, 'profile', 'add', '--name', 'src', '--rule', RULE_PATH);
+  const outFile = path.join(makeTempDir('cli-pf-undo-imp-out'), 'p.json');
+  runCli('--store-dir', storeDir, 'profile', 'export', '--name', 'src', '-o', outFile);
+
+  const storeDir2 = makeTempDir('cli-pf-undo-imp-dest');
+  runCli('--store-dir', storeDir2, 'profile', 'import', '--file', outFile);
+  const undoRes = runCli('--store-dir', storeDir2, 'undo');
+  assert.strictEqual(undoRes.status, 0);
+  assert.ok(/导入 profile/.test(undoRes.stdout), '输出应含"导入 profile"');
+  const listRes = runCli('--store-dir', storeDir2, 'profile', 'list');
+  assert.ok(/暂无 profile/.test(listRes.stdout), '撤销导入后应无 profile');
+});
+
+test('CLI profile add — 同名退出码 1，提示可用 --force', () => {
+  const storeDir = makeTempDir('cli-pf-dup');
+  runCli('--store-dir', storeDir, 'profile', 'add', '--name', 'dup', '--rule', RULE_PATH);
+  const res = runCli('--store-dir', storeDir, 'profile', 'add', '--name', 'dup', '--rule', RULE_PATH);
+  assert.strictEqual(res.status, 1);
+  assert.ok(/--force/.test(res.stdout + res.stderr), '应提示 --force');
+});
+
+test('CLI profile add — --force 覆盖同名', () => {
+  const storeDir = makeTempDir('cli-pf-force');
+  runCli('--store-dir', storeDir, 'profile', 'add', '--name', 'f', '--rule', RULE_PATH);
+  const res = runCli('--store-dir', storeDir, 'profile', 'add', '--name', 'f', '--rule', RULE_PATH, '--force');
+  assert.strictEqual(res.status, 0);
+  assert.ok(/覆盖/.test(res.stdout), '应提示已覆盖');
+});
+
+test('CLI profile use — 扫描后 markUsed 记录最近目录', () => {
+  const storeDir = makeTempDir('cli-pf-use-mark');
+  runCli('--store-dir', storeDir, 'profile', 'add', '--name', 'mark', '--rule', RULE_PATH);
+  runCli('--store-dir', storeDir, 'profile', 'use', '--name', 'mark', '--dir', DATA_DIR, '--force-scan');
+  const showRes = runCli('--store-dir', storeDir, 'profile', 'show', '--name', 'mark');
+  assert.ok(showRes.stdout.includes('资料目录') || showRes.stdout.includes(path.resolve(DATA_DIR).slice(0, 20)),
+    'show 中应显示最近使用目录');
+});
+
+test('回归: README 命令总览包含 profile 命令', () => {
+  const readmePath = path.join(__dirname, '..', 'README.md');
+  const readmeContent = fs.readFileSync(readmePath, 'utf-8');
+  const commandOverviewRe = /## 命令总览[\s\S]*?```\s*\n([\s\S]*?)\n```/;
+  const m = readmeContent.match(commandOverviewRe);
+  assert.ok(m, 'README 应存在「命令总览」章节');
+  const codeBlock = m[1];
+  assert.ok(/bbcheck profile\b/.test(codeBlock), 'README 命令总览中应包含 bbcheck profile');
 });
 
 // ─────────────────────────────────────────────────────────────

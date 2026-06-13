@@ -1,0 +1,11 @@
+name: "Reviewer Profile Rule"
+version: "1.0"
+sections:
+  - name: "主文件"
+    order: 1
+    directory: "01-main"
+    requiredFiles:
+      - path: "required.pdf"
+    namingPatterns:
+      - pattern: "^required\\.pdf$"
+        label: "required.pdf"

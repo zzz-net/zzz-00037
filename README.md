@@ -248,6 +248,7 @@ bbcheck export <output>          # 导出复核报告（csv/html/json）
 bbcheck list                     # 列出所有扫描批次
 bbcheck history <issueId>        # 查看单个问题的复核历史
 bbcheck baseline <sub>           # 基线管理：save/diff/list/export/import
+bbcheck profile <sub>            # 规则包管理：add/list/show/use/export/import/remove
 bbcheck init-samples             # 生成样例规则和资料目录
 ```
 
@@ -384,6 +385,22 @@ node src/cli.js undo
 # 8.6) 导出/导入基线（跨机器共享）
 node src/cli.js baseline export --name v1 -o v1-baseline.json
 node src/cli.js baseline import --file v1-baseline.json
+
+# 8.7) 登记常用规则为 profile，后续复用
+node src/cli.js profile add --name audit-v1 --rule mybid/rule.yaml
+# 查看已登记的 profile
+node src/cli.js profile list
+# 查看 profile 详情
+node src/cli.js profile show --name audit-v1
+# 使用 profile 扫描（无需再传规则路径）
+node src/cli.js profile use --name audit-v1 --dir mybid/资料目录
+# 撤销 profile 登记
+node src/cli.js undo
+# 导出/导入 profile（团队共享）
+node src/cli.js profile export --name audit-v1 -o audit-profile.json
+node src/cli.js profile import --file audit-profile.json --rename audit-copy
+# 删除 profile
+node src/cli.js profile remove --name audit-copy
 
 # 9) 导出 HTML 报告发给同事
 node src/cli.js export report.html

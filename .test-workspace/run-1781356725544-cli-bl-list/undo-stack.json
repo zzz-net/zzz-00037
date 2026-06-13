@@ -1,0 +1,11 @@
+[
+  {
+    "type": "NEW_BATCH",
+    "batchId": "BATCH_mqcdsugv_81az"
+  },
+  {
+    "type": "BASELINE_SAVE",
+    "baselineName": "mybl",
+    "previousData": null
+  }
+]

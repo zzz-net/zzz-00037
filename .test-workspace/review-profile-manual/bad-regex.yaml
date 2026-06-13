@@ -1,0 +1,8 @@
+name: "Bad Regex Rule"
+sections:
+  - name: "坏规则"
+    order: 1
+    directory: "01-main"
+    namingPatterns:
+      - pattern: "[a-z"
+        label: "bad regex"

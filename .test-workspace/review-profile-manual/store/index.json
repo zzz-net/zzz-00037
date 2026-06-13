@@ -1,0 +1,23 @@
+{
+  "batches": [
+    {
+      "batchId": "BATCH_mqce8bvc_o210",
+      "rulePath": "profile://review-main (D:\\workSpace\\AI__SPACE\\zzz-00037\\.test-workspace\\review-profile-manual\\rule.yaml)",
+      "targetDir": "D:\\workSpace\\AI__SPACE\\zzz-00037\\.test-workspace\\review-profile-manual\\docs",
+      "directorySignature": "8aeae58658063613bff0a535fafdcf4ae1f7ed7c2fbefda5b08fa57712d6c666",
+      "scanTime": "2026-06-13T13:30:48.216Z",
+      "lastModified": "2026-06-13T13:30:48.224Z",
+      "totalIssues": 0,
+      "pendingIssues": 0
+    }
+  ],
+  "directoryIndex": {
+    "D:\\workSpace\\AI__SPACE\\zzz-00037\\.test-workspace\\review-profile-manual\\docs": {
+      "signature": "8aeae58658063613bff0a535fafdcf4ae1f7ed7c2fbefda5b08fa57712d6c666",
+      "batches": [
+        "BATCH_mqce8bvc_o210"
+      ],
+      "lastScanTime": "2026-06-13T13:30:48.216Z"
+    }
+  }
+}

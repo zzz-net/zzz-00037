@@ -1,0 +1,4 @@
+name: "Minimal Valid Rule"
+sections:
+  - name: "Only Section"
+    order: 1

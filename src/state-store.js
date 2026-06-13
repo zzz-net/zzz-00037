@@ -396,6 +396,30 @@ class StateStore {
         }
         break;
       }
+      case 'PROFILE_ADD':
+      case 'PROFILE_IMPORT': {
+        const profilesDir = path.join(this.storeDir, 'profiles');
+        const profilePath = path.join(profilesDir, `${action.profileName}.json`);
+        if (action.previousData) {
+          fs.writeFileSync(profilePath, JSON.stringify(action.previousData, null, 2), 'utf-8');
+        } else {
+          if (fs.existsSync(profilePath)) {
+            fs.unlinkSync(profilePath);
+          }
+        }
+        break;
+      }
+      case 'PROFILE_REMOVE': {
+        const profilesDir = path.join(this.storeDir, 'profiles');
+        const profilePath = path.join(profilesDir, `${action.profileName}.json`);
+        if (action.previousData) {
+          if (!fs.existsSync(profilesDir)) {
+            fs.mkdirSync(profilesDir, { recursive: true });
+          }
+          fs.writeFileSync(profilePath, JSON.stringify(action.previousData, null, 2), 'utf-8');
+        }
+        break;
+      }
     }
 
     this._saveAllData(data);
@@ -404,6 +428,10 @@ class StateStore {
   }
 
   pushBaselineUndo(action) {
+    this._pushUndo(action);
+  }
+
+  pushProfileUndo(action) {
     this._pushUndo(action);
   }
 

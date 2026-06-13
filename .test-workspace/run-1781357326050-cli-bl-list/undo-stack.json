@@ -1,0 +1,11 @@
+[
+  {
+    "type": "NEW_BATCH",
+    "batchId": "BATCH_mqce5prl_zrbt"
+  },
+  {
+    "type": "BASELINE_SAVE",
+    "baselineName": "mybl",
+    "previousData": null
+  }
+]

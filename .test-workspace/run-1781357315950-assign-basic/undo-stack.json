@@ -1,0 +1,82 @@
+[
+  {
+    "type": "NEW_BATCH",
+    "batchId": "BATCH_mqce5htc_ju5m"
+  },
+  {
+    "type": "CLAIM",
+    "batchId": "BATCH_mqce5htc_ju5m",
+    "beforeStates": [
+      {
+        "id": "ISSUE_mqce5htg_eiyew5",
+        "type": "DUPLICATE_VERSION",
+        "severity": "error",
+        "message": "章节[一、投标函] 检测到重复版本文件: 01-投标函\\投标函_v1.pdf(版本:1), 01-投标函\\投标函_v2.pdf(版本:2)",
+        "targetPath": "01-投标函\\投标函_v1.pdf",
+        "expected": "仅保留一个版本",
+        "actual": "存在 2 个版本",
+        "details": {
+          "section": "一、投标函",
+          "files": [
+            {
+              "path": "01-投标函\\投标函_v1.pdf",
+              "version": "1"
+            },
+            {
+              "path": "01-投标函\\投标函_v2.pdf",
+              "version": "2"
+            }
+          ]
+        },
+        "reviewStatus": "pending",
+        "handler": null,
+        "assignee": null,
+        "remark": null,
+        "reviewHistory": []
+      }
+    ],
+    "count": 1
+  },
+  {
+    "type": "ASSIGN",
+    "batchId": "BATCH_mqce5htc_ju5m",
+    "beforeStates": [
+      {
+        "id": "ISSUE_mqce5htg_eiyew5",
+        "type": "DUPLICATE_VERSION",
+        "severity": "error",
+        "message": "章节[一、投标函] 检测到重复版本文件: 01-投标函\\投标函_v1.pdf(版本:1), 01-投标函\\投标函_v2.pdf(版本:2)",
+        "targetPath": "01-投标函\\投标函_v1.pdf",
+        "expected": "仅保留一个版本",
+        "actual": "存在 2 个版本",
+        "details": {
+          "section": "一、投标函",
+          "files": [
+            {
+              "path": "01-投标函\\投标函_v1.pdf",
+              "version": "1"
+            },
+            {
+              "path": "01-投标函\\投标函_v2.pdf",
+              "version": "2"
+            }
+          ]
+        },
+        "reviewStatus": "pending",
+        "handler": null,
+        "assignee": "张三",
+        "remark": null,
+        "reviewHistory": [
+          {
+            "from": null,
+            "to": "张三",
+            "operator": "张三",
+            "reason": "领取问题",
+            "timestamp": "2026-06-13T13:28:35.971Z"
+          }
+        ]
+      }
+    ],
+    "count": 1
+  }
+]

@@ -1,0 +1,24 @@
+{
+  "batches": {
+    "BATCH_mqce8bvc_o210": {
+      "batchId": "BATCH_mqce8bvc_o210",
+      "scanTime": "2026-06-13T13:30:48.216Z",
+      "rulePath": "profile://review-main (D:\\workSpace\\AI__SPACE\\zzz-00037\\.test-workspace\\review-profile-manual\\rule.yaml)",
+      "targetDir": "D:\\workSpace\\AI__SPACE\\zzz-00037\\.test-workspace\\review-profile-manual\\docs",
+      "directorySignature": "8aeae58658063613bff0a535fafdcf4ae1f7ed7c2fbefda5b08fa57712d6c666",
+      "issues": [],
+      "scannedFiles": [
+        "01-main\\required.pdf"
+      ],
+      "summary": {
+        "total": 0,
+        "byType": {},
+        "byStatus": {
+          "pending": 0,
+          "confirmed": 0,
+          "ignored": 0
+        }
+      }
+    }
+  }
+}
