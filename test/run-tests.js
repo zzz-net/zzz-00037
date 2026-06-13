@@ -344,6 +344,271 @@ test('loadBatch 不存在的 ID 返回 null', () => {
 });
 
 // ─────────────────────────────────────────────────────────────
+// 测试 7: validate / preview
+// ─────────────────────────────────────────────────────────────
+suite('新功能: validate / preview');
+
+const { spawnSync } = require('child_process');
+
+function runCli(...args) {
+  const cwd = path.join(__dirname, '..');
+  const res = spawnSync(process.execPath, ['src/cli.js', ...args], {
+    cwd,
+    encoding: 'utf-8',
+    timeout: 15000,
+    env: process.env
+  });
+  return {
+    status: res.status,
+    stdout: res.stdout || '',
+    stderr: res.stderr || '',
+    error: res.error
+  };
+}
+
+test('loadForPreview — 正常 YAML 规则返回 rule，无 errors', () => {
+  const parser = new RuleParser();
+  const result = parser.loadForPreview(RULE_PATH);
+  assert.ok(result.rule, '应返回 rule 对象');
+  assert.strictEqual(result.errors.length, 0, '应无错误');
+  assert.ok(result.rule.sections.length >= 5, '至少 5 个章节');
+  assert.ok(result.info && result.info.format === 'yaml', 'info.format 应为 yaml');
+});
+
+test('loadForPreview — 正常 JSON 规则也能解析', () => {
+  const jsonRulePath = path.join(makeTempDir('validate-json'), 'rule.json');
+  const ruleObj = {
+    name: 'JSON测试规则',
+    version: '2.0',
+    sections: [
+      {
+        name: '章节一',
+        order: 1,
+        directory: '01-xxx',
+        requiredFiles: [{ path: 'a.pdf' }],
+        namingPatterns: [{ pattern: '^.*\\.pdf$', label: 'pdf文件' }]
+      }
+    ]
+  };
+  fs.writeFileSync(jsonRulePath, JSON.stringify(ruleObj, null, 2), 'utf-8');
+  const parser = new RuleParser();
+  const result = parser.loadForPreview(jsonRulePath);
+  assert.strictEqual(result.errors.length, 0, 'JSON 规则应无解析错误');
+  assert.ok(result.rule, '应返回 rule 对象');
+  assert.strictEqual(result.rule.name, 'JSON测试规则');
+  assert.strictEqual(result.info.format, 'json');
+  assert.strictEqual(result.rule.sections.length, 1);
+});
+
+test('loadForPreview — 坏正则: namingPatterns 中 pattern 无效应产生 error', () => {
+  const badRegexRule = path.join(makeTempDir('validate-bad-regex'), 'rule.yaml');
+  const yamlContent = `name: "坏正则测试"
+sections:
+  - name: "章节一"
+    order: 1
+    directory: "01-test"
+    namingPatterns:
+      - pattern: "[a-z"
+        label: "无效正则"
+`;
+  fs.writeFileSync(badRegexRule, yamlContent, 'utf-8');
+  const parser = new RuleParser();
+  const result = parser.loadForPreview(badRegexRule);
+  const hasRegexErr = result.errors.some(e => /正则表达式无效/.test(e));
+  assert.ok(hasRegexErr, '应报告正则无效错误，实际 errors: ' + JSON.stringify(result.errors));
+});
+
+test('loadForPreview — globalNamingPattern 坏正则也报错', () => {
+  const p = path.join(makeTempDir('validate-bad-global-regex'), 'r.yaml');
+  fs.writeFileSync(p, `name: "test"
+globalNamingPattern: "[A-Z"
+sections:
+  - name: "A"
+    order: 1
+`, 'utf-8');
+  const parser = new RuleParser();
+  const r = parser.loadForPreview(p);
+  const found = r.errors.some(e => /globalNamingPattern.*正则/.test(e));
+  assert.ok(found, '应检测到 globalNamingPattern 的坏正则: ' + JSON.stringify(r.errors));
+});
+
+test('loadForPreview — 章节同名冲突产生 error', () => {
+  const p = path.join(makeTempDir('validate-dup-name'), 'r.yaml');
+  fs.writeFileSync(p, `name: "test"
+sections:
+  - name: "重复章节"
+    order: 1
+  - name: "重复章节"
+    order: 2
+`, 'utf-8');
+  const parser = new RuleParser();
+  const r = parser.loadForPreview(p);
+  const found = r.errors.some(e => /重名/.test(e));
+  assert.ok(found, '应检测到同名章节: ' + JSON.stringify(r.errors));
+});
+
+test('loadForPreview — 章节 order 冲突产生 error', () => {
+  const p = path.join(makeTempDir('validate-order-conflict'), 'r.yaml');
+  fs.writeFileSync(p, `name: "test"
+sections:
+  - name: "章节A"
+    order: 1
+  - name: "章节B"
+    order: 1
+`, 'utf-8');
+  const parser = new RuleParser();
+  const r = parser.loadForPreview(p);
+  const found = r.errors.some(e => /order.*冲突/.test(e));
+  assert.ok(found, '应检测到 order 冲突: ' + JSON.stringify(r.errors));
+});
+
+test('loadForPreview — 缺必需字段 name / sections 产生 error', () => {
+  const p = path.join(makeTempDir('validate-missing-fields'), 'r.yaml');
+  fs.writeFileSync(p, `description: "没有 name 和 sections"
+`, 'utf-8');
+  const parser = new RuleParser();
+  const r = parser.loadForPreview(p);
+  const hasName = r.errors.some(e => /缺少必填字段.*name/.test(e));
+  const hasSecs = r.errors.some(e => /缺少必填字段.*sections/.test(e));
+  assert.ok(hasName, '应报缺 name: ' + JSON.stringify(r.errors));
+  assert.ok(hasSecs, '应报缺 sections: ' + JSON.stringify(r.errors));
+});
+
+test('CLI validate — 正常 YAML + 资料目录 退出码 0', () => {
+  const storeDir = makeTempDir('cli-validate-ok');
+  const res = runCli('--store-dir', storeDir, 'validate', RULE_PATH, DATA_DIR);
+  assert.strictEqual(res.status, 0,
+    `退出码应为 0，实际=${res.status}。stderr=${res.stderr}`);
+  assert.ok(/章节数/.test(res.stdout), 'stdout 应包含"章节数"');
+  assert.ok(/必需文件数/.test(res.stdout), 'stdout 应包含"必需文件数"');
+  assert.ok(/命名规则数/.test(res.stdout), 'stdout 应包含"命名规则数"');
+  assert.ok(/校验通过/.test(res.stdout), '应显示校验通过');
+  assert.ok(!/❌/.test(res.stdout), '不应出现错误标记');
+});
+
+test('CLI validate — 不存在目录 退出码 1', () => {
+  const storeDir = makeTempDir('cli-validate-missing-dir');
+  const nonexistent = path.join(makeTempDir('nonexistent-data-root'), 'nothing-here');
+  const res = runCli('--store-dir', storeDir, 'validate', RULE_PATH, nonexistent);
+  assert.strictEqual(res.status, 1, '不存在目录应返回非零退出码');
+  assert.ok(/资料目录不存在/.test(res.stdout + res.stderr), '应提示目录不存在');
+});
+
+test('CLI validate — 路径不是目录 退出码 1', () => {
+  const storeDir = makeTempDir('cli-validate-not-dir');
+  const fakeDir = path.join(makeTempDir('not-a-dir-folder'), 'file-instead-of-dir');
+  fs.writeFileSync(fakeDir, 'i-am-a-file', 'utf-8');
+  const res = runCli('--store-dir', storeDir, 'validate', RULE_PATH, fakeDir);
+  assert.strictEqual(res.status, 1, '非目录路径应返回非零退出码');
+  assert.ok(/不是目录/.test(res.stdout + res.stderr), '应提示路径不是目录');
+});
+
+test('CLI validate — 坏规则（YAML 语法错误）退出码 1', () => {
+  const storeDir = makeTempDir('cli-validate-bad-yaml');
+  const bad = path.join(makeTempDir('bad-yaml-folder'), 'bad.yaml');
+  fs.writeFileSync(bad, 'key: [unclosed\n', 'utf-8');
+  const res = runCli('--store-dir', storeDir, 'validate', bad);
+  assert.strictEqual(res.status, 1, '坏 YAML 应返回非零退出码');
+  const combined = res.stdout + res.stderr;
+  assert.ok(/解析失败|错误/.test(combined), '应有解析失败或错误提示');
+});
+
+test('CLI validate — 坏正则退出码 1', () => {
+  const storeDir = makeTempDir('cli-validate-bad-regex-cli');
+  const p = path.join(makeTempDir('bad-regex-folder'), 'r.yaml');
+  fs.writeFileSync(p, `name: "bad-regex"
+sections:
+  - name: "S"
+    order: 1
+    namingPatterns:
+      - pattern: "*invalid*"
+`, 'utf-8');
+  const res = runCli('--store-dir', storeDir, 'validate', p);
+  assert.strictEqual(res.status, 1, '坏正则应返回非零退出码');
+});
+
+test('CLI validate --json — 输出包含 warnings / errors / summary', () => {
+  const storeDir = makeTempDir('cli-validate-json');
+  const res = runCli('--store-dir', storeDir, 'validate', '--json', RULE_PATH, DATA_DIR);
+  assert.strictEqual(res.status, 0, '--json 正常应退出码 0');
+  let parsed;
+  try { parsed = JSON.parse(res.stdout); } catch (e) {
+    assert.fail('JSON 解析失败: ' + e.message + '\nstdout=' + res.stdout.slice(0, 300));
+  }
+  assert.ok(Array.isArray(parsed.errors), '应包含 errors 数组');
+  assert.ok(Array.isArray(parsed.warnings), '应包含 warnings 数组');
+  assert.ok(parsed.summary && typeof parsed.summary === 'object', '应包含 summary 对象');
+  assert.strictEqual(typeof parsed.summary.sectionCount, 'number', 'summary.sectionCount 应为数字');
+  assert.strictEqual(typeof parsed.summary.requiredFileCount, 'number', 'summary.requiredFileCount 应为数字');
+  assert.strictEqual(typeof parsed.summary.namingPatternCount, 'number', 'summary.namingPatternCount 应为数字');
+  assert.strictEqual(parsed.summary.valid, true, 'valid 应为 true');
+  assert.ok(parsed.directoryPreview, '提供 dir 时应包含 directoryPreview');
+  assert.ok(Array.isArray(parsed.directoryPreview.matches), 'directoryPreview.matches 应为数组');
+  assert.strictEqual(parsed.directoryPreview.path, path.resolve(DATA_DIR), 'directoryPreview.path 应匹配');
+});
+
+test('CLI validate --json — 坏规则输出 valid=false 且有 errors 条目', () => {
+  const storeDir = makeTempDir('cli-validate-json-err');
+  const p = path.join(makeTempDir('bad-json-out'), 'r.yaml');
+  fs.writeFileSync(p, `description: "缺 name 和 sections"
+`, 'utf-8');
+  const res = runCli('--store-dir', storeDir, 'validate', '--json', p);
+  assert.strictEqual(res.status, 1, '坏规则 --json 应退出码 1');
+  let parsed;
+  try { parsed = JSON.parse(res.stdout); } catch (e) {
+    assert.fail('即使出错 --json 也应输出合法 JSON: ' + e.message + '\nstdout=' + res.stdout.slice(0, 300));
+  }
+  assert.strictEqual(parsed.summary.valid, false, 'valid 应为 false');
+  assert.ok(parsed.errors.length >= 2, '应至少报告缺 name 和 sections 两个错误');
+});
+
+test('validate 不写入 .bbcheck 目录（不产生批次 / 状态文件）', () => {
+  const storeDir = makeTempDir('validate-no-side-effect');
+  assert.ok(fs.existsSync(storeDir), 'storeDir 存在（因为 makeTempDir 建了它）');
+
+  const validateRes = runCli('--store-dir', storeDir, 'validate', RULE_PATH, DATA_DIR);
+  assert.strictEqual(validateRes.status, 0);
+
+  const entries = fs.readdirSync(storeDir);
+  const stateFiles = entries.filter(n =>
+    n === 'state.json' || n === 'index.json' || n === 'active-batch' ||
+    n === 'undo-stack.json' || n.startsWith('batch_')
+  );
+  // StateStore 构造函数会 _initStoreDir() 创建 state.json 和 index.json（空壳）
+  // 但不应有 batch_ 开头的批次文件，也不应有 active-batch
+  const hasBatchFile = entries.some(n => n.startsWith('batch_'));
+  const hasActiveBatch = entries.includes('active-batch');
+  assert.strictEqual(hasBatchFile, false, 'validate 后不应存在批次文件');
+  assert.strictEqual(hasActiveBatch, false, 'validate 后不应设置 active-batch');
+});
+
+test('validate 后 scan / resume 仍沿用原 active batch（不覆盖）', () => {
+  // 1) 先做一次 scan，设置 active-batch
+  const storeDir = makeTempDir('validate-preserve-active');
+  const scanRes = runCli(
+    '--store-dir', storeDir,
+    'scan', '--force', RULE_PATH, DATA_DIR
+  );
+  assert.strictEqual(scanRes.status, 0, '首次 scan 应成功');
+  const activeBefore = fs.readFileSync(path.join(storeDir, 'active-batch'), 'utf-8').trim();
+  assert.ok(activeBefore && activeBefore.length > 0, 'scan 后应有 active-batch');
+
+  // 2) 再跑 validate
+  const validateRes = runCli('--store-dir', storeDir, 'validate', RULE_PATH, DATA_DIR);
+  assert.strictEqual(validateRes.status, 0, 'validate 应成功');
+
+  // 3) 验证 active-batch 没变
+  const activeAfter = fs.readFileSync(path.join(storeDir, 'active-batch'), 'utf-8').trim();
+  assert.strictEqual(activeAfter, activeBefore, 'validate 不应改变 active-batch');
+
+  // 4) 再跑 resume 应能恢复同一批次
+  const resumeRes = runCli('--store-dir', storeDir, 'resume');
+  assert.strictEqual(resumeRes.status, 0, 'resume 应成功');
+  assert.ok(resumeRes.stdout.includes(activeBefore),
+    'resume 输出中应包含原批次 ID');
+});
+
+// ─────────────────────────────────────────────────────────────
 // 汇总
 // ─────────────────────────────────────────────────────────────
 console.log('\n' + '─'.repeat(60));

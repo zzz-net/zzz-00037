@@ -59,8 +59,77 @@ class RuleParser {
     return this.validate(parsed, absPath);
   }
 
-  validate(data, sourcePath) {
+  loadForPreview(rulePath) {
+    const absPath = path.resolve(rulePath);
     const errors = [];
+    const warnings = [];
+    let rule = null;
+    const info = { path: absPath, format: null, size: null };
+
+    if (!fs.existsSync(absPath)) {
+      errors.push(`规则文件不存在: ${absPath}`);
+      return { rule, errors, warnings, info };
+    }
+
+    const ext = path.extname(absPath).toLowerCase();
+    if (!this.supportedExtensions.includes(ext)) {
+      errors.push(`不支持的规则文件格式: ${ext}，请使用 .yaml, .yml 或 .json`);
+      return { rule, errors, warnings, info };
+    }
+    info.format = ext.slice(1);
+
+    try {
+      const stat = fs.statSync(absPath);
+      info.size = stat.size;
+    } catch (_) {}
+
+    let rawData;
+    try {
+      rawData = fs.readFileSync(absPath, 'utf-8');
+    } catch (e) {
+      errors.push(`读取规则文件失败: ${e.message}`);
+      return { rule, errors, warnings, info };
+    }
+
+    let parsed;
+    try {
+      if (ext === '.json') {
+        parsed = JSON.parse(rawData);
+      } else {
+        parsed = yaml.load(rawData, { schema: yaml.JSON_SCHEMA });
+      }
+    } catch (e) {
+      const marker = e.mark ? ` (行 ${e.mark.line + 1}, 列 ${e.mark.column + 1})` : '';
+      errors.push(`规则文件解析失败${marker}: ${e.message}`);
+      return { rule, errors, warnings, info };
+    }
+
+    if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed)) {
+      errors.push('规则文件必须是一个对象');
+      return { rule, errors, warnings, info };
+    }
+
+    const result = this.validateForPreview(parsed, absPath);
+    rule = result.rule;
+    for (const e of result.errors) errors.push(e);
+    for (const w of result.warnings) warnings.push(w);
+    return { rule, errors, warnings, info };
+  }
+
+  validate(data, sourcePath) {
+    const result = this.validateForPreview(data, sourcePath);
+    if (result.errors.length > 0) {
+      throw new RuleValidationError(
+        '规则校验失败:\n  - ' + result.errors.join('\n  - '),
+        'validation'
+      );
+    }
+    return result.rule;
+  }
+
+  validateForPreview(data, sourcePath) {
+    const errors = [];
+    const warnings = [];
 
     if (!data.name) {
       errors.push('缺少必填字段: name (规则名称)');
@@ -89,10 +158,17 @@ class RuleParser {
 
     if (data.sections && Array.isArray(data.sections)) {
       const seenNames = new Set();
+      const orderMap = new Map();
       data.sections.forEach((section, idx) => {
         const prefix = `sections[${idx}]`;
         try {
-          rule.sections.push(this.validateSection(section, idx, prefix, seenNames, errors));
+          const validated = this.validateSection(section, idx, prefix, seenNames, errors, warnings);
+          rule.sections.push(validated);
+          const orderKey = String(validated.order);
+          if (!orderMap.has(orderKey)) {
+            orderMap.set(orderKey, []);
+          }
+          orderMap.get(orderKey).push({ name: validated.name, index: idx });
         } catch (e) {
           if (e instanceof RuleValidationError) {
             errors.push(e.message);
@@ -101,19 +177,27 @@ class RuleParser {
           }
         }
       });
+
+      for (const [order, entries] of orderMap.entries()) {
+        if (entries.length > 1) {
+          const names = entries.map(e => `"${e.name}"(索引${e.index})`).join(', ');
+          errors.push(`章节 order 冲突: order=${order} 被 ${names} 同时使用`);
+        }
+      }
     }
 
-    if (errors.length > 0) {
-      throw new RuleValidationError(
-        '规则校验失败:\n  - ' + errors.join('\n  - '),
-        'validation'
-      );
+    if (rule.globalNamingPattern) {
+      try {
+        new RegExp(rule.globalNamingPattern);
+      } catch (e) {
+        errors.push(`globalNamingPattern 正则表达式无效: ${e.message}`);
+      }
     }
 
-    return rule;
+    return { rule, errors, warnings };
   }
 
-  validateSection(section, idx, prefix, seenNames, errors) {
+  validateSection(section, idx, prefix, seenNames, errors, warnings) {
     if (!section || typeof section !== 'object') {
       throw new RuleValidationError(`${prefix} 必须是对象`, prefix);
     }

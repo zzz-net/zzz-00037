@@ -98,6 +98,298 @@ yargs
   });
 
 yargs
+  .command('validate <rule> [dir]', '校验规则文件并预览目录匹配（不写入 .bbcheck、不生成批次）', (y) => {
+    y
+      .positional('rule', { describe: '规则文件路径 (YAML/JSON)', type: 'string' })
+      .positional('dir', { describe: '可选：资料目录路径，预览匹配情况', type: 'string' })
+      .option('json', { describe: '以 JSON 格式输出 warnings / errors / summary', type: 'boolean', default: false });
+  }, async (argv) => {
+    const out = { warnings: [], errors: [], summary: {} };
+    let hasFatal = false;
+
+    const preview = parser.loadForPreview(argv.rule);
+    out.errors.push(...preview.errors);
+    out.warnings.push(...preview.warnings);
+
+    if (preview.info) {
+      out.summary.ruleFile = preview.info.path;
+      out.summary.ruleFormat = preview.info.format;
+      out.summary.ruleSize = preview.info.size;
+    }
+
+    let totalRequiredFiles = 0;
+    let totalNamingPatterns = 0;
+    let sectionsWithDirectory = 0;
+
+    if (preview.rule) {
+      out.summary.ruleName = preview.rule.name;
+      out.summary.ruleVersion = preview.rule.version;
+      out.summary.sectionCount = preview.rule.sections.length;
+
+      const sectionSummaries = [];
+      for (const sec of preview.rule.sections) {
+        const reqCount = (sec.requiredFiles || []).length;
+        const patCount = (sec.namingPatterns || []).length;
+        totalRequiredFiles += reqCount;
+        totalNamingPatterns += patCount;
+        if (sec.directory) sectionsWithDirectory++;
+        sectionSummaries.push({
+          name: sec.name,
+          order: sec.order,
+          directory: sec.directory,
+          requiredFiles: reqCount,
+          namingPatterns: patCount,
+          signatureRequired: !!sec.signatureRequired,
+          allowUntracked: !!sec.allowUntracked
+        });
+      }
+      out.summary.requiredFileCount = totalRequiredFiles;
+      out.summary.namingPatternCount = totalNamingPatterns;
+      out.summary.sectionsWithDirectory = sectionsWithDirectory;
+      out.summary.globalSignatureRequired = !!preview.rule.globalSignatureRequired;
+      out.summary.sections = sectionSummaries;
+    }
+
+    let dirPreview = null;
+    if (argv.dir) {
+      const absDir = path.resolve(argv.dir);
+      dirPreview = { path: absDir, exists: false, readable: false, matches: [] };
+      out.summary.directory = absDir;
+
+      if (!fs.existsSync(absDir)) {
+        out.errors.push(`资料目录不存在: ${absDir}`);
+        hasFatal = true;
+      } else if (!fs.statSync(absDir).isDirectory()) {
+        out.errors.push(`路径不是目录: ${absDir}`);
+        hasFatal = true;
+      } else {
+        dirPreview.exists = true;
+        try {
+          fs.accessSync(absDir, fs.constants.R_OK);
+          dirPreview.readable = true;
+        } catch (_) {
+          out.errors.push(`目录不可读 (权限不足): ${absDir}`);
+          hasFatal = true;
+        }
+      }
+
+      if (dirPreview.exists && dirPreview.readable && preview.rule) {
+        let topLevelDirs = [];
+        try {
+          topLevelDirs = fs.readdirSync(absDir, { withFileTypes: true })
+            .filter(e => e.isDirectory())
+            .map(e => e.name);
+        } catch (e) {
+          out.errors.push(`读取目录失败: ${absDir} — ${e.message}`);
+          hasFatal = true;
+        }
+
+        let totalSectionFiles = 0;
+        for (const sec of preview.rule.sections) {
+          const secDir = sec.directory
+            ? path.join(absDir, sec.directory)
+            : absDir;
+          const matchEntry = {
+            section: sec.name,
+            directory: sec.directory || '(根目录)',
+            directoryExists: false,
+            fileCount: 0,
+            files: []
+          };
+
+          if (fs.existsSync(secDir) && fs.statSync(secDir).isDirectory()) {
+            matchEntry.directoryExists = true;
+            try {
+              fs.accessSync(secDir, fs.constants.R_OK);
+              const entries = fs.readdirSync(secDir, { withFileTypes: true });
+              for (const e of entries) {
+                if (e.isFile()) {
+                  matchEntry.files.push(e.name);
+                  matchEntry.fileCount++;
+                  totalSectionFiles++;
+                }
+              }
+            } catch (e) {
+              out.errors.push(`章节目录不可读: ${secDir} — ${e.message}`);
+            }
+          } else if (sec.directory) {
+            out.warnings.push(`章节"${sec.name}"指定的目录 "${sec.directory}" 在资料目录中不存在`);
+          }
+
+          if (!matchEntry.directoryExists && sec.directory) {
+            const actualIdx = topLevelDirs.indexOf(sec.directory);
+            matchEntry.foundInTopLevel = actualIdx >= 0;
+            matchEntry.topLevelIndex = actualIdx >= 0 ? actualIdx : null;
+          }
+
+          dirPreview.matches.push(matchEntry);
+        }
+
+        const sortedByOrder = [...preview.rule.sections].sort((a, b) => a.order - b.order);
+        const originalOrder = preview.rule.sections.map(s => s.name);
+        const sortedNames = sortedByOrder.map(s => s.name);
+        if (originalOrder.join(',') !== sortedNames.join(',')) {
+          out.warnings.push(
+            `规则中 sections 数组顺序与 order 值不一致，实际排序应为: ${sortedNames.join(' → ')}`
+          );
+        }
+
+        let actualDirs = [];
+        try {
+          actualDirs = fs.readdirSync(absDir, { withFileTypes: true })
+            .filter(e => e.isDirectory()).map(e => e.name);
+        } catch (_) {}
+
+        const ruleDirs = preview.rule.sections
+          .filter(s => s.directory)
+          .map(s => ({ name: s.name, dir: s.directory, order: s.order }));
+
+        for (let i = 0; i < ruleDirs.length - 1; i++) {
+          const a = ruleDirs[i];
+          const b = ruleDirs[i + 1];
+          const aIdx = actualDirs.indexOf(a.dir);
+          const bIdx = actualDirs.indexOf(b.dir);
+          if (aIdx >= 0 && bIdx >= 0 && aIdx > bIdx) {
+            out.warnings.push(
+              `磁盘目录顺序与 order 不符: ${a.dir}(章节"${a.name}",order=${a.order}) 在磁盘上位于 ${b.dir}(章节"${b.name}",order=${b.order}) 之后`
+            );
+          }
+        }
+
+        const mapped = new Set(ruleDirs.map(r => r.dir));
+        for (const d of actualDirs) {
+          if (!mapped.has(d)) {
+            out.warnings.push(`资料目录中存在未映射的顶层目录: "${d}"（未关联到任何章节）`);
+          }
+        }
+
+        out.summary.sectionFileCount = totalSectionFiles;
+        out.summary.topLevelDirectoryCount = actualDirs.length;
+      }
+    }
+
+    out.summary.errorCount = out.errors.length;
+    out.summary.warningCount = out.warnings.length;
+    out.summary.valid = out.errors.length === 0;
+
+    if (argv.json) {
+      if (dirPreview) out.directoryPreview = dirPreview;
+      process.stdout.write(JSON.stringify(out, null, 2) + '\n');
+      process.exit(out.errors.length > 0 ? 1 : 0);
+      return;
+    }
+
+    console.log(chalk.bold.cyan('\n━━━ 规则校验 ━━━'));
+    console.log(`  规则文件: ${chalk.white(out.summary.ruleFile || argv.rule)}`);
+    if (out.summary.ruleFormat) {
+      console.log(`  格式: ${chalk.white(out.summary.ruleFormat.toUpperCase())}`);
+      if (typeof out.summary.ruleSize === 'number') {
+        console.log(`  大小: ${chalk.white(out.summary.ruleSize + ' B')}`);
+      }
+    }
+
+    if (preview.rule) {
+      console.log(chalk.green(`\n  ✓ 规则名称: ${preview.rule.name}`));
+      console.log(chalk.green(`  ✓ 版本: ${preview.rule.version || '1.0'}`));
+      console.log(chalk.cyan(`  ✓ 章节数: ${out.summary.sectionCount}`));
+      console.log(chalk.cyan(`  ✓ 必需文件数: ${out.summary.requiredFileCount}`));
+      console.log(chalk.cyan(`  ✓ 命名规则数: ${out.summary.namingPatternCount}`));
+      if (preview.rule.globalSignatureRequired) {
+        console.log(chalk.yellow(`  ⚐ 全局签章要求: 开启`));
+      }
+    } else {
+      console.log(chalk.red('\n  ✗ 未能加载有效规则对象'));
+    }
+
+    if (out.summary.sections && out.summary.sections.length > 0) {
+      console.log(chalk.bold('\n📑 章节概览:'));
+      const secTable = new Table({
+        head: [
+          chalk.cyan('Order'),
+          chalk.cyan('章节名'),
+          chalk.cyan('目录'),
+          chalk.cyan('必需文件'),
+          chalk.cyan('命名规则'),
+          chalk.cyan('签章'),
+          chalk.cyan('允许未纳入')
+        ],
+        colWidths: [8, 24, 20, 10, 10, 8, 14],
+        wordWrap: true
+      });
+      for (const s of out.summary.sections) {
+        secTable.push([
+          s.order,
+          s.name,
+          s.directory || '-',
+          s.requiredFiles,
+          s.namingPatterns,
+          s.signatureRequired ? chalk.green('是') : '-',
+          s.allowUntracked ? chalk.yellow('是') : '-'
+        ]);
+      }
+      console.log(secTable.toString());
+    }
+
+    if (argv.dir && dirPreview) {
+      console.log(chalk.bold('\n📂 目录匹配预览:'));
+      console.log(`  目标目录: ${chalk.white(dirPreview.path)}`);
+      console.log(`  存在: ${dirPreview.exists ? chalk.green('✓') : chalk.red('✗')}`);
+      if (dirPreview.exists) {
+        console.log(`  可读: ${dirPreview.readable ? chalk.green('✓') : chalk.red('✗')}`);
+      }
+
+      if (dirPreview.matches.length > 0) {
+        const matchTable = new Table({
+          head: [
+            chalk.cyan('章节'),
+            chalk.cyan('子目录'),
+            chalk.cyan('存在'),
+            chalk.cyan('文件数'),
+            chalk.cyan('示例文件')
+          ],
+          colWidths: [22, 20, 8, 8, 40],
+          wordWrap: true
+        });
+        for (const m of dirPreview.matches) {
+          matchTable.push([
+            m.section,
+            m.directory,
+            m.directoryExists ? chalk.green('✓') : chalk.red('✗'),
+            m.fileCount,
+            (m.files || []).slice(0, 3).join(', ') + (m.files && m.files.length > 3 ? ` …(+${m.files.length - 3})` : '')
+          ]);
+        }
+        console.log(matchTable.toString());
+        if (typeof out.summary.sectionFileCount === 'number') {
+          console.log(chalk.gray(`  章节目录下共 ${out.summary.sectionFileCount} 个文件（顶层目录 ${out.summary.topLevelDirectoryCount || 0} 个）`));
+        }
+      }
+    }
+
+    if (out.warnings.length > 0) {
+      console.log(chalk.bold.yellow(`\n⚠ 警告 (${out.warnings.length}):`));
+      for (const w of out.warnings) {
+        console.log(chalk.yellow(`  • ${w}`));
+      }
+    }
+
+    if (out.errors.length > 0) {
+      console.log(chalk.bold.red(`\n❌ 错误 (${out.errors.length}):`));
+      for (const e of out.errors) {
+        console.log(chalk.red(`  ✗ ${e}`));
+      }
+      console.log();
+      process.exit(1);
+      return;
+    }
+
+    console.log(chalk.green('\n✅ 校验通过！可以执行 scan 开始正式扫描。\n'));
+    console.log(chalk.cyan('💡 下一步:'));
+    console.log(`  ${chalk.gray('$')} bbcheck scan ${JSON.stringify(argv.rule)}${argv.dir ? ' ' + JSON.stringify(argv.dir) : ' <资料目录>'}\n`);
+    process.exit(0);
+  });
+
+yargs
   .command('scan <rule> <dir>', '扫描资料目录', (y) => {
     y
       .positional('rule', { describe: '规则文件路径 (YAML/JSON)', type: 'string' })
