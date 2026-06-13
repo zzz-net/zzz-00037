@@ -1,0 +1,22 @@
+{
+  "name": "JSON测试规则",
+  "version": "2.0",
+  "sections": [
+    {
+      "name": "章节一",
+      "order": 1,
+      "directory": "01-xxx",
+      "requiredFiles": [
+        {
+          "path": "a.pdf"
+        }
+      ],
+      "namingPatterns": [
+        {
+          "pattern": "^.*\\.pdf$",
+          "label": "pdf文件"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,6 @@
+name: "test"
+sections:
+  - name: "重复章节"
+    order: 1
+  - name: "重复章节"
+    order: 2

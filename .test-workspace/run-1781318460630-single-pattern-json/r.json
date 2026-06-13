@@ -1,0 +1,16 @@
+{
+  "name": "JSON单规则",
+  "sections": [
+    {
+      "name": "S1",
+      "order": 1,
+      "directory": "01-s",
+      "namingPatterns": [
+        {
+          "pattern": "^.*\\.pdf$",
+          "label": "pdf"
+        }
+      ]
+    }
+  ]
+}

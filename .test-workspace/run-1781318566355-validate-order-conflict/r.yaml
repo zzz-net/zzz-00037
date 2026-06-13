@@ -1,0 +1,6 @@
+name: "test"
+sections:
+  - name: "章节A"
+    order: 1
+  - name: "章节B"
+    order: 1

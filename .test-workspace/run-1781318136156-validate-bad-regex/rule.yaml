@@ -1,0 +1,8 @@
+name: "坏正则测试"
+sections:
+  - name: "章节一"
+    order: 1
+    directory: "01-test"
+    namingPatterns:
+      - pattern: "[a-z"
+        label: "无效正则"

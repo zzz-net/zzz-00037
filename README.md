@@ -61,6 +61,17 @@ node src/cli.js init-samples --out-dir ./bid-samples
 
 自动生成样例规则 `bid-samples/rule.yaml` 和样例资料目录 `bid-samples/资料目录`（故意包含多种问题）。
 
+### 1.5 预览规则（推荐正式 scan 前执行）
+
+```bash
+bbcheck validate bid-samples/rule.yaml bid-samples/资料目录
+# 或机器可读输出
+bbcheck validate bid-samples/rule.yaml bid-samples/资料目录 --json
+```
+
+预览输出：章节数、必需文件数、命名规则数、配置错误（缺字段 / 坏正则 / 同名章节 / order 冲突）、警告（目录未映射 / 顺序不符）、章节目录匹配预览。
+有错误时进程以非零退出码返回，且**不会写入 `.bbcheck/` 状态目录、不会创建批次**，可反复执行。
+
 ### 2. 扫描目录
 
 ```bash
